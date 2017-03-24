@@ -20,3 +20,7 @@ keywords = "eNotTlGSQyEIO8z75VJU0ceshY5C293Tb3ztDCYwJJijSlMTOmRo27h2b3UPnwfBJ\
             9yI6Ypm7Ar+XpumHAgSSvE/gPTTtk7g=="
 keywords = decode(keywords).split(',')
 header_files = decode(header_files).split(',')
+store = dict()  # Stores major details of program
+store['keywords'] = keywords
+store['header_files'] = header_files
+
