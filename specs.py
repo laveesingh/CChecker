@@ -67,7 +67,7 @@ def recursion():
 	pass
 
 def comments_style():
-	'''There should not be any // style comments. All comments should be of the form /* …. */'''
+	'''There should not be any // style comments. All comments should be of the form /* ... */'''
 	pass
 
 def code_commented():
@@ -102,11 +102,11 @@ def unarymin_on_unsigned():
 
 def loop_iterator():
 	'''Numeric variable used in a for loop for controlling loop iterations shall not be modified inside the loop.
-	Eg: for(i=0; i<10; i++) {…..i=i+3; ….} is not allowed.'''
+	Eg: for(i=0; i<10; i++) {...i=i+3; ...} is not allowed.'''
 	pass
 
 def else_check():
-	'''All if…else if… constructs should be terminated with an else clause.'''
+	'''All if...else if... constructs should be terminated with an else clause.'''
 	pass
 
 def pointer_level():
