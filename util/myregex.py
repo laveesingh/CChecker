@@ -1,3 +1,13 @@
+'''
+This file contains same methods as re module, but these methods are modified a
+little bit in order to avoid spoilers that may arise due to double quoted
+strings in the text.
+For example:
+    printf("value of a = ", 5);
+'=' sign in the line above, may spoil patterns created to detect assignments
+only.
+
+'''
 import re
 
 
