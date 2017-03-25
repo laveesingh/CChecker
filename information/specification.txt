@@ -1,0 +1,46 @@
+The framework Ccheck should check if the given C program file satisfies the following specifications. 
+1) There should not be implicit type conversions between integer and floating point types, signed and unsigned types. 
+2) Statements that evaluate differently left to right and right to left should not be allowed. eg: statements like a = b[j] + j++;
+3) Bitwise operations are not allowed on signed data types. 
+4) Assignment statements in expressions resulting in Boolean value are not allowed. eg: if( b = a)
+5) Equalities (==) and inequalities (<=, >=) between floating point values are not allowed.
+6) Global variables are not allowed as function parameters. 
+7) Automatic (local) variables should have a value before they are used. 
+8) goto and continue statements should not be used. 
+9) Dynamic heap memory allocation should not be used. Hence functions such as malloc, calloc, realloc, free should not be used. 
+10) There should not be any recursion. 
+11) There should not be any // style comments. All comments should be of the form /* …. */
+12) Sections of code should not be commented out. 
+13) Inside a comment, the character sequence /* should not be used. 
+14) Identifier in an inner scope should not have the same name as an identifier in an outer scope, and hide the identifier in the outer scope. 
+15) All functions shall have prototype declarations that are visible at both function definition and function call. 
+16) sizeof operator should not be used on expressions with side effect. Eg: sizeof(x=10) is not allowed, as this will not set x to 10. 
+17) Right-hand operand of shift operator should lie between zero and one less than the width in bits of the left-hand side operand. Eg: x << 9 is not permitted if x is of width 8-bits. 
+18) Unary minus operator should not be used on an expression whose type is unsigned. 
+19) Numeric variable used in a for loop for controlling loop iterations shall not be modified inside the loop. Eg: for(i=0; i<10; i++) {…..i=i+3; ….} is not allowed. 
+20) All if…else if… constructs should be terminated with an else clause. 
+21) More than two levels of pointer indirection should not be used. 
+22) Unions should not be used. 
+23) There shall not be any unreachable code (code which will not be executed under any circumstances and which can be detected at compile-time). 
+24) All switch statements should have a default clause. 
+25) A switch expression should not be effectively Boolean. Eg: switch(x==10) should not be used, as x==10 is effectively Boolean. 
+
+CCheck should be invoked as,
+Ccheck < specification file> < input program file> -o <output program file>
+The specification file should contain the list of specifications to be checked. For example, suppose we wish to check if the given program satisfies the specifications 1,2,3,5, and 10. Then specification file should be 
+1 2 3 5 10
+Let the input program in this case be 
+int compare(int x, float y)
+{
+float z = x;
+if(z == y) return 1;
+else return 0;
+}
+Ccheck in this case should output 
+int compare(int x, float y)
+{
+float z = x;  /* violation of specifications-1 */
+if(z == y) return 1; /* violation of specifications-5 */
+else return 0;
+}
+ 
