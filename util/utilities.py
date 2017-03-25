@@ -3,6 +3,9 @@ import myregex
 
 import store
 
+before_pattern = r'(?P<before>.*?)'
+after_pattern = r'(?P<after>.*?)'
+
 class statement:
 
     def __init__(self, line, number):
@@ -226,68 +229,96 @@ class statement:
 
 
 
+
+
 class function:
 
-    def __init__(self, name, startmark, text, rettype='int', arglist=[]):
-        """
-        name: Name of the function
-        startmark: Line number where the function definition starts
-        rettype: return data type
-        arglist: parameter list that it takes
-        """
-        self.name = name
-        self.startmark = startmark
+    properties = {}
+
+    def __init__(self, index, text, start, end):
+        self.index = index
         self.text = text
-        self.rettype = rettype
-        seslf.arglist = arglist
+        self.start = start
+        self.end = end
 
-    def __eq__(self, other):
-        return self.name == other.name and self.rettype == other.rettype and\
-                self.arglist == other.arglist
-
+    def process(self, details={}):
+        lines_list = self.text.split('\n')
+        mid_pattern = r'(?P<ret>\w+\*{0,2})\s+(?P<name>\w+)\s*\((?P<args>.*?)\)'  # not handled case where pointer(*) is with function name
+        first_line_pattern = before_pattern + mid_pattern + after_pattern
+        match = re.search(first_line_pattern, lines_list[0].strip())
+        self.name = match.group('name')
+        self.rettype = match.group('ret')
+        args = match.group('args')
 
 class forloop:
 
-    def __init__(self, index, level, text):
+    def __init__(self, index, level, text, start, end):
         self.index = index
         self.level = level
         self.text = text
+        self.start = start
+        self.end = end
 
-    def ex():
-        pass
-
+    def process(self, details={}):
+        lines_list = self.text.split('\n')
+        mid_pattern = r'for\s*\((?P<init>.*?);\s*(?P<cond>.*?);\s*(?P<inc>.*?)\)\n'
+        first_line_pattern = before_pattern + mid_pattern + after_pattern
+        match = re.search(first_line_pattern, lines_list[0].strip())
+        init = match.group('init')
+        cond = match.group('cond')
+        inc = match.group('inc')
+        before = match.group('before')
+        after = match.group('after')
+        # todo: process init, according to assignment processor and 
+        # fill deails
 
 class whileloop:
 
-    def __init__(self, index, level, text):
+    def __init__(self, index, level, text, start, end):
         self.index = index
         self.level = level
         self.text = text
+        self.start = start
+        self.end = end
 
-    def ex():
-        pass
-
+    def process(self, details={}):
+        lines_list = self.text.split('\n')
+        mid_pattern = r'while\s*\((?P<cond>.*?)\)(?P<after>.*)\n'
+        first_line_pattern = before_pattern + mid_pattern + after_pattern
+        match = re.search(first_line_pattern, lines_list[0].strip())
+        before = match.group('before')
+        after = match.group('after')
+        cond = match.group('cond')
+        # there's nothing much to do in this initial stage here
 
 class dowhileloop:
 
-    def __init__(self, index, level, text):
+    def __init__(self, index, level, text, start, end):
         self.index = index
         self.level = level
         self.text = text
+        self.start = start
+        self.end = end
 
-    def ex():
-        pass
+    def process(self, details={}):
+        lines_list = self.text.split('\n')
+        last_mid_pattern = r'while\s*\((?P<cond>.*?)\)'
+        last_line_pattern = before_pattern + last_mid_pattern + after_pattern
+        match = re.search(last_line_pattern, lines_list[-1].strip())
+        before = match.group('before')
+        after = match.group('after')
+        cond = match.group('cond')
+        # there's nothing much to do in this initial stage here
 
 
 class ifcondition:
 
-    def __init__(self, index, level, text):
+    def __init__(self, index, level, text, start, end):
         self.index = index
         self.level = level
         self.text = text
-
-    def ex():
-        pass
+        self.start = start
+        self.end = end
 
 
 class elseifcondition:
@@ -300,7 +331,6 @@ class elseifcondition:
     def ex():
         pass
 
-
 class switch:
 
     def __init__(self, index, level, text):
@@ -310,7 +340,6 @@ class switch:
 
     def ex():
         pass
-
 
 class struct:
 
@@ -334,7 +363,44 @@ class elsecondition:
         pass
 
 
-class variable:
+class initialization:
 
-    def __init__(self):
-        pass
+    def __init__(self, text, func='global'):
+        self.text = text
+        self.function = func
+
+    def process(self, details={}):
+        """
+        This would be of the pattern:
+        >>> int a, b = 20, c;
+        """
+        assign_list = self.text.split(',')
+        first_expression = assign_list[0]
+        dtype = None
+        if re.search(r'\w+\s+\w+', first_expression):
+            match = re.search(r'(?P<type>\w+)\s+(?P<name>\w+)', first_expression)
+            dtype = match.group('type')
+            varname = match.group('name')
+            details['variables'][varname]['garbage'] = True
+            details['variables'][varname]['datatype'] = dtype
+            if '=' in first_expression:
+                details['variables'][varname]['garbage'] = False
+        elif '=' in first_expression and not re.search(r'\w+\s+\w+', first_expression):
+            match = re.search(r'(?P<name>\w+)\s*\=\s*(?P<val>.*)', first_expression)
+            varname = match.group('name')
+            # dtype must have been defined already
+            val_exp = match.group('val')
+            details['variables'][varname]['garbage'] = False
+
+        for expression in assign_list[1:]:
+            if '=' in expression:
+                match = re.search(r'(?P<name>\w+)\s*\=\s*(?P<val>.*)', expression)
+                varname = match.group('name')
+                details['variables'][varname]['garbage'] = False
+                if dtype:
+                    details['variables'][varname]['datatype'] = dtype
+            else:
+                varname = expression.strip()
+                details['variables'][varname]['garbage'] = True
+                if dtype:
+                    details['variables'][varname]['datatype'] = dtype
