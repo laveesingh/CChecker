@@ -35,7 +35,7 @@ def parse_specs(spec_file):
     		# though we can and we need to make this parser more smart and decide on
     		# various fromats which can be there
     		try:
-    			specs.append(int(lines))
+    			specs.append(list(map(int,lines.split(' '))))
     		except ValueError:
     			raise Exception("Unable to parse specification file due to its invalid bad format")
     return specs
