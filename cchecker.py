@@ -9,7 +9,7 @@ from util.store import *
 
 def check_args(parser, args):
     '''This function will parse the arguments and make sure the arguments
-	passed are correct and complete.'''
+    passed are correct and complete.'''
 
     #TODO: add more exceptions here (required)
     #TODO: add an error class (Low priority)
@@ -18,8 +18,8 @@ def check_args(parser, args):
                 colors.ENDC)
 
     if args.spec != 'all' and not os.path.isfile(args.spec):
-    	raise Exception(colors.FAIL + "File not found: " + str(args.spec) +
-            	colors.ENDC)
+        raise Exception(colors.FAIL + "File not found: " + str(args.spec) +
+                colors.ENDC)
 
 def parse_specs(spec_file):
     '''This function will parse the spec file and return a list of
@@ -27,34 +27,34 @@ def parse_specs(spec_file):
 
     specs = []
     if spec_file == 'all':
-    	specs = [x for x in range(1,26)]
+        specs = [x for x in range(1,26)]
     else:
-    	fp = open(spec_file, 'r+').read()
-    	for lines in fp:
-    		# We have assumed the current spec file to be like a spec number per line
-    		# though we can and we need to make this parser more smart and decide on
-    		# various fromats which can be there
-    		try:
-    			specs.append(list(map(int,lines.split(' '))))
-    		except ValueError:
-    			raise Exception("Unable to parse specification file due to its invalid bad format")
+        fp = open(spec_file, 'r+').read()
+        for lines in fp:
+            # We have assumed the current spec file to be like a spec number per line
+            # though we can and we need to make this parser more smart and decide on
+            # various fromats which can be there
+            try:
+                specs.append(list(map(int,lines.split(' '))))
+            except ValueError:
+                raise Exception("Unable to parse specification file due to its invalid bad format")
     return specs
 
 def eval_specs(specs_list):
-	'''This function will accept a list of specification numbers and call the related functions'''
-	for spec_no in specs_list:
-		fname = specs.num_to_name[spec_no]
-		try:
-			getattr(specs, fname)()
-		except AttributeError:
-			raise Exception("The source code sucks")
+    '''This function will accept a list of specification numbers and call the related functions'''
+    for spec_no in specs_list:
+        fname = specs.num_to_name[spec_no]
+        try:
+            getattr(specs, fname)()
+        except AttributeError:
+            raise Exception("The source code sucks")
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-s', '--spec',
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--spec',
                     help="Specification file of rules", default='all')
-parser.add_argument('-f', '--file', help="C input file", required=True)
-args = parser.parse_args()
-
-### If there's any error with provided input files
-check_args(parser, args)
-specs = parse_specs(args.spec)
+    parser.add_argument('-f', '--file', help="C input file", required=True)
+    args = parser.parse_args()
+    ### If there's any error with provided input files
+    check_args(parser, args)
+    specs = parse_specs(args.spec)
