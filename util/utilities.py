@@ -1,8 +1,7 @@
 import re
 import myregex
 
-from store import store
-
+import store
 
 class statement:
 
@@ -243,8 +242,8 @@ class function:
         seslf.arglist = arglist
 
     def __eq__(self, other):
-        return self.name == other.name and self.rettype == other.rettype and
-            self.arglist == other.arglist
+        return self.name == other.name and self.rettype == other.rettype and\
+                self.arglist == other.arglist
 
 
 class forloop:
@@ -335,6 +334,7 @@ class elsecondition:
         pass
 
 
-def variable:
+class variable:
 
-    def __init__(self, 
+    def __init__(self):
+        pass
