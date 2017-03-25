@@ -7,7 +7,7 @@ from store import store
 class statement:
 
     def __init__(self, line, number):
-        self.line = line
+        self.line = line.strip()
         self.number = number  # line number in program
 
     def is_blank(self):
@@ -15,7 +15,6 @@ class statement:
             For this line to be blank, it should contain, spaces and newline
             characters
         """
-        self.line = self.line.strip()
         return not self.line
 
     def is_comment1(self):
@@ -25,7 +24,6 @@ class statement:
             or line contains comment after some statement/expression.
             But here we're looking, if line starts with comment
         """
-        self.line = self.line.strip()
         return self.line.startswith('//')
 
     def is_preprocessor(self):
@@ -35,7 +33,6 @@ class statement:
             >>> #define something
             or some other preprocessor
         """
-        self.line = self.line.strip()
         regex = r'\#((include)|(define)).*'
         if re.search(regex, self.line):
             return True
@@ -53,7 +50,6 @@ class statement:
             4. Parantheses contain argument list, closing parantheses is followed
             by a semicolon;
         """
-        self.line = self.line.strip()
         regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
             r'\(.*\)\s*\;)'
         if re.search(regex, self.line):
@@ -80,7 +76,6 @@ class statement:
             4. Parantheses contain argument list, closing parantheses is followed
             by a { or newline;
         """
-        self.line = self.line.strip()
         regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
             r'\(.*\)\s*\[\n\{])'
         if re.search(regex, self.line):
@@ -99,7 +94,6 @@ class statement:
                 body
             }
         """
-        self.line = self.line.strip()
         regex = r'for\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
@@ -117,7 +111,6 @@ class statement:
                     body
                 }
         """
-        self.line = self.line.strip()
         regex = r'while\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
@@ -135,7 +128,6 @@ class statement:
                     body
                 }
         """
-        self.line = self.line.strip()
         regex = r'if\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
@@ -153,7 +145,6 @@ class statement:
                     body
                 }
         """
-        self.line = self.line.strip()
         regex = r'else if\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
@@ -171,7 +162,6 @@ class statement:
                     body
                 }
         """
-        self.line = self.line.strip()
         regex = r'else\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
@@ -189,7 +179,6 @@ class statement:
                     body
                 }
         """
-        self.line = self.line.strip()
         regex = r'switch\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
@@ -203,7 +192,6 @@ class statement:
             Or the pattern:
             >>> datatype var1, var2, var3...;
         """
-        self.line = self.line.strip()
         regex = r'((const)|(static))?\s*(?P<type>\w+)\s*(?P<name>(\w+)\,?)\s*;'
         if re.search(regex, self.line):
             return True
@@ -220,7 +208,6 @@ class statement:
         or
         >>> var1 = val1, var2 = val2;
         """
-        self.line = self.line.strip()
         regex = r'[^=]\=[^=]'
         if myregex.search(regex, self.line):
             return True
