@@ -24,7 +24,7 @@ def parse_specs(spec_file):
 
     specs = []
     if spec_file == 'all':
-    	specs = [x for x in range(1,25)]
+    	specs = [x for x in range(1,26)]
     else:
     	fp = open(spec_file, 'r+').read()
     	for lines in fp:
