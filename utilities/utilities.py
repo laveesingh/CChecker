@@ -1,7 +1,7 @@
 import re
 import myregex
 
-from Store import store
+from store import store
 
 
 class statement:
