@@ -1,12 +1,14 @@
 import re
+import myregex
 
 from Store import store
 
 
-class Line:
+class statement:
 
-    def __init__(self, line):
+    def __init__(self, line, number):
         self.line = line
+        self.number = number  # line number in program
 
     def is_blank(self):
         """
@@ -219,4 +221,133 @@ class Line:
         >>> var1 = val1, var2 = val2;
         """
         self.line = self.line.strip()
-        regex = r'\w
+        regex = r'[^=]\=[^=]'
+        if myregex.search(regex, self.line):
+            return True
+        return False
+
+    def is_struct(self):
+        """
+        For this line to be struct, it has to follow the pattern:
+        >>> struct name{
+                body
+            };
+        >>> typedef struct name{
+                body
+            };
+        """
+    
+
+
+
+class function:
+
+    def __init__(self, name, startmark, text, rettype='int', arglist=[]):
+        """
+        name: Name of the function
+        startmark: Line number where the function definition starts
+        rettype: return data type
+        arglist: parameter list that it takes
+        """
+        self.name = name
+        self.startmark = startmark
+        self.text = text
+        self.rettype = rettype
+        seslf.arglist = arglist
+
+    def __eq__(self, other):
+        return self.name == other.name and self.rettype == other.rettype and
+            self.arglist == other.arglist
+
+
+class forloop:
+
+    def __init__(self, index, level, text):
+        self.index = index
+        self.level = level
+        self.text = text
+
+    def ex():
+        pass
+
+
+class whileloop:
+
+    def __init__(self, index, level, text):
+        self.index = index
+        self.level = level
+        self.text = text
+
+    def ex():
+        pass
+
+
+class dowhileloop:
+
+    def __init__(self, index, level, text):
+        self.index = index
+        self.level = level
+        self.text = text
+
+    def ex():
+        pass
+
+
+class ifcondition:
+
+    def __init__(self, index, level, text):
+        self.index = index
+        self.level = level
+        self.text = text
+
+    def ex():
+        pass
+
+
+class elseifcondition:
+
+    def __init__(self, index, level, text):
+        self.index = index
+        self.level = level
+        self.text = text
+
+    def ex():
+        pass
+
+
+class switch:
+
+    def __init__(self, index, level, text):
+        self.index = index
+        self.level = level
+        self.text = text
+
+    def ex():
+        pass
+
+
+class struct:
+
+    def __init__(self, index, level, text):
+        self.index = index
+        self.level = level
+        self.text = text
+
+    def ex():
+        pass
+
+
+class elsecondition:
+
+    def __init__(self, index, level, text):
+        self.index = index
+        self.level = level
+        self.text = text
+
+    def ex():
+        pass
+
+
+def variable:
+
+    def __init__(self, 

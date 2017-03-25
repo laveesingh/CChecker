@@ -32,3 +32,4 @@ STORE = dict()  # Stores major details of program
 STORE['KEYWORDS'] = KEYWORDS
 STORE['HEADER'] = HEADER
 
+print KEYWORDS
