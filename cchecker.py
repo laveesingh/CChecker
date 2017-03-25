@@ -1,6 +1,9 @@
+# STDLib imports
 import argparse
 import os
 
+# Local imports
+import specs
 import utilities.colors as colors
 from utilities.Store import *
 
@@ -36,6 +39,15 @@ def parse_specs(spec_file):
     		except ValueError:
     			raise Exception("Unable to parse specification file due to its invalid bad format")
     return specs
+
+def eval_specs(specs_list):
+	'''This function will accept a list of specification numbers and call the related functions'''
+	for spec_no in specs_list:
+		fname = specs.num_to_name[spec_no]
+		try:
+			getattr(specs, fname)()
+		except AttributeError:
+			raise Exception("The source code sucks")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--spec',
