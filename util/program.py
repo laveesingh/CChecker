@@ -4,10 +4,13 @@ attributes which represents various parts of the code.'''
 
 class program:
 
-	def __init__(self,filepointer):
+	def __init__(self):
 		self.functions = []
 		self.macros = []
 		self.structs = []
 		self.global_vars = []
 		self.proto_decl = []
 		self.global_comments = []
+
+	def load_attrs(self, fp):
+		pass
