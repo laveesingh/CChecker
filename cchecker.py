@@ -4,27 +4,28 @@ import os
 import utilities.colors as colors
 from utilities.Store import *
 
+def check_args(parser, args):
+    '''This function will parse the arguments and make sure the arguments
+	passed are correct and complete.'''
+
+    #TODO: add more exceptions here (required)
+    #TODO: add an error class (Low priority)
+    if not os.path.isfile(args.file):
+        raise Exception(colors.FAIL + "File not found: " + str(args.file) +
+                colors.ENDC)
+
+    if args.spec != 'all' and not os.path.isfile(args.spec):
+    	raise Exception(colors.FAIL + "File not found: " + str(args.spec) +
+            	colors.ENDC)
+
+
 parser = argparse.ArgumentParser()
-parser.add_argument('-s', '--specification',
-                    help="Specification file of rules")
-parser.add_argument('-i', '--input', help="C input file")
+parser.add_argument('-s', '--spec',
+                    help="Specification file of rules", default='all')
+parser.add_argument('-f', '--file', help="C input file", required=True)
 args = parser.parse_args()
 
 ### If there's any error with provided input files
-if args.specification is None:
-    parser.print_help()
-    raise Exception(colors.FAIL + "Specification file not given" +
-            colors.ENDC)
-if args.input is None:
-    parser.print_help()
-    raise Exception(colors.FAIL + "C input file not given" + colors.ENDC)
+check_args(parser, args)
 
-if not os.path.isfile(args.specification):
-    raise Exception(colors.FAIL + "No such file: " + str(args.specification) +
-            colors.ENDC)
-if not os.path.isfile(args.input):
-    raise Exception(colors.FAIL + "No such file: " + str(args.input) +
-            colors.ENDC)
-
-flags_data = open(args.specification, 'r+').read()
-
+flags_data = open(args.spec, 'r+').read()
