@@ -18,6 +18,24 @@ def check_args(parser, args):
     	raise Exception(colors.FAIL + "File not found: " + str(args.spec) +
             	colors.ENDC)
 
+def parse_specs(spec_file):
+    '''This function will parse the spec file and return a list of
+    check numbers which are required to perform.'''
+
+    specs = []
+    if spec_file == 'all':
+    	specs = [x for x in range(1,25)]
+    else:
+    	fp = open(spec_file, 'r+').read()
+    	for lines in fp:
+    		# We have assumed the current spec file to be like a spec number per line
+    		# though we can and we need to make this parser more smart and decide on
+    		# various fromats which can be there
+    		try:
+    			specs.append(int(lines))
+    		except ValueError:
+    			raise Exception("Unable to parse specification file due to its invalid bad format")
+    return specs
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', '--spec',
@@ -27,5 +45,4 @@ args = parser.parse_args()
 
 ### If there's any error with provided input files
 check_args(parser, args)
-
-flags_data = open(args.spec, 'r+').read()
+specs = parse_specs(args.spec)
