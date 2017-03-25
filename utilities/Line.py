@@ -209,12 +209,14 @@ class Line:
 
     def is_assignment(self):
         """
-            For this line to be assignment, it has to follow the pattern:
-            >>> datatype var_name = val;
-            or
-            >>> datatype var1 = val1, var2 = val2;
-            or
-            >>> var_name = val;
-            or
-            >>> var1 = val1, var2 = val2;
+        For this line to be assignment, it has to follow the pattern:
+        >>> datatype var_name = val;
+        or
+        >>> datatype var1 = val1, var2 = val2;
+        or
+        >>> var_name = val;
+        or
+        >>> var1 = val1, var2 = val2;
         """
+        self.line = self.line.strip()
+        regex = r'\w
