@@ -1,8 +1,6 @@
-# STDLib imports
 import argparse
 import os
 
-# Local imports
 import specs
 import util.colors as colors
 from util.store import *
@@ -57,6 +55,6 @@ if __name__ == '__main__':
                     help="Specification file of rules", default='all')
     parser.add_argument('-f', '--file', help="C input file", required=True)
     args = parser.parse_args()
-    ### If there's any error with provided input files
+    # If there's any error with provided input files
     check_args(parser, args)
     specs = parse_specs(args.spec)
