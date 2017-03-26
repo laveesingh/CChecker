@@ -37,6 +37,7 @@ class program:
 			lineno = struct(lineno)
 			lineno = func_prototype(lineno)
 			lineno = function(lineno)
+			lineno = global_comments(lineno)
 
 
 	def preprocessor(lineno):
@@ -115,6 +116,22 @@ class program:
 		If it's not the beginning of a struct, then it will
 		return the same line number which was passed.'''
 		if is_struct(self.lines[lineno]):
+			pass
+
+		return lineno
+
+	def global_comments(lineno):
+		'''It will check whether the given line is the beginning
+		of a global comments or not. If it is the beginning it will do
+		following things:
+		1. Find the end(last line) of this global comments
+		2. Make a object of global_comments class
+		3. Add that object to self.global_comments list
+		4. Return the line number next to where this global_comments ends
+
+		If it's not the beginning of a global comments, then it will
+		return the same line number which was passed.'''
+		if is_global_comments(self.lines[lineno]):
 			pass
 
 		return lineno
