@@ -103,3 +103,16 @@ store = dict()  # Stores major details of program
 functions = dict()
 store['keywords'] = keywords
 store['header'] = header
+counterparts = {
+        'define': '',
+        'include': '',
+        'undef': '',
+        'ifdef': 'endif',
+        'ifndef':'endif',
+        'if': 'endif',
+        'elif': 'endif',
+        'else': 'endif',
+        'error': '',
+        'pragma':''
+}
+

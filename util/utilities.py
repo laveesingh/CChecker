@@ -18,35 +18,35 @@ class statement:
         self.number = number  # line number in program
 
     def is_blank(self):
-        """
+        '''
             For this line to be blank, it should contain, spaces and newline
             characters
-        """
+        '''
         return not self.line
 
     def is_comment1(self):
-        """
+        '''
             Inline comment: // type
             There can be two patterns, either line starts with //
             or line contains comment after some statement/expression.
             But here we're looking, if line starts with comment
-        """
+        '''
         return self.line.startswith('//')
 
     def is_preprocessor(self):
-        """
+        '''
             For this line to be a preprocessor, it has to follow the pattern:
             >>> #include something
             >>> #define something
             or some other preprocessor
-        """
+        '''
         regex = r'\#((include)|(define)).*'
         if re.search(regex, self.line):
             return True
         return False
 
     def is_function_prototype(self):
-        """
+        '''
             For this line to be a function prototype, it has to follow the pattern:
             >>> return_type function_name(type1 arg1...);
             1. It starts at a return type, built in or self defined. This is
@@ -56,7 +56,7 @@ class statement:
             the parantheses.
             4. Parantheses contain argument list, closing parantheses is followed
             by a semicolon;
-        """
+        '''
         regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
             r'\(.*\)\s*\;)'
         if re.search(regex, self.line):
@@ -64,7 +64,7 @@ class statement:
         return False
 
     def is_function_definition(self):
-        """
+        '''
             For this line to be a function definition, it has to follow the
             pattern:
             >>> return_type function_name(type1 arg1...) {
@@ -82,7 +82,7 @@ class statement:
             the parantheses.
             4. Parantheses contain argument list, closing parantheses is followed
             by a { or newline;
-        """
+        '''
         regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
             r'\(.*\)\s*\[\n\{])'
         if re.search(regex, self.line):
@@ -90,7 +90,7 @@ class statement:
         return False
 
     def is_forloop(self):
-        """
+        '''
             For this line to be a for loop, it has to follow the pattern:
             >>> for(init; condition; increment){
                     body
@@ -100,14 +100,14 @@ class statement:
             {
                 body
             }
-        """
+        '''
         regex = r'for\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
         return False
 
     def is_whileloop(self):
-        """
+        '''
             For this line to be while loop, it has to follow the pattern:
             >>> while(condition){
                     body
@@ -117,14 +117,26 @@ class statement:
                 {
                     body
                 }
-        """
+        '''
         regex = r'while\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
         return False
 
+    def is_dowhileloop(self):
+        '''
+        For this line to be dowhileloop, it has to follow the pattern:
+        >>> do{
+                body
+            } 
+        '''
+        regex = r'[^\w]do[^\w]'
+        if re.search(regex, self.line):
+            return True
+        return False
+
     def is_if(self):
-        """
+        '''
             For this line to be if condition, it has to follow the pattern:
             >>> if(condition){
                     body
@@ -134,14 +146,14 @@ class statement:
                 {
                     body
                 }
-        """
+        '''
         regex = r'if\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
         return False
 
     def is_elseif(self):
-        """
+        '''
             For this line to be else if, it has to follow the pattern:
             >>> else if(condition){
                     body
@@ -151,14 +163,14 @@ class statement:
                 {
                     body
                 }
-        """
+        '''
         regex = r'else if\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
         return False
 
     def is_else(self):
-        """
+        '''
             For this line to be else, it has to follow the pattern:
             >>> else(condition){
                     body
@@ -168,14 +180,14 @@ class statement:
                 {
                     body
                 }
-        """
+        '''
         regex = r'else\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
         return False
 
     def is_switch(self):
-        """
+        '''
             For this line to be switch, it has to follow the pattern:
             >>> switch(condition){
                     body
@@ -185,43 +197,43 @@ class statement:
                 {
                     body
                 }
-        """
+        '''
         regex = r'switch\s*\(.*\)\s*[\n\{]'
         if re.search(regex, self.line):
             return True
         return False
 
     def is_declaration(self):
-        """
+        '''
             For this line to be only declaration of variable, it has to follow the
             pattern:
             >>> datatype var_name;
             Or the pattern:
             >>> datatype var1, var2, var3...;
-        """
+        '''
         regex = r'((const)|(static))?\s*(?P<type>\w+)\s*(?P<name>(\w+)\,?)\s*;'
         if re.search(regex, self.line):
             return True
         return False
 
     def is_assignment(self):
-        """
+        '''
         For this line to be assignment, it has to follow the pattern:
         >>> datatype var_name = val;
-        or
+        sor
         >>> datatype var1 = val1, var2 = val2;
         or
         >>> var_name = val;
         or
         >>> var1 = val1, var2 = val2;
-        """
+        '''
         regex = r'[^=]\=[^=]'
         if myregex.search(regex, self.line):
             return True
         return False
 
     def is_struct(self):
-        """
+        '''
         For this line to be struct, it has to follow the pattern:
         >>> struct name{
                 body
@@ -229,11 +241,33 @@ class statement:
         >>> typedef struct name{
                 body
             };
-        """
-    
+        '''
+        regex = r'struct\s+\w+'
+        if re.search(regex, self.line):
+            return True
+        return False
 
-
-
+    def resolve(self):
+        '''
+        This function will resolve the type of the given line.
+        '''
+        inst = statement(self.line, self.number)
+        if inst.is_blank(): return 'blank'
+        if inst.is_comment(): return 'comment'
+        if inst.is_preprocessor(): return 'preprocessor'
+        if inst.is_function_prototype(): return 'function_prototype'
+        if inst.is_function_definition(): return 'function_definition'
+        if inst.is_forloop(): return 'forloop'
+        if inst.is_whileloop(): return 'whileloop'
+        if inst.is_dowhileloop(): return 'dowhileloop'
+        if inst.is_if(): return 'if'
+        if inst.is_elseif(): return 'elseif'
+        if inst.is_else(): return 'else'
+        if inst.is_swith(): return 'switch'
+        if inst.is_declaration(): return 'declaration'
+        if inst.is_assigment(): return 'assignment'
+        if inst.is_struct(): return 'struct'
+        return 'screwed'
 
 
 class function:
@@ -375,10 +409,10 @@ class initialization:
         self.function = func
 
     def process(self, details={}):
-        """
+        '''
         This would be of the pattern:
         >>> int a, b = 20, c;
-        """
+        '''
         assign_list = self.text.split(',')
         first_expression = assign_list[0]
         dtype = None

@@ -1,3 +1,8 @@
+import sys
+
+# disable creation of *.pyc files
+sys.dont_write_bytecode = True
+
 num_to_name = {
 	1: 'imp_type_conv',
 	2: 'evaluate_diff_sidewise',

@@ -1,11 +1,13 @@
 import argparse
 import os
+import sys
 
 import specs
 import util.colors as colors
 from util.store import *
 
-
+# disable creation of *.pyc files
+sys.dont_write_bytecode = True
 
 def check_args(parser, args):
     '''This function will parse the arguments and make sure the arguments
