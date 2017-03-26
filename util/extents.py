@@ -62,22 +62,137 @@ def preprocessor(name, lines_list, index):
 
 def function_prototype(lines_list, index):
     '''
-    yet to handle comma separated prototypes
+    handles only inline function prototypes of the format
+    >>> rettype func(args);
     '''
-    for i in xrange(index, len(lines_list)):
-        if re.search(r'\)\s*?;', lines_list[i]):
-            return i
-    return len(lines_list)-1
+    return index
 
 
 def function_definition(lines_list, index):
     '''
-    yet to handle strange cases or double quotes spoilers
+    handles only function of the format
+    >>> rettype func(args){
+            body
+        }
     '''
-    ocount = lines_list[index].count('{')
-    ccount = lines_list[index].count('}')
-    if ccount > ocount:
+    if lines_list[index].strip() == '}':  #ignored inline comments for now
         return index
     thisend = process_line(lines_list, index)
     return function_definition(lines_list, thisend+1)
 
+
+def forloop(lines_list, index):
+    '''
+    handles only for loops of the format
+    >>> for(details){
+            body
+        }
+    '''
+    if lines_list[index].strip() == '}':  #ignored inline comments for now
+        return index
+    thisend = process_line(lines_list, index)
+    return forloop(lines_list, thisend+1)
+
+
+def whileloop(lines_list, index):
+    '''
+    handles only while loops of the format
+    >>> while(conditions){
+            body
+        }
+    '''
+    if lines_list[index].strip() == '}':  #ignored inline comments for now
+        return index
+    thisend = process_line(lines_list, index)
+    return whileloop(lines_list, thisend+1)
+
+def dowhileloop(lines_list, index):
+    '''
+    handles only dowhile loops of the format
+    >>> do{
+            body
+        } while(condition);
+    '''
+    if lines_list[index].strip() == '}':  #ignored inline comments for now
+        return index
+    thisend = process_line(lines_list, index)
+    return dowhileloop(lines_list, thisend+1)
+
+def ifcondition(lines_list, index):
+    '''
+    handles only if conditions of the format
+    >>> if(conditions){
+            body
+        }
+    '''
+    if lines_list[index].strip() == '}':  #ignored inline comments for now
+        return index
+    thisend = process_line(lines_list, index)
+    return ifcondition(lines_list, thisend+1)
+
+
+def elseifcondition(lines_list, index):
+    '''
+    handles only else if conditions of the format
+    >>> else if(conditions){
+            body
+        }
+    '''
+    if lines_list[index].strip() == '}':  #ignored inline comments for now
+        return index
+    thisend = process_line(lines_list, index)
+    return elseifcondition(lines_list, thisend+1)
+
+
+def elsecondition(lines_list, index):
+    '''
+    handles only else conditions of the format
+    >>> else{
+            body
+        }
+    '''
+    if lines_list[index].strip() == '}':  #ignored inline comments for now
+        return index
+    thisend = process_line(lines_list, index)
+    return elsecondition(lines_list, thisend+1)
+
+
+def switch(lines_list, index):
+    '''
+    handles only switch of the format
+    >>> switch(constraint){
+            body
+        }
+    '''
+    if lines_list[index].strip() == '}':  #ignored inline comments for now
+        return index
+    thisend = process_line(lines_list, index)
+    return switch(lines_list, thisend+1)
+
+
+def struct(lines_list, index):
+    '''
+    handles only structs of the format
+    >>> struct name{
+            body
+        };
+    '''
+    if lines_list[index].strip() == '};':  #ignored inline comments for now
+        return index
+    thisend = process_line(lines_list, index)
+    return struct(lines_list, thisend+1)
+
+def declaration(lines_list, index):
+    '''handles only declarations of the following format
+    >>> datatype var1;
+    or
+    >>> datatype var1, var2...;
+    '''
+    return index
+
+def assignment(lines_list, index):
+    '''handles only assignments of the following format
+    >>> datatype var1 = val1;
+    or any other inline assignment
+    '''
+    return index
