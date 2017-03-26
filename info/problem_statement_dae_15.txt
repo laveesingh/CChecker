@@ -1,0 +1,88 @@
+﻿The framework Ccheck should check if the given C program file satisfies the following specifications. 
+
+1) There should not be implicit type conversions between integer and floating point types, signed and unsigned types.
+- Lossy conversion include
+1. float → int type conversion 
+2. a functions returning float but received by int variables
+3. parameters implicit conversion 
+4. double → long type conversions
+5. long → int type conversions
+6. allow explicit conversions 
+
+2) Statements that evaluate differently left to right and right to left should not be allowed. eg: statements like a = b[j] + j++;
+- statements with different evaluation from left to right:
+1. statement containing unary operators like ++ ,  - -  ,  + ,  - 
+2. statements containing update of variables and their usage in the same line 
+3.  
+
+3) Bitwise operations are not allowed on signed data types.
+- bitwise operators in C are
+1. ! , ^ , | , & , >> , <<
+
+4) Assignment statements in expressions resulting in Boolean value are not allowed. eg: if( b = a)
+- no assigment in if statements
+- no assignment in switch statements
+- while
+- do while
+
+5) Equalities (==) and inequalities (<=, >=) between floating point values are not allowed.
+- check on both sides that they are not floating points or double
+- Give alternate use for better use
+
+6) Global variables are not allowed as function parameters.
+
+7) Automatic (local) variables should have a value before they are used.
+- initialisation should be done before use
+- same gois for pointer type variables also  
+
+8) goto and continue statements should not be used.
+
+9) Dynamic heap memory allocation should not be used. Hence functions such as malloc, calloc, realloc, free should not be used.
+- no use of above keywords
+
+10) There should not be any recursion.
+- same function call inside any function is not allowed
+- another case can be of different functions calling different different functions but forming a circular dependancy  
+
+11) There should not be any // style comments. All comments should be of the form /* …. */
+- No sigle line comments
+
+12) Sections of code should not be commented out.
+
+13) Inside a comment, the character sequence /* should not be used.
+- Nested comments are not allowed 
+
+14) Identifier in an inner scope should not have the same name as an identifier in an outer scope, and hide the identifier in the outer scope.
+-  local Variables of same names as global ones should not be defined 
+
+15) All functions shall have prototype declarations that are visible at both function definition and function call.
+- prototype definition should be made before the function definition itself
+
+16) sizeof operator should not be used on expressions with side effect. Eg: sizeof(x=10) is not allowed, as this will not set x to 10.
+ - update and initialization should not take place in sizeof operators
+
+17) Right-hand operand of shift operator should lie between zero and one less than the width in bits of the left-hand side operand. Eg: x << 9 is not permitted if x is of width 8-bits.
+
+18) Unary minus operator should not be used on an expression whose type is unsigned.
+- no ‘ - ’ sign on unsigned numbers.
+
+19) Numeric variable used in a for loop for controlling loop iterations shall not be modified inside the loop. Eg: for(i=0; i<10; i++) {…..i=i+3; ….} is not allowed.
+- Value of counter if for loop should not be modified in for loop 
+
+20) All if…else if… constructs should be terminated with an else clause. 
+
+21) More than two levels of pointer indirection should not be used.
+- ** for pointers should not be used
+
+22) Unions should not be used.
+- union same as struct
+
+23) There shall not be any unreachable code (code which will not be executed under any circumstances and which can be detected at compile-time).
+- no unused code
+- TODO
+
+24) All switch statements should have a default clause. 
+
+25) A switch expression should not be effectively Boolean. Eg: switch(x==10) should not be used, as x==10 is effectively Boolean. 
+- switch should not take boolean value in switc. Can be done by evakuating the value of the expression first.
+
