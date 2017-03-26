@@ -5,7 +5,7 @@ structs, etc.
 '''
 import re
 
-from store import counterparts
+from store import counterparts, root
 from utilities import statement
 
 
@@ -59,4 +59,25 @@ def preprocessor(name, lines_list, index):
         thisend = process_line(lines_list, index)
         return preprocessor(name, lines_list, thisend+1)
 
+
+def function_prototype(lines_list, index):
+    '''
+    yet to handle comma separated prototypes
+    '''
+    for i in xrange(index, len(lines_list)):
+        if re.search(r'\)\s*?;', lines_list[i]):
+            return i
+    return len(lines_list)-1
+
+
+def function_definition(lines_list, index):
+    '''
+    yet to handle strange cases or double quotes spoilers
+    '''
+    ocount = lines_list[index].count('{')
+    ccount = lines_list[index].count('}')
+    if ccount > ocount:
+        return index
+    thisend = process_line(lines_list, index)
+    return function_definition(lines_list, thisend+1)
 

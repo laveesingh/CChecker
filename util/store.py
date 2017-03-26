@@ -8,7 +8,7 @@ sys.dont_write_bytecode = True
 ### Global Properties go here
 c_program = None  # the main c program as a string
 flags = None  # specification flags
-store = None  # dictionary to store runtime details
+root = None  # dictionary to store runtime details
 keywords = None  # list of all keywords
 header = None  # list of all header files
 
@@ -99,10 +99,10 @@ datatypes = [
         'void'
 ]
 
-store = dict()  # Stores major details of program
+root = dict()  # Stores major details of program
 functions = dict()
-store['keywords'] = keywords
-store['header'] = header
+root['keywords'] = keywords
+root['header'] = header
 counterparts = {
         'define': '',
         'include': '',
