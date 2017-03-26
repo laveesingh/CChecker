@@ -33,6 +33,13 @@ class statement:
         '''
         return self.line.startswith('//')
 
+    def is_comment2(self):
+        '''
+        Multiline comment: /* ... */ type
+        '''
+        return self.line.startswith('/*')
+
+
     def is_preprocessor(self):
         '''
             For this line to be a preprocessor, it has to follow the pattern:
@@ -253,16 +260,16 @@ class statement:
         '''
         inst = statement(self.line, self.number)
         if inst.is_blank(): return 'blank'
-        if inst.is_comment(): return 'comment'
+        if inst.is_comment1(): return 'comment1'
         if inst.is_preprocessor(): return 'preprocessor'
         if inst.is_function_prototype(): return 'function_prototype'
         if inst.is_function_definition(): return 'function_definition'
         if inst.is_forloop(): return 'forloop'
         if inst.is_whileloop(): return 'whileloop'
         if inst.is_dowhileloop(): return 'dowhileloop'
-        if inst.is_if(): return 'if'
-        if inst.is_elseif(): return 'elseif'
-        if inst.is_else(): return 'else'
+        if inst.is_if(): return 'ifcondition'
+        if inst.is_elseif(): return 'elseifcondition'
+        if inst.is_else(): return 'elsecondition'
         if inst.is_swith(): return 'switch'
         if inst.is_declaration(): return 'declaration'
         if inst.is_assigment(): return 'assignment'
