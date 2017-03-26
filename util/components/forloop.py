@@ -6,15 +6,14 @@ sys.dont_write_bytecode = True
 
 class forloop:
 
-    def __init__(self, index, level, text, start, end):
+    def __init__(self, index, level, lines_list, start, end):
         self.index = index
         self.level = level
-        self.text = text
+        self.lines_list = lines_list
         self.start = start
         self.end = end
 
     def process(self, details={}):
-        lines_list = self.text.split('\n')
         mid_pattern = r'for\s*\((?P<init>.*?);\s*(?P<cond>.*?);\s*(?P<inc>.*?)\)\n'
         first_line_pattern = before_pattern + mid_pattern + after_pattern
         match = re.search(first_line_pattern, lines_list[0].strip())
