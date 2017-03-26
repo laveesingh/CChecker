@@ -11,10 +11,10 @@ class program:
 
 	def __init__(self):
 		self.functions = []
-		self.macros = []
+		self.preprocessors = []
 		self.structs = []
 		self.global_vars = []
-		self.proto_decl = []
+		self.func_prototypes = []
 		self.global_comments = []
 		self.lines = []
 
@@ -37,6 +37,7 @@ class program:
 			lineno = struct(lineno)
 			lineno = func_prototype(lineno)
 			lineno = function(lineno)
+			lineno = global_comments(lineno)
 
 
 	def preprocessor(lineno):
@@ -51,7 +52,11 @@ class program:
 		If it's not the beginning of a preprocessor, then it will
 		return the same line number which was passed.'''
 		if is_preprocessor(self.lines[lineno]):
-			pass
+			endline = parse_preprocessor(self.lines, lineno)
+			text = self.lines[lineno : endline + 1]
+			pclass = utilities.preprocessor(text, [lineno, endline])
+			self.preprocessors.append(pclass)
+			return endline + 1
 
 		return lineno
 
@@ -67,7 +72,11 @@ class program:
 		If it's not the beginning of declaration of a global variable, then it
 		will return the same line number which was passed.'''
 		if is_global_var(self.lines[lineno]):
-			pass
+			endline = parse_global_var(self.lines, lineno)
+			text = self.lines[lineno : endline + 1]
+			gvclass - utilities.global_vars(text, [lineno, endline])
+			self.global_vars.append(gvclass)
+			return endline + 1
 
 		return lineno
 
@@ -83,7 +92,11 @@ class program:
 		If it's not the beginning of a function, then it will
 		return the same line number which was passed.'''
 		if is_func(self.lines[lineno]):
-			pass
+			endline = parse_function(self.lines, lineno)
+			text = self.lines[lineno : endline + 1]
+			fclass = utilities.function(text, [lineno, endline])
+			self.functions.append(fclass)
+			return endline + 1
 
 		return lineno
 
@@ -93,13 +106,17 @@ class program:
 		things:
 		1. Find the end(last line) of this function prototype
 		2. Make a object of func_prototype class
-		3. Add that object to self.func_prototype list
+		3. Add that object to self.func_prototypes list
 		4. Return the line number next to where this function prototype ends
 
 		If it's not the beginning of a function prototype, then it will
 		return the same line number which was passed.'''
 		if is_func_prototype(self.lines[lineno]):
-			pass
+			endline = parse_func_proto(self.lines, lineno)
+			text = self.lines[lineno : endline + 1]
+			fpclass - utilities.func_prototype(text, [lineno, endline])
+			self.func_prototypes.append(fpclass)
+			return endline + 1
 
 		return lineno
 
@@ -115,6 +132,30 @@ class program:
 		If it's not the beginning of a struct, then it will
 		return the same line number which was passed.'''
 		if is_struct(self.lines[lineno]):
-			pass
+			endline = parse_struct(self.lines, lineno)
+			text = self.lines[lineno : endline + 1]
+			sclass - utilities.struct(text, [lineno, endline])
+			self.structs.append(sclass)
+			return endline + 1
+
+		return lineno
+
+	def global_comments(lineno):
+		'''It will check whether the given line is the beginning
+		of a global comments or not. If it is the beginning it will do
+		following things:
+		1. Find the end(last line) of this global comments
+		2. Make a object of global_comments class
+		3. Add that object to self.global_comments list
+		4. Return the line number next to where this global_comments ends
+
+		If it's not the beginning of a global comments, then it will
+		return the same line number which was passed.'''
+		if is_global_comments(self.lines[lineno]):
+			endline = parse_global_comments(self.lines, lineno)
+			text = self.lines[lineno : endline + 1]
+			gcclass - utilities.global_comments(text, [lineno, endline])
+			self.global_comments.append(gcclass)
+			return endline + 1
 
 		return lineno
