@@ -35,7 +35,7 @@ def parse_specs(spec_file):
         for line in lines:
             # We have assumed the current spec file to be like a spec number per line
             # though we can and we need to make this parser more smart and decide on
-            # various fromats which can be there
+            # various formats which can be there
             try:
                 specs.append(list(map(int,line.split(' '))))
             except ValueError:
