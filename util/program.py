@@ -19,6 +19,8 @@ class program:
 		self.func_prototypes = []
 		self.global_comments = []
 		self.lines = []
+		# Make sure we track things which we are unable to parse
+		self.unrecognized = []
 
 	def load_attrs(self, fp):
 		text = fp.read()
@@ -34,12 +36,30 @@ class program:
 				lineno = lineno + 1
 				continue
 
-			lineno = preprocessor(lineno)
-			lineno = global_vars(lineno)
-			lineno = struct(lineno)
-			lineno = func_prototype(lineno)
-			lineno = function(lineno)
-			lineno = global_comments(lineno)
+			# The following sequence of calling function is trivial for now
+			# and is like this for no reason. We surely want to improve on this
+			# but is left as is because we are currently concentrating on the
+			# implementation part. We need to revisit this while optimising.
+
+			newline = preprocessor(lineno)
+			if newline != lineno:
+				continue
+			newline = global_vars(lineno)
+			if newline != lineno:
+				continue
+			newline = struct(lineno)
+			if newline != lineno:
+				continue
+			newline = func_prototype(lineno)
+			if newline != lineno:
+				continue
+			newline = function(lineno)
+			if newline != lineno:
+				continue
+			newline = global_comments(lineno)
+			if newline == lineno:
+				self.unrecognized.append(self.lines[lineno])
+				lineno = lineno + 1
 
 
 	def preprocessor(lineno):
