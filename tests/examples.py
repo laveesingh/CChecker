@@ -15,3 +15,9 @@ Blank = [
 '\t',
 '\r'
 ]
+Dowhile=[
+'''do
+   {
+    body
+   }while(condition);'''
+]
