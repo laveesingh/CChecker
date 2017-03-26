@@ -4,18 +4,19 @@ import sys
 sys.dont_write_bytecode = True
 
 
+before_pattern = 
+after_pattern = 
+
 class forloop:
 
-    def __init__(self, index, level, lines_list, start, end):
-        self.index = index
-        self.level = level
+    def __init__(self, lines_list, start, end, env={}):
         self.lines_list = lines_list
         self.start = start
         self.end = end
+        self.env = env  #environment details
 
     def process(self, details={}):
-        mid_pattern = r'for\s*\((?P<init>.*?);\s*(?P<cond>.*?);\s*(?P<inc>.*?)\)\n'
-        first_line_pattern = before_pattern + mid_pattern + after_pattern
+        first_line_pattern = r'(?P<before>.*?)' + r'for\s*\((?P<init>.*?);\s*(?P<cond>.*?);\s*(?P<inc>.*?)\)' + r'(?P<after>.*?)'
         match = re.search(first_line_pattern, lines_list[0].strip())
         init = match.group('init')
         cond = match.group('cond')
