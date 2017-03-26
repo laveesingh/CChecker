@@ -9,6 +9,10 @@ only.
 
 '''
 import re
+import sys
+
+# disable creation of *.pyc files
+sys.dont_write_bytecode = True
 
 
 # following functions find a given pattern, excluding the text given in the

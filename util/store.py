@@ -1,11 +1,14 @@
 import zlib
 import base64
+import sys
 
+# disable creation of *.pyc files
+sys.dont_write_bytecode = True
 
 ### Global Properties go here
 c_program = None  # the main c program as a string
-flags = none  # specification flags
-store = none  # dictionary to store runtime details
+flags = None  # specification flags
+store = None  # dictionary to store runtime details
 keywords = None  # list of all keywords
 header = None  # list of all header files
 
@@ -96,8 +99,6 @@ datatypes = [
         'void'
 ]
 
-keywords = decode(KEYWORDS).split(',')
-header = decode(HEADER).split(',')
 store = dict()  # Stores major details of program
 functions = dict()
 store['keywords'] = keywords

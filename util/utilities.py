@@ -1,10 +1,15 @@
 import re
-import myregex
+import sys
 
+import myregex
 import store
 
 before_pattern = r'(?P<before>.*?)'
 after_pattern = r'(?P<after>.*?)'
+
+# disable creation of *.pyc files
+sys.dont_write_bytecode = True
+
 
 class statement:
 

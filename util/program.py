@@ -1,6 +1,11 @@
+import sys
+
 '''This file contains the class 'program' which will be representative
 of the c program. This class will have objects of other classes as
 attributes which represents various parts of the code.'''
+
+# disable creation of *.pyc files
+sys.dont_write_bytecode = True
 
 class program:
 

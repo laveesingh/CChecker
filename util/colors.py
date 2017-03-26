@@ -1,4 +1,7 @@
+import sys
 
+# disable creation of *.pyc files
+sys.dont_write_bytecode = True
 ## Color globals
 
 HEADER = '\033[95m'
