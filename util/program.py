@@ -16,60 +16,60 @@ class program:
 		self.global_vars = []
 		self.proto_decl = []
 		self.global_comments = []
+		self.lines = []
 
 	def load_attrs(self, fp):
 		text = fp.read()
-		list_of_lines = []
 		for line in text:
-			list_of_lines.append(line)
+			self.lines.append(line)
 
 		lineno = 0
-		no_of_lines = len(list_of_lines)
+		no_of_lines = len(self.lines)
 
-		while lineno < list_of_lines:
+		while lineno < no_of_lines:
 			
-			if list_of_lines[lineno].strip() == '':
+			if self.lines[lineno].strip() == '':
 				lineno = lineno + 1
 				continue
 
-			lineno = preprocessor(list_of_lines, lineno)
-			lineno = global_vars(list_of_lines, lineno)
-			lineno = struct(list_of_lines, lineno)
-			lineno = func_prototype(list_of_lines, lineno)
-			lineno = function(list_of_lines, lineno)
+			lineno = preprocessor(lineno)
+			lineno = global_vars(lineno)
+			lineno = struct(lineno)
+			lineno = func_prototype(lineno)
+			lineno = function(lineno)
 
 
-def preprocessor(lines, lineno):
-	''''''
-	if is_preprocessor(lines[lineno]):
-		pass
+	def preprocessor(lineno):
+		''''''
+		if is_preprocessor(self.lines[lineno]):
+			pass
 
-	return lineno
+		return lineno
 
-def global_vars(lines, lineno):
-	''''''
-	if is_global_var(lines[lineno]):
-		pass
+	def global_vars(lineno):
+		''''''
+		if is_global_var(self.lines[lineno]):
+			pass
 
-	return lineno
+		return lineno
 
-def function(lines, lineno):
-	''''''
-	if is_func(lines[lineno]):
-		pass
+	def function(lineno):
+		''''''
+		if is_func(self.lines[lineno]):
+			pass
 
-	return lineno
+		return lineno
 
-def func_prototype(lines, lineno):
-	''''''
-	if is_func_prototype(lines[lineno]):
-		pass
+	def func_prototype(lineno):
+		''''''
+		if is_func_prototype(self.lines[lineno]):
+			pass
 
-	return lineno
+		return lineno
 
-def struct(lines, lineno):
-	''''''
-	if is_struct(lines[lineno]):
-		pass
+	def struct(lineno):
+		''''''
+		if is_struct(self.lines[lineno]):
+			pass
 
-	return lineno
+		return lineno
