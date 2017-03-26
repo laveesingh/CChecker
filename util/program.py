@@ -11,10 +11,10 @@ class program:
 
 	def __init__(self):
 		self.functions = []
-		self.macros = []
+		self.preprocessors = []
 		self.structs = []
 		self.global_vars = []
-		self.proto_decl = []
+		self.func_prototypes = []
 		self.global_comments = []
 		self.lines = []
 
@@ -93,7 +93,7 @@ class program:
 		things:
 		1. Find the end(last line) of this function prototype
 		2. Make a object of func_prototype class
-		3. Add that object to self.func_prototype list
+		3. Add that object to self.func_prototypes list
 		4. Return the line number next to where this function prototype ends
 
 		If it's not the beginning of a function prototype, then it will
