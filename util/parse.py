@@ -2,13 +2,15 @@
 and returning the end points of various components such as functions,
 preprocessors, etc.'''
 
+from . import extents
+
 def preprocessor(lines, lineno):
 	''''''
 	pass
 
 def function(lines, lineno):
 	''''''
-	pass
+	return extents.function_definition(lines, lineno)
 
 def global_var(lines, lineno):
 	pass
@@ -21,7 +23,7 @@ def func_proto(lines, lineno):
     return lineno
 
 def struct(lines, lineno):
-	pass
+	return extents.struct(lines, lineno)
 
 def global_comments(lines, lineno):
 	''''''
