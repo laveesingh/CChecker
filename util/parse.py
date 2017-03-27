@@ -23,7 +23,17 @@ def global_comments(lines, lineno):
 	pass
 
 def is_preprocessor(lines, lineno):
-	pass
+	'''
+		For this line to be a preprocessor, it has to follow the pattern:
+	    >>> #include something
+	    >>> #define something
+	    or some other preprocessor
+	'''
+	#TODO: improve this regex
+	regex = r'\#((include)|(define)).*'
+	if re.search(regex, lines[lineno]):
+	    return True
+	return False
 
 def is_function(lines, lineno):
 	pass

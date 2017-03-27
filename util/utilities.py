@@ -39,19 +39,6 @@ class statement:
         '''
         return self.line.startswith('/*')
 
-
-    def is_preprocessor(self):
-        '''
-            For this line to be a preprocessor, it has to follow the pattern:
-            >>> #include something
-            >>> #define something
-            or some other preprocessor
-        '''
-        regex = r'\#((include)|(define)).*'
-        if re.search(regex, self.line):
-            return True
-        return False
-
     def is_function_prototype(self):
         '''
             For this line to be a function prototype, it has to follow the pattern:
