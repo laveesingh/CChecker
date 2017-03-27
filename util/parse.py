@@ -21,3 +21,21 @@ def struct(lines, lineno):
 
 def global_comments(lines, lineno):
 	pass
+
+def is_preprocessor(lines, lineno):
+	pass
+
+def is_function(lines, lineno):
+	pass
+
+def is_global_var(lines, lineno):
+	pass
+
+def is_func_proto(lines, lineno):
+	pass
+
+def is_struct(lines, lineno):
+	pass
+
+def is_global_comments(lines, lineno):
+	pass
