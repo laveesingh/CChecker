@@ -8,14 +8,10 @@ Struct =
 Functions Proto = 
 Comments = 
 Global Var = 
-Unrecognised = #include <stdio.h>
-const int global_variable;
-#define ll long long
+Unrecognised = const int global_variable;
 void print(const char *s){
   printf("%s",s);
 }
-#define ull unsigned long long
-#include <stdlib.h>
 int main(){
   printf("Hello World!\n");
   return 0;

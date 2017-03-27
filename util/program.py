@@ -49,24 +49,25 @@ class program:
 			# but is left as is because we are currently concentrating on the
 			# implementation part. We need to revisit this while optimising.
 
-			newline = self.fpreprocessor(lineno)
-			if newline != lineno:
+			flag, newline = self.fpreprocessor(lineno)
+			if flag:
 				continue
-			newline = self.fglobal_vars(lineno)
-			if newline != lineno:
+			flag, newline = self.fglobal_vars(lineno)
+			if flag:
 				continue
-			newline = self.fstruct(lineno)
-			if newline != lineno:
+			flag, newline = self.fstruct(lineno)
+			if flag:
 				continue
-			newline = self.ffunc_prototype(lineno)
-			if newline != lineno:
+			flag, newline = self.ffunc_prototype(lineno)
+			if flag:
 				continue
-			newline = self.ffunction(lineno)
-			if newline != lineno:
+			flag, newline = self.ffunction(lineno)
+			if flag:
 				continue
-			newline = self.fglobal_comments(lineno)
-			if newline == lineno:
-				self.unrecognized.append(self.lines[lineno])
+			flag, newline = self.fglobal_comments(lineno)
+			if flag:
+				continue
+			self.unrecognized.append(self.lines[lineno])
 
 
 	def fpreprocessor(self, lineno):
@@ -85,9 +86,9 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			pclass = preprocessor.preprocessor(text, [lineno, endline])
 			self.preprocessors.append(pclass)
-			return endline
+			return True, endline
 
-		return lineno
+		return False, lineno
 
 	def fglobal_vars(self, lineno):
 		'''It will check whether the given line is the beginning
@@ -105,9 +106,9 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			gvclass = global_var.global_vars(text, [lineno, endline])
 			self.global_vars.append(gvclass)
-			return endline
+			return True, endline
 
-		return lineno
+		return False, lineno
 
 	def ffunction(self, lineno):
 		'''It will check whether the given line is the beginning
@@ -125,9 +126,9 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			fclass = function.function(text, [lineno, endline])
 			self.functions.append(fclass)
-			return endline
+			return True, endline
 
-		return lineno
+		return False, lineno
 
 	def ffunc_prototype(self, lineno):
 		'''It will check whether the given line is the beginning
@@ -145,9 +146,9 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			fpclass = func_prototype.func_prototype(text, [lineno, endline])
 			self.func_prototypes.append(fpclass)
-			return endline
+			return True, endline
 
-		return lineno
+		return False, lineno
 
 	def fstruct(self, lineno):
 		'''It will check whether the given line is the beginning
@@ -165,9 +166,9 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			sclass = struct.struct(text, [lineno, endline])
 			self.structs.append(sclass)
-			return endline
+			return True, endline
 
-		return lineno
+		return False, lineno
 
 	def fglobal_comments(self, lineno):
 		'''It will check whether the given line is the beginning
@@ -185,6 +186,6 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			gcclass = global_comment.global_comments(text, [lineno, endline])
 			self.global_comments.append(gcclass)
-			return endline
+			return True, endline
 
-		return lineno
+		return False, lineno
