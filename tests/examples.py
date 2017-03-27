@@ -122,6 +122,6 @@ Boolean And           conditional && conditional;
 Boolean Not           !identifier;
 Bitwise And           integer_value & integer_value;
 Bitwise Or            integer_value | integer_value;
-Ternary Operator       <condition> ? <true-case-code>:<false-case-code>;
+Ternary Operator       <condition> ? <true-case-code>:<false-case-code>;'''
 ]
 
