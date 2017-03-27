@@ -6,7 +6,7 @@ structs, etc.
 import re
 
 from store import counterparts, root
-from utilities import statement
+from . import parse, utilities
 
 
 possible_function_list = [
@@ -21,9 +21,7 @@ def process_line(lines_list, index):
     processes line according to defined function for particular type
     then returns line number, where counter_part of this line ends
     '''
-    current_line = lines_list[index]
-    inst = statement(current_line, index)
-    statement_type = inst.resolve()
+    statement_type = utilities.resolve(lines_list, index)
     returned = eval(statement_type +_'(lines_list, index)')
     return returned
 
@@ -39,7 +37,7 @@ def preprocessor(name, lines_list, index):
     one_liners = ['define', 'include', 'line', 'pragma']
     if name in one_liners:
         return index
-    if statement(lines_list[index]).is_preprocessor():
+    if parse.is_preprocessor(lines_list, index):
         thisname = re.search(r'\#(?P<name>\w+)', ).group('name')
         if thisname == counterparts[name]:
             return index
