@@ -42,7 +42,22 @@ def is_global_var(lines, lineno):
 	pass
 
 def is_func_proto(lines, lineno):
-	pass
+    '''
+        For this line to be a function prototype, it has to follow the pattern:
+        >>> return_type function_name(type1 arg1...);
+        1. It starts at a return type, built in or self defined. This is
+        followed by one or more spaces.
+        2. Then comes the function name followed by parantheses
+        3. There may be zero of more space characters between function name and
+        the parantheses.
+        4. Parantheses contain argument list, closing parantheses is followed
+        by a semicolon;
+    '''
+    regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
+        r'\(.*\)\s*\;)'
+    if re.search(regex, lines[lineno]):
+        return True
+    return False
 
 def is_struct(lines, lineno):
 	pass
