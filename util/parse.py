@@ -14,7 +14,11 @@ def global_var(lines, lineno):
 	pass
 
 def func_proto(lines, lineno):
-	pass
+    '''
+    handles only inline function prototypes of the format
+    >>> rettype func(args);
+    '''
+    return lineno + 1
 
 def struct(lines, lineno):
 	pass
@@ -29,7 +33,7 @@ def global_comments(lines, lineno):
 	        if '*/' in lines_list[i]:
 	            return i
 	    return len(lines_list)-1  # This won't have to execute		
-	    
+
 	return lineno
 
 def is_preprocessor(lines, lineno):

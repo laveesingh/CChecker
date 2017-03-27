@@ -49,15 +49,6 @@ def preprocessor(name, lines_list, index):
         thisend = process_line(lines_list, index)
         return preprocessor(name, lines_list, thisend+1)
 
-
-def function_prototype(lines_list, index):
-    '''
-    handles only inline function prototypes of the format
-    >>> rettype func(args);
-    '''
-    return index
-
-
 def function_definition(lines_list, index):
     '''
     handles only function of the format
