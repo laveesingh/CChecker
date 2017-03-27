@@ -15,9 +15,24 @@ Blank = [
 '\t',
 '\r'
 ]
-Dowhile=[
+
+Dowhile = [
 '''do
    {
     body
    }while(condition);'''
+]
+
+while = [
+'while(int i){'
+'while(i>0){'
+'while(i<n){'
+'while( i <= 0){'
+'while(int i)'
+'while(i>0)'
+'while(i<n)'
+'while( i <= 0)'
+'while( i <= n)'
+
+
 ]

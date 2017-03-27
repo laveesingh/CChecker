@@ -167,6 +167,21 @@ class statement:
             return True
         return False
 
+    def is_union(self):
+        '''
+        For this line to be union, it has to follow the pattern:
+        >>> union name{
+                body
+            };
+        >>> typedef union name{
+                body
+            };
+        '''
+        regex = r'union\s+\w+'
+        if re.search(regex, self.line):
+            return True
+        return False
+
     def resolve(self):
         '''
         This function will resolve the type of the given line.
@@ -187,4 +202,5 @@ class statement:
         if inst.is_declaration(): return 'declaration'
         if inst.is_assigment(): return 'assignment'
         if inst.is_struct(): return 'struct'
+        if inst.is_union(): return 'union'
         return 'screwed'
