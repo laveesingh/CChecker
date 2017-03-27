@@ -57,7 +57,7 @@ def is_function(lines, lineno):
     '''
     regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
         r'\(.*\)\s*\[\n\{])'
-    if re.search(regex, self.line):
+    if re.search(regex, lines[lineno]):
         return True
     return False
 
@@ -93,7 +93,7 @@ def is_struct(lines, lineno):
         };
     '''
     regex = r'struct\s+\w+'
-    if re.search(regex, self.line):
+    if re.search(regex, lines[lineno]):
         return True
     return False
 
