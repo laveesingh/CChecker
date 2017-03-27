@@ -101,4 +101,5 @@ if __name__ == '__main__':
     opf.write('\n')
     opf.write("Unrecognised = " + untext)
     opf.close()
+    #print(pinst.lines)
 

@@ -30,7 +30,7 @@ class program:
 		self.unrecognized = []
 
 	def load_attrs(self, fp):
-		text = fp.read()
+		text = fp.readlines()
 		for line in text:
 			self.lines.append(line)
 
