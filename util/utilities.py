@@ -10,13 +10,6 @@ after_pattern = r'(?P<after>.*?)'
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
 
-
-class statement:
-
-    def __init__(self, line, number):
-        self.line = line.strip()
-        self.number = number  # line number in program
-
 def is_blank(lines, lineno):
     '''
         For this line to be blank, it should contain, spaces and newline
