@@ -6,7 +6,9 @@ from . import extents
 
 def preprocessor(lines, lineno):
 	''''''
-	pass
+	name = lines[lineno].split(' ')[0]
+	name = [1:]
+	return extents.preprocessor(name, lines, lineno)
 
 def function(lines, lineno):
 	''''''
