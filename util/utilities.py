@@ -39,33 +39,6 @@ class statement:
         '''
         return self.line.startswith('/*')
 
-
-    def is_function_definition(self):
-        '''
-            For this line to be a function definition, it has to follow the
-            pattern:
-            >>> return_type function_name(type1 arg1...) {
-                    definition
-                }
-            Or the pattern:
-            >>> return_type function_name(type1 arg1...)
-            {
-                    definition
-            }
-            1. It starts at a return type, built in or self defined. This is
-            followed by one or more spaces.
-            2. Then comes the function name followed by parantheses
-            3. There may be zero of more space characters between function name and
-            the parantheses.
-            4. Parantheses contain argument list, closing parantheses is followed
-            by a { or newline;
-        '''
-        regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
-            r'\(.*\)\s*\[\n\{])'
-        if re.search(regex, self.line):
-            return True
-        return False
-
     def is_forloop(self):
         '''
             For this line to be a for loop, it has to follow the pattern:
