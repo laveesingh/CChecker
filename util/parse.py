@@ -98,4 +98,12 @@ def is_struct(lines, lineno):
     return False
 
 def is_global_comments(lines, lineno):
-	pass
+    '''
+        Inline comment: // type
+        There can be two patterns, either line starts with //
+        or line contains comment after some statement/expression.
+        But here we're looking, if line starts with comment
+
+        Multiline comment: /* ... */ type
+    '''	
+	return lines[lineno].startswith('//') or lines[lineno].startswith('/*')

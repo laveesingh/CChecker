@@ -24,21 +24,6 @@ class statement:
         '''
         return not self.line
 
-    def is_comment1(self):
-        '''
-            Inline comment: // type
-            There can be two patterns, either line starts with //
-            or line contains comment after some statement/expression.
-            But here we're looking, if line starts with comment
-        '''
-        return self.line.startswith('//')
-
-    def is_comment2(self):
-        '''
-        Multiline comment: /* ... */ type
-        '''
-        return self.line.startswith('/*')
-
     def is_forloop(self):
         '''
             For this line to be a for loop, it has to follow the pattern:
