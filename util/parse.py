@@ -20,7 +20,17 @@ def struct(lines, lineno):
 	pass
 
 def global_comments(lines, lineno):
-	pass
+	''''''
+	if lines[lineno].startswith('//'):
+		return lineno + 1
+
+	else if lines[lineno].startswith('/*'):
+	    for i in xrange(index, len(lines_list)):
+	        if '*/' in lines_list[i]:
+	            return i
+	    return len(lines_list)-1  # This won't have to execute		
+	    
+	return lineno
 
 def is_preprocessor(lines, lineno):
 	'''
