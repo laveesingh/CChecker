@@ -1,10 +1,10 @@
 
 class struct:
 
-    def __init__(self, index, level, text):
-        self.index = index
-        self.level = level
+    def __init__(self, text, lines):
         self.text = text
+        self.start = lines[0]
+        self.end = lines[1]
 
     def ex():
         pass

@@ -6,6 +6,15 @@ import sys
 
 from . import parse
 
+from components import (
+	function,
+	struct,
+	preprocessor,
+	func_prototype,
+	global_var,
+	global_comment,
+)
+
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
 
@@ -76,7 +85,7 @@ class program:
 		if parse.is_preprocessor(self.lines[lineno]):
 			endline = parse.preprocessor(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			pclass = utilities.preprocessor(text, [lineno, endline])
+			pclass = preprocessor.preprocessor(text, [lineno, endline])
 			self.preprocessors.append(pclass)
 			return endline
 
@@ -96,7 +105,7 @@ class program:
 		if parse.is_global_var(self.lines[lineno]):
 			endline = parse.global_var(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			gvclass - utilities.global_vars(text, [lineno, endline])
+			gvclass = global_var.global_vars(text, [lineno, endline])
 			self.global_vars.append(gvclass)
 			return endline
 
@@ -116,7 +125,7 @@ class program:
 		if parse.is_function(self.lines[lineno]):
 			endline = parse.function(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			fclass = utilities.function(text, [lineno, endline])
+			fclass = function.function(text, [lineno, endline])
 			self.functions.append(fclass)
 			return endline
 
@@ -136,7 +145,7 @@ class program:
 		if parse.is_func_proto(self.lines[lineno]):
 			endline = parse.func_proto(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			fpclass - utilities.func_prototype(text, [lineno, endline])
+			fpclass = func_prototype.func_prototype(text, [lineno, endline])
 			self.func_prototypes.append(fpclass)
 			return endline
 
@@ -156,7 +165,7 @@ class program:
 		if parse.is_struct(self.lines[lineno]):
 			endline = parse.struct(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			sclass - utilities.struct(text, [lineno, endline])
+			sclass = struct.struct(text, [lineno, endline])
 			self.structs.append(sclass)
 			return endline
 
@@ -176,7 +185,7 @@ class program:
 		if parse.is_global_comments(self.lines[lineno]):
 			endline = parse.global_comments(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			gcclass - utilities.global_comments(text, [lineno, endline])
+			gcclass = global_comment.global_comments(text, [lineno, endline])
 			self.global_comments.append(gcclass)
 			return endline
 

@@ -3,11 +3,10 @@ class function:
 
     properties = {}
 
-    def __init__(self, index, text, start, end):
-        self.index = index
+    def __init__(self, text, lines):
         self.text = text
-        self.start = start
-        self.end = end
+        self.start = lines[0]
+        self.end = lines[1]
 
     def process(self, details={}):
         lines_list = self.text.split('\n')
