@@ -24,78 +24,6 @@ class statement:
         '''
         return not self.line
 
-    def is_comment1(self):
-        '''
-            Inline comment: // type
-            There can be two patterns, either line starts with //
-            or line contains comment after some statement/expression.
-            But here we're looking, if line starts with comment
-        '''
-        return self.line.startswith('//')
-
-    def is_comment2(self):
-        '''
-        Multiline comment: /* ... */ type
-        '''
-        return self.line.startswith('/*')
-
-
-    def is_preprocessor(self):
-        '''
-            For this line to be a preprocessor, it has to follow the pattern:
-            >>> #include something
-            >>> #define something
-            or some other preprocessor
-        '''
-        regex = r'\#((include)|(define)).*'
-        if re.search(regex, self.line):
-            return True
-        return False
-
-    def is_function_prototype(self):
-        '''
-            For this line to be a function prototype, it has to follow the pattern:
-            >>> return_type function_name(type1 arg1...);
-            1. It starts at a return type, built in or self defined. This is
-            followed by one or more spaces.
-            2. Then comes the function name followed by parantheses
-            3. There may be zero of more space characters between function name and
-            the parantheses.
-            4. Parantheses contain argument list, closing parantheses is followed
-            by a semicolon;
-        '''
-        regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
-            r'\(.*\)\s*\;)'
-        if re.search(regex, self.line):
-            return True
-        return False
-
-    def is_function_definition(self):
-        '''
-            For this line to be a function definition, it has to follow the
-            pattern:
-            >>> return_type function_name(type1 arg1...) {
-                    definition
-                }
-            Or the pattern:
-            >>> return_type function_name(type1 arg1...)
-            {
-                    definition
-            }
-            1. It starts at a return type, built in or self defined. This is
-            followed by one or more spaces.
-            2. Then comes the function name followed by parantheses
-            3. There may be zero of more space characters between function name and
-            the parantheses.
-            4. Parantheses contain argument list, closing parantheses is followed
-            by a { or newline;
-        '''
-        regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
-            r'\(.*\)\s*\[\n\{])'
-        if re.search(regex, self.line):
-            return True
-        return False
-
     def is_forloop(self):
         '''
             For this line to be a for loop, it has to follow the pattern:
@@ -236,21 +164,6 @@ class statement:
         '''
         regex = r'[^=]\=[^=]'
         if myregex.search(regex, self.line):
-            return True
-        return False
-
-    def is_struct(self):
-        '''
-        For this line to be struct, it has to follow the pattern:
-        >>> struct name{
-                body
-            };
-        >>> typedef struct name{
-                body
-            };
-        '''
-        regex = r'struct\s+\w+'
-        if re.search(regex, self.line):
             return True
         return False
 

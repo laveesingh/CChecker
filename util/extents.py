@@ -31,16 +31,6 @@ def process_line(lines_list, index):
 def blank(lines_list, index):
     return index
 
-
-def comment1(lines_list, index):
-    return index
-
-def comment2(lines_list, index):
-    for i in xrange(index, len(lines_list)):
-        if '*/' in lines_list[i]:
-            return i
-    return len(lines_list)-1  # This won't have to execute
-
 def preprocessor(name, lines_list, index):
     '''
     Function returns index of the ending line of the preprocessor
@@ -58,15 +48,6 @@ def preprocessor(name, lines_list, index):
     else:
         thisend = process_line(lines_list, index)
         return preprocessor(name, lines_list, thisend+1)
-
-
-def function_prototype(lines_list, index):
-    '''
-    handles only inline function prototypes of the format
-    >>> rettype func(args);
-    '''
-    return index
-
 
 def function_definition(lines_list, index):
     '''

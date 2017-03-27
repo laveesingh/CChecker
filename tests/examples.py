@@ -23,6 +23,9 @@ Dowhile = [
    }while(condition);'''
 ]
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 983e1a4fded1505d2e1a826656689631077f0b22
 while=[
 '''while(condition)
    {
@@ -86,6 +89,7 @@ Function definition=[
 type functionName( type argname [, type, ...] )
 {
      function body
+<<<<<<< HEAD
 }''']
 Function calling=[
 '''function_name( [arg1, ... ] );'''
@@ -93,6 +97,12 @@ Function calling=[
 =======
 
 while = [
+=======
+}'''
+]
+
+while_conditions = [
+>>>>>>> 983e1a4fded1505d2e1a826656689631077f0b22
 'while(int i){'
 'while(i>0){'
 'while(i<n){'
@@ -102,6 +112,7 @@ while = [
 'while(i<n)'
 'while( i <= 0)'
 'while( i <= n)'
+<<<<<<< HEAD
 
 
 ]
@@ -129,3 +140,6 @@ Boolean Not           !identifier;
 Bitwise And           integer_value & integer_value;
 Bitwise Or            integer_value | integer_value;
 Ternary Operator       <condition> ? <true-case-code>:<false-case-code>;
+=======
+]
+>>>>>>> 983e1a4fded1505d2e1a826656689631077f0b22
