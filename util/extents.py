@@ -13,7 +13,7 @@ possible_function_list = [
         'blank', 'comment1', 'preprocessor',
         'function_prototype', 'function_definition', 'forloop', 'whileloop',
         'dowhileloop', 'ifcondition', 'elseifcondition', 'elsecondition',
-        'switch', 'declaration', 'assignment', 'struct'
+        'switch', 'declaration', 'assignment', 'struct', 'union'
 ]
 
 def process_line(lines_list, index):
@@ -181,6 +181,15 @@ def struct(lines_list, index):
         return index
     thisend = process_line(lines_list, index)
     return struct(lines_list, thisend+1)
+
+def union(lines_list, index):
+    '''
+    handles only structs of the format
+    >>> union name{
+            body
+        };
+    '''
+    return index
 
 def declaration(lines_list, index):
     '''handles only declarations of the following format

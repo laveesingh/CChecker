@@ -15,7 +15,8 @@ Blank = [
 '\t',
 '\r'
 ]
-Dowhile=[
+
+Dowhile = [
 '''do
    {
     body
@@ -98,4 +99,17 @@ Function definition=[
 type functionName( type argname [, type, ...] )
 {
      function body
-}''']
+}'''
+]
+
+while_conditions = [
+'while(int i){'
+'while(i>0){'
+'while(i<n){'
+'while( i <= 0){'
+'while(int i)'
+'while(i>0)'
+'while(i<n)'
+'while( i <= 0)'
+'while( i <= n)'
+]

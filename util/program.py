@@ -73,7 +73,7 @@ class program:
 
 		If it's not the beginning of a preprocessor, then it will
 		return the same line number which was passed.'''
-		if is_preprocessor(self.lines[lineno]):
+		if parse.is_preprocessor(self.lines[lineno]):
 			endline = parse.preprocessor(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			pclass = utilities.preprocessor(text, [lineno, endline])
@@ -93,7 +93,7 @@ class program:
 
 		If it's not the beginning of declaration of a global variable, then it
 		will return the same line number which was passed.'''
-		if is_global_var(self.lines[lineno]):
+		if parse.is_global_var(self.lines[lineno]):
 			endline = parse.global_var(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			gvclass - utilities.global_vars(text, [lineno, endline])
@@ -113,7 +113,7 @@ class program:
 
 		If it's not the beginning of a function, then it will
 		return the same line number which was passed.'''
-		if is_func(self.lines[lineno]):
+		if parse.is_function(self.lines[lineno]):
 			endline = parse.function(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			fclass = utilities.function(text, [lineno, endline])
@@ -133,7 +133,7 @@ class program:
 
 		If it's not the beginning of a function prototype, then it will
 		return the same line number which was passed.'''
-		if is_func_prototype(self.lines[lineno]):
+		if parse.is_func_proto(self.lines[lineno]):
 			endline = parse.func_proto(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			fpclass - utilities.func_prototype(text, [lineno, endline])
@@ -153,7 +153,7 @@ class program:
 
 		If it's not the beginning of a struct, then it will
 		return the same line number which was passed.'''
-		if is_struct(self.lines[lineno]):
+		if parse.is_struct(self.lines[lineno]):
 			endline = parse.struct(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			sclass - utilities.struct(text, [lineno, endline])
@@ -173,7 +173,7 @@ class program:
 
 		If it's not the beginning of a global comments, then it will
 		return the same line number which was passed.'''
-		if is_global_comments(self.lines[lineno]):
+		if parse.is_global_comments(self.lines[lineno]):
 			endline = parse.global_comments(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			gcclass - utilities.global_comments(text, [lineno, endline])
