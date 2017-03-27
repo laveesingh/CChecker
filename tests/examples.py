@@ -85,12 +85,10 @@ Function definition=[
 type functionName( type argname [, type, ...] )
 {
      function body
-
 }''']
 Function calling=[
 '''function_name( [arg1, ... ] );'''
 ]
-
 while_conditions = [
 'while(int i){'
 'while(i>0){'
@@ -101,8 +99,6 @@ while_conditions = [
 'while(i<n)'
 'while( i <= 0)'
 'while( i <= n)'
-
-
 ]
 Array declaration=[
 '''type name[size];'''
@@ -117,7 +113,6 @@ Struct=[
 } [struct_name_t] [struct_instance];''']
 Pointer_to_a_struct=[
 '''struct struct_name *struct_instance;''']
-
 Operators=[
 '''
 assignment            identifier = value or identifier;
