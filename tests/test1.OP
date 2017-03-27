@@ -7,9 +7,9 @@ Functions =
 Struct = 
 Functions Proto = 
 Comments = 
-Global Var = 
-Unrecognised = const int global_variable;
-void print(const char *s){
+Global Var = const int global_variable;
+
+Unrecognised = void print(const char *s){
   printf("%s",s);
 }
 int main(){

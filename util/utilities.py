@@ -140,7 +140,7 @@ def is_declaration(lines, lineno):
         Or the pattern:
         >>> datatype var1, var2, var3...;
     '''
-    regex = r'((const)|(static))?\s*(?P<type>\w+)\s*(?P<name>(\w+)\,?)\s*;'
+    regex = r'((const)|(static))?\s*((void)|(int)|(float)|(char))\s*(?P<name>(\w+)\,?)\s*;'
     if re.search(regex, lines[lineno]):
         return True
     return False

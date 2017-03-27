@@ -4,7 +4,7 @@ preprocessors, etc.'''
 
 import re
 
-from . import extents
+from . import extents, utilities
 
 def preprocessor(lines, lineno):
 	''''''
@@ -17,7 +17,7 @@ def function(lines, lineno):
 	return extents.function_definition(lines, lineno)
 
 def global_var(lines, lineno):
-	pass
+	return extents.declaration(lines, lineno)
 
 def func_proto(lines, lineno):
     '''
@@ -82,7 +82,7 @@ def is_function(lines, lineno):
     return False
 
 def is_global_var(lines, lineno):
-	pass
+	return utilities.is_declaration(lines, lineno)
 
 def is_func_proto(lines, lineno):
     '''
