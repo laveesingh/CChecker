@@ -60,7 +60,19 @@ def is_func_proto(lines, lineno):
     return False
 
 def is_struct(lines, lineno):
-	pass
+    '''
+    For this line to be struct, it has to follow the pattern:
+    >>> struct name{
+            body
+        };
+    >>> typedef struct name{
+            body
+        };
+    '''
+    regex = r'struct\s+\w+'
+    if re.search(regex, self.line):
+        return True
+    return False
 
 def is_global_comments(lines, lineno):
 	pass

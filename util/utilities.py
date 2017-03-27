@@ -209,21 +209,6 @@ class statement:
             return True
         return False
 
-    def is_struct(self):
-        '''
-        For this line to be struct, it has to follow the pattern:
-        >>> struct name{
-                body
-            };
-        >>> typedef struct name{
-                body
-            };
-        '''
-        regex = r'struct\s+\w+'
-        if re.search(regex, self.line):
-            return True
-        return False
-
     def resolve(self):
         '''
         This function will resolve the type of the given line.
