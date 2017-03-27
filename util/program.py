@@ -6,14 +6,12 @@ import sys
 
 from . import parse
 
-from components import (
-	function,
-	struct,
-	preprocessor,
-	func_prototype,
-	global_var,
-	global_comment,
-)
+import components.function as function
+import components.struct as struct
+import components.preprocessor as preprocessor
+import components.func_prototype as func_prototype
+import components.global_var as global_var
+import components.global_comment as global_comment
 
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
@@ -39,7 +37,7 @@ class program:
 		lineno = -1
 		no_of_lines = len(self.lines)
 
-		while lineno < no_of_lines:
+		while lineno < no_of_lines - 1:
 
 			lineno = lineno + 1
 			
@@ -51,27 +49,27 @@ class program:
 			# but is left as is because we are currently concentrating on the
 			# implementation part. We need to revisit this while optimising.
 
-			newline = preprocessor(lineno)
+			newline = self.fpreprocessor(lineno)
 			if newline != lineno:
 				continue
-			newline = global_vars(lineno)
+			newline = self.fglobal_vars(lineno)
 			if newline != lineno:
 				continue
-			newline = struct(lineno)
+			newline = self.fstruct(lineno)
 			if newline != lineno:
 				continue
-			newline = func_prototype(lineno)
+			newline = self.ffunc_prototype(lineno)
 			if newline != lineno:
 				continue
-			newline = function(lineno)
+			newline = self.ffunction(lineno)
 			if newline != lineno:
 				continue
-			newline = global_comments(lineno)
+			newline = self.fglobal_comments(lineno)
 			if newline == lineno:
 				self.unrecognized.append(self.lines[lineno])
 
 
-	def preprocessor(lineno):
+	def fpreprocessor(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a preprocessor or not. If it is the beginning it will do following
 		things:
@@ -82,7 +80,7 @@ class program:
 
 		If it's not the beginning of a preprocessor, then it will
 		return the same line number which was passed.'''
-		if parse.is_preprocessor(self.lines[lineno]):
+		if parse.is_preprocessor(self.lines, lineno):
 			endline = parse.preprocessor(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			pclass = preprocessor.preprocessor(text, [lineno, endline])
@@ -91,7 +89,7 @@ class program:
 
 		return lineno
 
-	def global_vars(lineno):
+	def fglobal_vars(self, lineno):
 		'''It will check whether the given line is the beginning
 		of declaration of a global var or not. If it is the beginning it will
 		do the following things:
@@ -102,7 +100,7 @@ class program:
 
 		If it's not the beginning of declaration of a global variable, then it
 		will return the same line number which was passed.'''
-		if parse.is_global_var(self.lines[lineno]):
+		if parse.is_global_var(self.lines, lineno):
 			endline = parse.global_var(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			gvclass = global_var.global_vars(text, [lineno, endline])
@@ -111,7 +109,7 @@ class program:
 
 		return lineno
 
-	def function(lineno):
+	def ffunction(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a function or not. If it is the beginning it will do following
 		things:
@@ -122,7 +120,7 @@ class program:
 
 		If it's not the beginning of a function, then it will
 		return the same line number which was passed.'''
-		if parse.is_function(self.lines[lineno]):
+		if parse.is_function(self.lines, lineno):
 			endline = parse.function(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			fclass = function.function(text, [lineno, endline])
@@ -131,7 +129,7 @@ class program:
 
 		return lineno
 
-	def func_prototype(lineno):
+	def ffunc_prototype(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a function prototype or not. If it is the beginning it will do following
 		things:
@@ -142,7 +140,7 @@ class program:
 
 		If it's not the beginning of a function prototype, then it will
 		return the same line number which was passed.'''
-		if parse.is_func_proto(self.lines[lineno]):
+		if parse.is_func_proto(self.lines, lineno):
 			endline = parse.func_proto(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			fpclass = func_prototype.func_prototype(text, [lineno, endline])
@@ -151,7 +149,7 @@ class program:
 
 		return lineno
 
-	def struct(lineno):
+	def fstruct(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a struct or not. If it is the beginning it will do following
 		things:
@@ -162,7 +160,7 @@ class program:
 
 		If it's not the beginning of a struct, then it will
 		return the same line number which was passed.'''
-		if parse.is_struct(self.lines[lineno]):
+		if parse.is_struct(self.lines, lineno):
 			endline = parse.struct(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			sclass = struct.struct(text, [lineno, endline])
@@ -171,7 +169,7 @@ class program:
 
 		return lineno
 
-	def global_comments(lineno):
+	def fglobal_comments(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a global comments or not. If it is the beginning it will do
 		following things:
@@ -182,7 +180,7 @@ class program:
 
 		If it's not the beginning of a global comments, then it will
 		return the same line number which was passed.'''
-		if parse.is_global_comments(self.lines[lineno]):
+		if parse.is_global_comments(self.lines, lineno):
 			endline = parse.global_comments(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
 			gcclass = global_comment.global_comments(text, [lineno, endline])

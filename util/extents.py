@@ -6,7 +6,8 @@ structs, etc.
 import re
 
 from store import counterparts, root
-from . import parse, utilities
+import parse
+import utilities
 
 
 possible_function_list = [
@@ -22,7 +23,7 @@ def process_line(lines_list, index):
     then returns line number, where counter_part of this line ends
     '''
     statement_type = utilities.resolve(lines_list, index)
-    returned = eval(statement_type +_'(lines_list, index)')
+    returned = eval(statement_type +'('+lines_list + ',' + index +')')
     return returned
 
 

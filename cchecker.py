@@ -5,6 +5,7 @@ import sys
 import specs
 import util.colors as colors
 from util.store import *
+from util import program
 
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
@@ -60,3 +61,44 @@ if __name__ == '__main__':
     # If there's any error with provided input files
     check_args(parser, args)
     specs = parse_specs(args.spec)
+    pinst = program.program()
+    pinst.load_attrs(open(args.file, 'r+'))
+    opname = args.file[:-2] + '.OP'
+    open(opname, 'w').close()    
+    opf = open(opname, 'w+')
+    prepoptext = ''
+    for obs in pinst.preprocessors:
+        prepoptext = prepoptext + obs.text
+    funtext = ''
+    for obs in pinst.functions:
+        funtext = funtext + obs.text
+    strtext = ''
+    for obs in pinst.structs:
+        strtext = strtext + obs.text
+    gctext = ''
+    for obs in pinst.global_comments:
+        gctext = gctext + obs.text
+    fptext = ''
+    for obs in pinst.func_prototypes:
+        fptext = fptext + obs.text
+    gvtext = ''
+    for obs in pinst.global_vars:
+        gvtext = gvtext + obs.text
+    untext = ''
+    for obs in pinst.unrecognized:
+        untext = untext + obs
+    opf.write("Preprocessors = " + prepoptext)
+    opf.write('\n')
+    opf.write("Functions = " + funtext)
+    opf.write('\n')
+    opf.write("Struct = " + strtext)
+    opf.write('\n')
+    opf.write("Functions Proto = " + fptext)
+    opf.write('\n')
+    opf.write("Comments = " + gctext)
+    opf.write('\n')
+    opf.write("Global Var = " + gvtext)
+    opf.write('\n')
+    opf.write("Unrecognised = " + untext)
+    opf.close()
+

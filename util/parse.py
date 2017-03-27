@@ -2,12 +2,14 @@
 and returning the end points of various components such as functions,
 preprocessors, etc.'''
 
+import re
+
 from . import extents
 
 def preprocessor(lines, lineno):
 	''''''
 	name = lines[lineno].split(' ')[0]
-	name = [1:]
+	name = name[1:]
 	return extents.preprocessor(name, lines, lineno)
 
 def function(lines, lineno):
@@ -32,7 +34,7 @@ def global_comments(lines, lineno):
 	if lines[lineno].startswith('//'):
 		return lineno
 
-	else if lines[lineno].startswith('/*'):
+	elif lines[lineno].startswith('/*'):
 	    for i in xrange(index, len(lines_list)):
 	        if '*/' in lines_list[i]:
 	            return i
@@ -124,4 +126,4 @@ def is_global_comments(lines, lineno):
 
         Multiline comment: /* ... */ type
     '''	
-	return lines[lineno].startswith('//') or lines[lineno].startswith('/*')
+    return lines[lineno].startswith('//') or lines[lineno].startswith('/*')

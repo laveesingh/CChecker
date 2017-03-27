@@ -1,0 +1,7 @@
+Preprocessors = 
+Functions = 
+Struct = 
+Functions Proto = 
+Comments = 
+Global Var = 
+Unrecognised = #include<stdio.h>constintglobal_variable;#definelllonglongvoidprint(constchar*s){printf("%s",s);}#defineullunsignedlonglong#include<stdlib.h>intmain(){printf("HelloWorld!\n");return0;}
