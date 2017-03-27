@@ -17,4 +17,5 @@ print "else if condition:",lineobject.is_elseif()
 print "else condition:",lineobject.is_else()
 print "switch statement:",lineobject.is_switch()
 print "declaration statement:",lineobject.is_declaration()
-
+print "struct statement:",lineobject.is_struct()
+print "union statement:",lineobject.is_union()
