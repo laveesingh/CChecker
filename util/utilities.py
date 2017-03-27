@@ -3,6 +3,7 @@ import sys
 
 import myregex
 import store
+import parse
 
 before_pattern = r'(?P<before>.*?)'
 after_pattern = r'(?P<after>.*?)'
@@ -156,7 +157,7 @@ def is_assignment(lines, lineno):
     >>> var1 = val1, var2 = val2;
     '''
     regex = r'[^=]\=[^=]'
-    if myregex.search(regex, lines[lineno]):
+    if myregex.search_wq(regex, lines[lineno]):
         return True
     return False
 
@@ -180,19 +181,19 @@ def resolve(lines, lineno):
     This function will resolve the type of the given line.
     '''
     if is_blank(lines, lineno): return 'blank'
-    if is_comment1(lines, lineno): return 'comment1'
-    if is_preprocessor(lines, lineno): return 'preprocessor'
-    if is_function_prototype(lines, lineno): return 'function_prototype'
-    if is_function_definition(lines, lineno): return 'function_definition'
+    if parse.is_global_comments(lines, lineno): return 'comment1'
+    if parse.is_preprocessor(lines, lineno): return 'preprocessor'
+    if parse.is_func_proto(lines, lineno): return 'function_prototype'
+    if parse.is_function(lines, lineno): return 'function_definition'
     if is_forloop(lines, lineno): return 'forloop'
     if is_whileloop(lines, lineno): return 'whileloop'
     if is_dowhileloop(lines, lineno): return 'dowhileloop'
     if is_if(lines, lineno): return 'ifcondition'
     if is_elseif(lines, lineno): return 'elseifcondition'
     if is_else(lines, lineno): return 'elsecondition'
-    if is_swith(lines, lineno): return 'switch'
+    if is_switch(lines, lineno): return 'switch'
     if is_declaration(lines, lineno): return 'declaration'
-    if is_assigment(lines, lineno): return 'assignment'
-    if is_struct(lines, lineno): return 'struct'
+    if is_assignment(lines, lineno): return 'assignment'
+    if parse.is_struct(lines, lineno): return 'struct'
     if is_union(lines, lineno): return 'union'
     return 'screwed'
