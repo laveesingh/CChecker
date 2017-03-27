@@ -27,13 +27,14 @@ class program:
 		for line in text:
 			self.lines.append(line)
 
-		lineno = 0
+		lineno = -1
 		no_of_lines = len(self.lines)
 
 		while lineno < no_of_lines:
+
+			lineno = lineno + 1
 			
 			if self.lines[lineno].strip() == '':
-				lineno = lineno + 1
 				continue
 
 			# The following sequence of calling function is trivial for now
@@ -59,7 +60,6 @@ class program:
 			newline = global_comments(lineno)
 			if newline == lineno:
 				self.unrecognized.append(self.lines[lineno])
-				lineno = lineno + 1
 
 
 	def preprocessor(lineno):
@@ -78,7 +78,7 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			pclass = utilities.preprocessor(text, [lineno, endline])
 			self.preprocessors.append(pclass)
-			return endline + 1
+			return endline
 
 		return lineno
 
@@ -98,7 +98,7 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			gvclass - utilities.global_vars(text, [lineno, endline])
 			self.global_vars.append(gvclass)
-			return endline + 1
+			return endline
 
 		return lineno
 
@@ -118,7 +118,7 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			fclass = utilities.function(text, [lineno, endline])
 			self.functions.append(fclass)
-			return endline + 1
+			return endline
 
 		return lineno
 
@@ -138,7 +138,7 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			fpclass - utilities.func_prototype(text, [lineno, endline])
 			self.func_prototypes.append(fpclass)
-			return endline + 1
+			return endline
 
 		return lineno
 
@@ -158,7 +158,7 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			sclass - utilities.struct(text, [lineno, endline])
 			self.structs.append(sclass)
-			return endline + 1
+			return endline
 
 		return lineno
 
@@ -178,6 +178,6 @@ class program:
 			text = self.lines[lineno : endline + 1]
 			gcclass - utilities.global_comments(text, [lineno, endline])
 			self.global_comments.append(gcclass)
-			return endline + 1
+			return endline
 
 		return lineno

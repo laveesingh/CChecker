@@ -18,7 +18,7 @@ def func_proto(lines, lineno):
     handles only inline function prototypes of the format
     >>> rettype func(args);
     '''
-    return lineno + 1
+    return lineno
 
 def struct(lines, lineno):
 	pass
@@ -26,7 +26,7 @@ def struct(lines, lineno):
 def global_comments(lines, lineno):
 	''''''
 	if lines[lineno].startswith('//'):
-		return lineno + 1
+		return lineno
 
 	else if lines[lineno].startswith('/*'):
 	    for i in xrange(index, len(lines_list)):
