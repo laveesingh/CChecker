@@ -17,18 +17,9 @@ possible_function_list = [
         'switch', 'declaration', 'assignment', 'struct', 'union'
 ]
 
-def process_line(lines_list, index):
-    '''
-    processes line according to defined function for particular type
-    then returns line number, where counter_part of this line ends
-    '''
-    statement_type = utilities.resolve(lines_list, index)
-    returned = eval(statement_type +'(lines_list, index)')
-    return returned
-
-
 def blank(lines_list, index):
     return index
+
 
 def preprocessor(name, lines_list, index):
     '''
@@ -49,17 +40,31 @@ def preprocessor(name, lines_list, index):
         thisend = process_line(lines_list, index)
         return preprocessor(name, lines_list, thisend+1)
 
-def function_definition(lines_list, index):
+
+def function_prototype(lines_list, index):
+    '''
+    For now it handles only cases of the pattern:
+    >>> rettype funcname(parameter_list);
+    '''
+    return index
+
+
+def function_definition(lines_list, start_index, current_index, details={}):
     '''
     handles only function of the format
     >>> rettype func(args){
             body
         }
     '''
+    if start_index == current_index:
+        pattern = r'(?P<type>\w+)\s+(?P<name>\w+)\s*\((?P<args>.*)\)'
+        # TODO: Put these details into dictionary
+
     if lines_list[index].strip() == '}':  #ignored inline comments for now
         return index
-    thisend = process_line(lines_list, index)
-    return function_definition(lines_list, thisend+1)
+    statement_type = utilities.resolve(lines_list, index)
+    returned = eval(statement_type +'(lines_list, index)')
+    return function_definition(lines_list, returned+1)
 
 
 def forloop(lines_list, index):
