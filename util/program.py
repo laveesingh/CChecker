@@ -6,6 +6,13 @@ import sys
 
 from . import parse
 
+import components.function as function
+import components.struct as struct
+import components.preprocessor as preprocessor
+import components.func_prototype as func_prototype
+import components.global_var as global_var
+import components.global_comment as global_comment
+
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
 
@@ -23,17 +30,18 @@ class program:
 		self.unrecognized = []
 
 	def load_attrs(self, fp):
-		text = fp.read()
+		text = fp.readlines()
 		for line in text:
 			self.lines.append(line)
 
-		lineno = 0
+		lineno = -1
 		no_of_lines = len(self.lines)
 
-		while lineno < no_of_lines:
+		while lineno < no_of_lines - 1:
+
+			lineno = lineno + 1
 			
 			if self.lines[lineno].strip() == '':
-				lineno = lineno + 1
 				continue
 
 			# The following sequence of calling function is trivial for now
@@ -41,28 +49,28 @@ class program:
 			# but is left as is because we are currently concentrating on the
 			# implementation part. We need to revisit this while optimising.
 
-			newline = preprocessor(lineno)
-			if newline != lineno:
+			flag, newline = self.fpreprocessor(lineno)
+			if flag:
 				continue
-			newline = global_vars(lineno)
-			if newline != lineno:
+			flag, newline = self.fglobal_vars(lineno)
+			if flag:
 				continue
-			newline = struct(lineno)
-			if newline != lineno:
+			flag, newline = self.fstruct(lineno)
+			if flag:
 				continue
-			newline = func_prototype(lineno)
-			if newline != lineno:
+			flag, newline = self.ffunc_prototype(lineno)
+			if flag:
 				continue
-			newline = function(lineno)
-			if newline != lineno:
+			flag, newline = self.ffunction(lineno)
+			if flag:
 				continue
-			newline = global_comments(lineno)
-			if newline == lineno:
-				self.unrecognized.append(self.lines[lineno])
-				lineno = lineno + 1
+			flag, newline = self.fglobal_comments(lineno)
+			if flag:
+				continue
+			self.unrecognized.append(self.lines[lineno])
 
 
-	def preprocessor(lineno):
+	def fpreprocessor(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a preprocessor or not. If it is the beginning it will do following
 		things:
@@ -73,16 +81,16 @@ class program:
 
 		If it's not the beginning of a preprocessor, then it will
 		return the same line number which was passed.'''
-		if is_preprocessor(self.lines[lineno]):
+		if parse.is_preprocessor(self.lines, lineno):
 			endline = parse.preprocessor(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			pclass = utilities.preprocessor(text, [lineno, endline])
+			pclass = preprocessor.preprocessor(text, [lineno, endline])
 			self.preprocessors.append(pclass)
-			return endline + 1
+			return True, endline
 
-		return lineno
+		return False, lineno
 
-	def global_vars(lineno):
+	def fglobal_vars(self, lineno):
 		'''It will check whether the given line is the beginning
 		of declaration of a global var or not. If it is the beginning it will
 		do the following things:
@@ -93,16 +101,16 @@ class program:
 
 		If it's not the beginning of declaration of a global variable, then it
 		will return the same line number which was passed.'''
-		if is_global_var(self.lines[lineno]):
+		if parse.is_global_var(self.lines, lineno):
 			endline = parse.global_var(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			gvclass - utilities.global_vars(text, [lineno, endline])
+			gvclass = global_var.global_vars(text, [lineno, endline])
 			self.global_vars.append(gvclass)
-			return endline + 1
+			return True, endline
 
-		return lineno
+		return False, lineno
 
-	def function(lineno):
+	def ffunction(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a function or not. If it is the beginning it will do following
 		things:
@@ -113,16 +121,16 @@ class program:
 
 		If it's not the beginning of a function, then it will
 		return the same line number which was passed.'''
-		if is_func(self.lines[lineno]):
+		if parse.is_function(self.lines, lineno):
 			endline = parse.function(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			fclass = utilities.function(text, [lineno, endline])
+			fclass = function.function(text, [lineno, endline])
 			self.functions.append(fclass)
-			return endline + 1
+			return True, endline
 
-		return lineno
+		return False, lineno
 
-	def func_prototype(lineno):
+	def ffunc_prototype(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a function prototype or not. If it is the beginning it will do following
 		things:
@@ -133,16 +141,16 @@ class program:
 
 		If it's not the beginning of a function prototype, then it will
 		return the same line number which was passed.'''
-		if is_func_prototype(self.lines[lineno]):
+		if parse.is_func_proto(self.lines, lineno):
 			endline = parse.func_proto(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			fpclass - utilities.func_prototype(text, [lineno, endline])
+			fpclass = func_prototype.func_prototype(text, [lineno, endline])
 			self.func_prototypes.append(fpclass)
-			return endline + 1
+			return True, endline
 
-		return lineno
+		return False, lineno
 
-	def struct(lineno):
+	def fstruct(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a struct or not. If it is the beginning it will do following
 		things:
@@ -153,16 +161,16 @@ class program:
 
 		If it's not the beginning of a struct, then it will
 		return the same line number which was passed.'''
-		if is_struct(self.lines[lineno]):
+		if parse.is_struct(self.lines, lineno):
 			endline = parse.struct(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			sclass - utilities.struct(text, [lineno, endline])
+			sclass = struct.struct(text, [lineno, endline])
 			self.structs.append(sclass)
-			return endline + 1
+			return True, endline
 
-		return lineno
+		return False, lineno
 
-	def global_comments(lineno):
+	def fglobal_comments(self, lineno):
 		'''It will check whether the given line is the beginning
 		of a global comments or not. If it is the beginning it will do
 		following things:
@@ -173,11 +181,11 @@ class program:
 
 		If it's not the beginning of a global comments, then it will
 		return the same line number which was passed.'''
-		if is_global_comments(self.lines[lineno]):
+		if parse.is_global_comments(self.lines, lineno):
 			endline = parse.global_comments(self.lines, lineno)
 			text = self.lines[lineno : endline + 1]
-			gcclass - utilities.global_comments(text, [lineno, endline])
+			gcclass = global_comment.global_comments(text, [lineno, endline])
 			self.global_comments.append(gcclass)
-			return endline + 1
+			return True, endline
 
-		return lineno
+		return False, lineno

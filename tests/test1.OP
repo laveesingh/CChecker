@@ -1,0 +1,18 @@
+Preprocessors = #include <stdio.h>
+#define ll long long
+#define ull unsigned long long
+#include <stdlib.h>
+
+Functions = 
+Struct = 
+Functions Proto = 
+Comments = 
+Global Var = 
+Unrecognised = const int global_variable;
+void print(const char *s){
+  printf("%s",s);
+}
+int main(){
+  printf("Hello World!\n");
+  return 0;
+}
