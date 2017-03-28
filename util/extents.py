@@ -76,11 +76,11 @@ def function_definition(lines_list, start_index, current_index, root_dict):
     '''
     if current_index == start_index:
         pattern = r'(?P<type>\w+)\s+(?P<name>\w+)\s*\((?P<args>.*)\)'
-        match = re.search(pattern, lines_list[index])
+        match = re.search(pattern, lines_list[current_index])
         rettype = match.group('type')
         funcname = match.group('name')
         args = match.group('args')
-        arglist, varlist = fetch_arglist(args)  #only datatypes would be enough
+        arglist, varlist = fetch_arglist(args)  # need to create it, datatypes list, variables list
         instance = Function(funcname, rettype, arglist)
         if root_dict.get(instance) is None:
             root_dict[instance] = {}
@@ -110,10 +110,21 @@ def forloop(lines_list, start_index, current_index, detail_dict):
         }
     '''
     if current_index == start_index:
-        pattern = r'for\s*('
+        pattern = r'for\s*\((?P<init>.*);(?P<cond>.*);(?P<step>.*)\)'
+        match = re.search(pattern, lines_list[current_index])
+        init = match.group('init')
+        cond = match.group('cond')
+        step = match.group('step')
+        varlist = fetch_varlist(init)  # need to create it, variables list
+        if detail_dict.get('forloops') is None:
+            detail_dict['forloops'] = []
+        detail_dict['forloops'].append({})
+        cur_loop_index = len(detail_dict['forloops']) - 1
+        detail_dict['forloops'][cur_loop_index]['varlist'] = varlist
+        # TODO: Need further careful modification
     if lines_list[index].strip() == '}':  #ignored inline comments for now
         return index
-    thisend = process_line(lines_list, index)
+    thisend = process_line(lines_list, index)  # Need to know what it is so that I could pass appropriate dictionary accordingly to fill details
     return forloop(lines_list, thisend+1)
 
 
