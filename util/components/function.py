@@ -3,16 +3,13 @@ class function:
 
     properties = {}
 
-    def __init__(self, text, lines):
-        self.text = '\n'.join(text)
-        self.start = lines[0]
-        self.end = lines[1]
+    def __init__(self, name, rettype, arglist):
+        self.name = name
+        self.rettype = rettype
+        self.arglist = arglist
 
-    def process(self, details={}):
-        lines_list = self.text.split('\n')
-        mid_pattern = r'(?P<ret>\w+\*{0,2})\s+(?P<name>\w+)\s*\((?P<args>.*?)\)'  # not handled case where pointer(*) is with function name
-        first_line_pattern = before_pattern + mid_pattern + after_pattern
-        match = re.search(first_line_pattern, lines_list[0].strip())
-        self.name = match.group('name')
-        self.rettype = match.group('ret')
-        args = match.group('args')
+    def __eq__(self, other):
+        first = self.name == other.name
+        second = self.rettype == other.rettype
+        third = self.arglist == other.arglist
+        return first and second and third
