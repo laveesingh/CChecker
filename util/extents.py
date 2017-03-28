@@ -37,13 +37,15 @@ def comment1(lines_list, index):
 
 def comment2(lines_list, index):
     for i in xrange(index, len(lines_list)):
-        if '*/' in lines_list[i]:
+        if '*/' in lines_list[i]:  #This */ may be before /* in the same line
             return i
     return len(lines_list)-1  # This won't have to execute
 
 def preprocessor(name, lines_list, index):
     '''
     Function returns index of the ending line of the preprocessor
+    Actually we should stop worrying about where this preprocessor starts or
+    ends, this doesn't really make a difference.
     '''
     if index == len(lines_list): return index
     one_liners = ['define', 'include', 'line', 'pragma']

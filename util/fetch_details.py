@@ -3,6 +3,7 @@ This file is actually to help process any kind of statement and fetch all kinds
 of runtime details into a given dictionary
 '''
 import re
+from .. import forloop
 
 
 def initialization(text, details={}):
@@ -43,3 +44,21 @@ def initialization(text, details={}):
             details['variables'][varname]['garbage'] = True
             if dtype:
                 details['variables'][varname]['datatype'] = dtype
+
+
+def forloop(lines_list, start, end, details={}):
+    '''
+    This function may take text of text lines and process things to fill
+    details dictionary
+    '''
+    pattern = r'for\s*\((?P<init>.*?);\s*(?P<cond>.*?);\s*(?P<inc>.*?)\)'
+    match = re.search(pattern, lines_list[0])
+    inits = match.group('init')
+    vars_details = {}
+    initialization(inits, vars_details)
+    instance = forloop(lines_list, start, end, vars_details) 
+    if details.get('forloop') is None:
+        details['forloop'] = []
+    details['forloop'].append(instance)
+
+
