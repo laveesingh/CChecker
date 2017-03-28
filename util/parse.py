@@ -149,8 +149,9 @@ def is_struct(lines, lineno):
             body
         };
     '''
-    regex = r'struct\s+\w+'
-    if re.search(regex, lines[lineno]):
+    line = lines[lineno].strip()
+    if line.startswith('struct'):
+    #if re.search(regex, lines[lineno]):
         return True
     return False
 

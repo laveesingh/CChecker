@@ -7,7 +7,43 @@ Preprocessors = #include <stdio.h>
 #define MAXN 150002
 #define MAXM 150002
 
-Functions = int main() {
+Functions = void print_graph(struct graph g) {
+
+	for(int i=0;i<g.n;i++) {
+
+		printf("neigbors of vertex %u are: ",i);
+
+		for(int j=0;j<g.AdjList[i].degree;j++) {
+
+			//printf("%u ",g.AdjList[i].neighbors[j]);
+
+		}
+
+		puts("");
+
+	}
+
+}
+void dfs(struct graph g, u32 node) {
+
+	if(!vis[node]) {
+
+		cc[co]=node;
+
+		co++;
+
+		vis[node]=true;
+
+		for(int i=0;i<g.AdjList[node].degree;i++) {
+
+			dfs(g,g.AdjList[node].neighbors[i]);
+
+		}
+
+	}
+
+}
+int main() {
 
 	memset(vis,0,sizeof(vis));
 
@@ -151,42 +187,6 @@ struct graph append_edge(struct graph g, u32 a, u32 b) {
 	g.AdjList[b]=add_neighbor(g.AdjList[b],a);
 
 	return g;
-
-}
-void print_graph(struct graph g) {
-
-	for(int i=0;i<g.n;i++) {
-
-		printf("neigbors of vertex %u are: ",i);
-
-		for(int j=0;j<g.AdjList[i].degree;j++) {
-
-			//printf("%u ",g.AdjList[i].neighbors[j]);
-
-		}
-
-		puts("");
-
-	}
-
-}
-void dfs(struct graph g, u32 node) {
-
-	if(!vis[node]) {
-
-		cc[co]=node;
-
-		co++;
-
-		vis[node]=true;
-
-		for(int i=0;i<g.AdjList[node].degree;i++) {
-
-			dfs(g,g.AdjList[node].neighbors[i]);
-
-		}
-
-	}
 
 }
 
