@@ -9,6 +9,10 @@ from store import counterparts, root
 import parse
 import utilities
 
+from components import (
+        function as Function
+)
+
 
 possible_function_list = [
         'blank', 'comment1', 'preprocessor',
@@ -41,15 +45,29 @@ def preprocessor(name, lines_list, index):
         return preprocessor(name, lines_list, thisend+1)
 
 
-def function_prototype(lines_list, index):
+def function_prototype(lines_list, index, root_dict):
     '''
     For now it handles only cases of the pattern:
     >>> rettype funcname(parameter_list);
     '''
+    pattern = r'(?P<type>\w+)\s+(?P<name>\w+)\s*\((?P<args>.*)\)'
+    match = re.search(pattern, lines_list[index])
+    rettype = match.group('type')
+    funcname = match.group('name')
+    args = match.group('args')
+    arglist = fetch_arglist(args)  #only datatypes would be enough
+    instance = Function(funcname, rettype, arglist)
+    if root_dict.get(instance) is None:
+        root_dict[instance] = {}
+    root_dict[instance]['name'] = funcname
+    root_dict[instance]['rettype'] = rettype
+    root_dict[instance]['arglist'] = arglist
+    root_dict[instance]['prototype'] = True
+    root_dict[instance]['prototype_visible'] = False  # check at function definition construction 
     return index
 
 
-def function_definition(lines_list, start_index, current_index, details={}):
+def function_definition(lines_list, start_index, current_index, root_dict):
     '''
     handles only function of the format
     >>> rettype func(args){
@@ -58,12 +76,28 @@ def function_definition(lines_list, start_index, current_index, details={}):
     '''
     if start_index == current_index:
         pattern = r'(?P<type>\w+)\s+(?P<name>\w+)\s*\((?P<args>.*)\)'
-        # TODO: Put these details into dictionary
+        match = re.search(pattern, lines_list[index])
+        rettype = match.group('type')
+        funcname = match.group('name')
+        args = match.group('args')
+        arglist = fetch_arglist(args)  #only datatypes would be enough
+        instance = Function(funcname, rettype, arglist)
+        if root_dict.get(instance) is None:
+            root_dict[instance] = {}
+            root_dict[instance]['name'] = funcname
+            root_dict[instance]['rettype'] = rettype
+            root_dict[instance]['arglist'] = arglist
+        if root_dict[instance].get('prototype'):
+            root_dict[instance]['prototype_visible'] = True
+        else:
+            root_dict[instance]['prototype_visible'] = False
+        root_dict[instance]['start_index'] = start_index
 
     if lines_list[index].strip() == '}':  #ignored inline comments for now
-        return index
-    statement_type = utilities.resolve(lines_list, index)
-    returned = eval(statement_type +'(lines_list, index)')
+        root_dict[instance]['end_index'] = current_index
+        return current_index
+    statement_type = utilities.resolve(lines_list, current_index)
+    returned = eval(statement_type +'(lines_list, current_index)')
     return function_definition(lines_list, returned+1)
 
 
