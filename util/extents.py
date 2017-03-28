@@ -10,7 +10,10 @@ import parse
 import utilities
 
 from components import (
-        function as Function
+        function as Function,
+        forloop as ForLoop,
+        whileloop as WhileLoop,
+        dowhileloop as DoWhileLoop
 )
 
 
@@ -110,12 +113,12 @@ def forloop(lines_list, start_index, current_index, detail_dict):
         }
     '''
     if current_index == start_index:
-        pattern = r'for\s*\((?P<init>.*);(?P<cond>.*);(?P<step>.*)\)'
+        pattern = r'for\s*\((?P<init>.*);(?P<cond>.*);(?P<step>.*)\)'  #pattern can be further modified
         match = re.search(pattern, lines_list[current_index])
         init = match.group('init')
         cond = match.group('cond')
         step = match.group('step')
-        varlist = fetch_varlist(init)  # need to create it, variables list
+        varlist = fetch_varlist(init)  # need to create it, only declared ones
         if detail_dict.get('forloops') is None:
             detail_dict['forloops'] = []
         detail_dict['forloops'].append({})
@@ -129,29 +132,50 @@ def forloop(lines_list, start_index, current_index, detail_dict):
     return forloop(lines_list, returned+1)
 
 
-def whileloop(lines_list, index):
+def whileloop(lines_list, start_index, current_index, detail_dict):
     '''
     handles only while loops of the format
     >>> while(conditions){
             body
         }
     '''
+    if current_index == start_index:
+        pattern = r'while\s*\((?P<cond>.*)\)'  #pattern can be further modified
+        match = re.search(pattern, lines_list[current_index])  # This search doesn't mean anything at all
+        cond = match.group('cond')
+        if detail_dict.get('whileloops') is None:
+            detail_dict['whileloops'] = []
+        detail_dict['whileloops'].append({})
+        cur_loop_index = len(detail_dict['whileloops']) - 1
+        detail_dict['whileloops'][cur_loop_index]['varlist'] = []
+        # TODO: Need further modifications and utilizations
     if lines_list[index].strip() == '}':  #ignored inline comments for now
         return index
-    thisend = process_line(lines_list, index)
-    return whileloop(lines_list, thisend+1)
+    statement_type = utilities.resolve(lines_list, current_index)
+    returned = eval(statement_type +'(lines_list, start_index, current_index, detail_dict["whileloops"][cur_loop_index])')  # cur_loop_index might not be here due to recursion, need to take care of this
+    return whileloop(lines_list, returned+1)
 
-def dowhileloop(lines_list, index):
+def dowhileloop(lines_list, start_index, current_index, detail_dict):
     '''
     handles only dowhile loops of the format
     >>> do{
             body
         } while(condition);
     '''
+    if current_index == start_index:
+        pattern = r'[^\w]do[^\w]'  #pattern has to be further modified
+        match = re.search(pattern, lines_list[current_index])  # This search doesn't mean anything at all
+        if detail_dict.get('dowhileloops') is None:
+            detail_dict['dowhileloops'] = []
+        detail_dict['dowhileloops'].append({})
+        cur_loop_index = len(detail_dict['dowhileloops']) - 1
+        detail_dict['dowhileloops'][cur_loop_index]['varlist'] = []
+        # TODO: Need further modifications and utilizations
     if lines_list[index].strip() == '}':  #ignored inline comments for now
         return index
-    thisend = process_line(lines_list, index)
-    return dowhileloop(lines_list, thisend+1)
+    statement_type = utilities.resolve(lines_list, current_index)
+    returned = eval(statement_type +'(lines_list, start_index, current_index, detail_dict["dowhileloops"][cur_loop_index])')  # cur_loop_index might not be here due to recursion, need to take care of this
+    return dowhileloop(lines_list, returned+1)
 
 def ifcondition(lines_list, index):
     '''
