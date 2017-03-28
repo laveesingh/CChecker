@@ -7,10 +7,13 @@ import re
 from . import extents, utilities
 
 def preprocessor(lines, lineno):
-	''''''
-	name = lines[lineno].split(' ')[0]
-	name = name[1:]
-	return extents.preprocessor(name, lines, lineno)
+    ''''''
+    #print lines[lineno]
+    name = re.split(' |<', lines[lineno])[0]
+    #name = lines[lineno].split(' |<')[0]
+    name = name[1:]
+    #print name
+    return extents.preprocessor(name, lines, lineno)
 
 def function(lines, lineno):
 	''''''

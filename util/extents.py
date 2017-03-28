@@ -36,6 +36,7 @@ def preprocessor(name, lines_list, index):
     '''
     if index == len(lines_list): return index
     one_liners = ['define', 'include', 'line', 'pragma']
+    #print name
     if name in one_liners:
         return index
     if parse.is_preprocessor(lines_list, index):
