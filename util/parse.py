@@ -47,7 +47,24 @@ def func_proto(lines, lineno):
     return lineno
 
 def struct(lines, lineno):
-	return extents.struct(lines, lineno)
+    ''''''
+    no_of_cbraces = 0
+    if '{' in lines[lineno]:
+        no_of_cbraces = 1
+
+    linep = lineno +1
+
+    while True:
+        #print lines[linep]
+        no_of_cbraces += lines[linep].count('{')
+        #print "New" + str(no_of_cbraces)
+        no_of_cbraces -= lines[linep].count('}')
+        #print "Closed" + str(no_of_cbraces)
+        if no_of_cbraces == 0 or linep == len(lines) - 1:
+            print linep
+            return linep
+        linep += 1     
+    print no_of_cbraces, lines[lineno]
 
 def global_comments(lines, lineno):
 	''''''
