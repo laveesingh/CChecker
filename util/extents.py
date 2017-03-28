@@ -55,7 +55,7 @@ def function_prototype(lines_list, index, root_dict):
     rettype = match.group('type')
     funcname = match.group('name')
     args = match.group('args')
-    arglist = fetch_arglist(args)  #only datatypes would be enough
+    arglist, varlist = fetch_arglist(args)  #only datatypes would be enough
     instance = Function(funcname, rettype, arglist)
     if root_dict.get(instance) is None:
         root_dict[instance] = {}
@@ -74,13 +74,13 @@ def function_definition(lines_list, start_index, current_index, root_dict):
             body
         }
     '''
-    if start_index == current_index:
+    if current_index == start_index:
         pattern = r'(?P<type>\w+)\s+(?P<name>\w+)\s*\((?P<args>.*)\)'
         match = re.search(pattern, lines_list[index])
         rettype = match.group('type')
         funcname = match.group('name')
         args = match.group('args')
-        arglist = fetch_arglist(args)  #only datatypes would be enough
+        arglist, varlist = fetch_arglist(args)  #only datatypes would be enough
         instance = Function(funcname, rettype, arglist)
         if root_dict.get(instance) is None:
             root_dict[instance] = {}
@@ -92,6 +92,7 @@ def function_definition(lines_list, start_index, current_index, root_dict):
         else:
             root_dict[instance]['prototype_visible'] = False
         root_dict[instance]['start_index'] = start_index
+        root_dict[instance]['varlist'] = varlist
 
     if lines_list[index].strip() == '}':  #ignored inline comments for now
         root_dict[instance]['end_index'] = current_index
@@ -101,13 +102,15 @@ def function_definition(lines_list, start_index, current_index, root_dict):
     return function_definition(lines_list, returned+1)
 
 
-def forloop(lines_list, index):
+def forloop(lines_list, start_index, current_index, detail_dict):
     '''
     handles only for loops of the format
     >>> for(details){
             body
         }
     '''
+    if current_index == start_index:
+        pattern = r'for\s*('
     if lines_list[index].strip() == '}':  #ignored inline comments for now
         return index
     thisend = process_line(lines_list, index)
