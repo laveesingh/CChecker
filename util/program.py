@@ -49,22 +49,22 @@ class program:
 			# but is left as is because we are currently concentrating on the
 			# implementation part. We need to revisit this while optimising.
 
-			flag, newline = self.fpreprocessor(lineno)
+			flag, lineno = self.fpreprocessor(lineno)
 			if flag:
 				continue
-			flag, newline = self.fglobal_vars(lineno)
+			flag, lineno = self.fglobal_vars(lineno)
 			if flag:
 				continue
-			flag, newline = self.fstruct(lineno)
+			flag, lineno = self.fstruct(lineno)
 			if flag:
 				continue
-			flag, newline = self.ffunc_prototype(lineno)
+			flag, lineno = self.ffunc_prototype(lineno)
 			if flag:
 				continue
-			flag, newline = self.ffunction(lineno)
+			flag, lineno = self.ffunction(lineno)
 			if flag:
 				continue
-			flag, newline = self.fglobal_comments(lineno)
+			flag, lineno = self.fglobal_comments(lineno)
 			if flag:
 				continue
 			self.unrecognized.append(self.lines[lineno])

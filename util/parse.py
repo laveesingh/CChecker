@@ -16,8 +16,25 @@ def preprocessor(lines, lineno):
     return extents.preprocessor(name, lines, lineno)
 
 def function(lines, lineno):
-	''''''
-	return extents.function_definition(lines, lineno)
+    ''''''
+    no_of_cbraces = 0
+    if '{' in lines[lineno]:
+        no_of_cbraces = 1
+
+    linep = lineno +1
+
+    while True:
+        #print lines[linep]
+        no_of_cbraces += lines[linep].count('{')
+        #print "New" + str(no_of_cbraces)
+        no_of_cbraces -= lines[linep].count('}')
+        #print "Closed" + str(no_of_cbraces)
+        if no_of_cbraces == 0 or linep == len(lines) - 1:
+            print linep
+            return linep
+        linep += 1     
+    print no_of_cbraces, lines[lineno]
+
 
 def global_var(lines, lineno):
 	return extents.declaration(lines, lineno)
@@ -78,9 +95,9 @@ def is_function(lines, lineno):
         4. Parantheses contain argument list, closing parantheses is followed
         by a { or newline;
     '''
-    regex = r'((?P<ret>[a-zA-Z_]\w*)\*?\s+\*?(?P<name>[a-zA-Z_]\w*)\s*' +\
-        r'\(.*\)\s*\[\n\{])'
+    regex = r'(?P<type>(int)|(void)|(double)|(float)|(char))\s+(?P<name>(\w+))\(\w*\)\s*'
     if re.search(regex, lines[lineno]):
+        print lines[lineno]
         return True
     return False
 
