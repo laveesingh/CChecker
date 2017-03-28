@@ -36,13 +36,17 @@ Functions = int main()
     return 0;
 
 }
+int cmp(const int *a,const int *b)
+
+{
+
+    return(*a-*b);
+
+}
 
 Struct = 
 Functions Proto = int cmp(const int *a,const int *b);
 
 Comments = 
 Global Var = 
-Unrecognised = int cmp(const int *a,const int *b)
-{
-    return(*a-*b);
-}
+Unrecognised = 
