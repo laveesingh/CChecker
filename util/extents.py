@@ -98,7 +98,7 @@ def function_definition(lines_list, start_index, current_index, root_dict):
         root_dict[instance]['end_index'] = current_index
         return current_index
     statement_type = utilities.resolve(lines_list, current_index)
-    returned = eval(statement_type +'(lines_list, current_index)')
+    returned = eval(statement_type +'(lines_list, start_index, current_index, root_dict[instance])')  # Instance might not be here due to recursive step, need to take care of this
     return function_definition(lines_list, returned+1)
 
 
@@ -124,8 +124,9 @@ def forloop(lines_list, start_index, current_index, detail_dict):
         # TODO: Need further careful modification
     if lines_list[index].strip() == '}':  #ignored inline comments for now
         return index
-    thisend = process_line(lines_list, index)  # Need to know what it is so that I could pass appropriate dictionary accordingly to fill details
-    return forloop(lines_list, thisend+1)
+    statement_type = utilities.resolve(lines_list, current_index)
+    returned = eval(statement_type +'(lines_list, start_index, current_index, detail_dict["forloops"][cur_loop_index])')  # cur_loop_index might not be here due to recursion, need to take care of this
+    return forloop(lines_list, returned+1)
 
 
 def whileloop(lines_list, index):
