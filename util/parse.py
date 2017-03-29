@@ -31,10 +31,10 @@ def function(lines, lineno):
         no_of_cbraces -= lines[linep].count('}')
         #print "Closed" + str(no_of_cbraces)
         if no_of_cbraces == 0 or linep == len(lines) - 1:
-            print linep
+            #print linep
             return linep
         linep += 1     
-    print no_of_cbraces, lines[lineno]
+    #print no_of_cbraces, lines[lineno]
 
 
 def global_var(lines, lineno):
@@ -62,10 +62,10 @@ def struct(lines, lineno):
         no_of_cbraces -= lines[linep].count('}')
         #print "Closed" + str(no_of_cbraces)
         if no_of_cbraces == 0 or linep == len(lines) - 1:
-            print linep
+            #print linep
             return linep
         linep += 1     
-    print no_of_cbraces, lines[lineno]
+    #print no_of_cbraces, lines[lineno]
 
 def global_comments(lines, lineno):
 	''''''
@@ -115,7 +115,7 @@ def is_function(lines, lineno):
     '''
     regex = r'(?P<type>(int)|(void)|(double)|(float)|(char))\s+(?P<name>(\w+))\((?P<arg>(.*))\)\s*'
     if re.search(regex, lines[lineno]):
-        print lines[lineno]
+        #print lines[lineno]
         return True
     return False
 
