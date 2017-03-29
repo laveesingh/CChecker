@@ -45,8 +45,8 @@ int cmp(const int *a,const int *b)
 }
 
 Struct = 
+Comments = 
 Functions Proto = int cmp(const int *a,const int *b);
 
-Comments = 
 Global Var = 
 Unrecognised = 

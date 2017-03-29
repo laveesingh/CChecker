@@ -64,42 +64,29 @@ if __name__ == '__main__':
     pinst = program.program()
     pinst.load_attrs(open(args.file, 'r+'))
     opname = args.file[:-2] + '.OP'
-    open(opname, 'w').close()    
     opf = open(opname, 'w+')
-    prepoptext = ''
+    opf.write("Preprocessors = ")
     for obs in pinst.preprocessors:
-        prepoptext = prepoptext + obs.text
-    funtext = ''
+        opf.write(obs.text)
+    opf.write("\nFunctions = ")
     for obs in pinst.functions:
-        funtext = funtext + obs.text
-    strtext = ''
+        opf.write(obs.text)
+    opf.write("\nStruct = ")
     for obs in pinst.structs:
-        strtext = strtext + obs.text
-    gctext = ''
+        opf.write(obs.text)
+    opf.write("\nComments = ")
     for obs in pinst.global_comments:
-        gctext = gctext + obs.text
-    fptext = ''
+        opf.write(obs.text)
+    opf.write("\nFunctions Proto = ")
     for obs in pinst.func_prototypes:
-        fptext = fptext + obs.text
-    gvtext = ''
+        opf.write(obs.text)
+    opf.write("\nGlobal Var = ")
     for obs in pinst.global_vars:
-        gvtext = gvtext + obs.text
-    untext = ''
+        opf.write(obs,text)
+    opf.write("\nUnrecognised = ")
     for obs in pinst.unrecognized:
-        untext = untext + obs
-    opf.write("Preprocessors = " + prepoptext)
-    opf.write('\n')
-    opf.write("Functions = " + funtext)
-    opf.write('\n')
-    opf.write("Struct = " + strtext)
-    opf.write('\n')
-    opf.write("Functions Proto = " + fptext)
-    opf.write('\n')
-    opf.write("Comments = " + gctext)
-    opf.write('\n')
-    opf.write("Global Var = " + gvtext)
-    opf.write('\n')
-    opf.write("Unrecognised = " + untext)
+        opf.write(obs)
+    #opf.write(resstr)
     opf.close()
     #print(pinst.lines)
 
