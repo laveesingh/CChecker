@@ -3,10 +3,10 @@ class function:
 
     properties = {}
 
-    def __init__(self, name, rettype, arglist):
-        self.name = name
-        self.rettype = rettype
-        self.arglist = arglist
+    def __init__(self, text, lines):
+        self.text = '\n'.join(text)
+        self.start = lines[0]
+        self.end = lines[1]
 
     def __eq__(self, other):
         first = self.name == other.name
