@@ -64,6 +64,9 @@ if __name__ == '__main__':
     pinst = program.program()
     pinst.load_attrs(open(args.file, 'r+'))
     opname = args.file[:-2] + '.OP'
+    #if os.path.exists(opname):
+    #    oldname = opname
+    #    opname = opname + '.temp'
     opf = open(opname, 'w+')
     opf.write("Preprocessors = ")
     for obs in pinst.preprocessors:
@@ -88,5 +91,8 @@ if __name__ == '__main__':
         opf.write(obs)
     #opf.write(resstr)
     opf.close()
+
+    #if oldname and fileEquals(opname, oldname):
+    #    pass
     #print(pinst.lines)
 
