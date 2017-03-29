@@ -4,7 +4,7 @@ preprocessors, etc.'''
 
 import re
 
-from . import extents, utilities
+#from . import extents, utilities
 
 def preprocessor(lines, lineno):
     ''''''
@@ -13,7 +13,8 @@ def preprocessor(lines, lineno):
     #name = lines[lineno].split(' |<')[0]
     name = name[1:]
     #print name
-    return extents.preprocessor(name, lines, lineno)
+    return lineno # We need to handle multiline preprocessors also
+    #return extents.preprocessor(name, lines, lineno)
 
 def function(lines, lineno):
     ''''''
@@ -119,7 +120,10 @@ def is_function(lines, lineno):
     return False
 
 def is_global_var(lines, lineno):
-	return utilities.is_declaration(lines, lineno)
+    regex = r'((const)|(static))?\s*((void)|(int)|(float)|(char))\s*(?P<name>(\w+)\,?)\s*;'
+    if re.search(regex, lines[lineno]):
+        return True
+    return False
 
 def is_func_proto(lines, lineno):
     '''
