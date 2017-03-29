@@ -38,7 +38,7 @@ def function(lines, lineno):
 
 
 def global_var(lines, lineno):
-	return extents.declaration(lines, lineno)
+	return lineno
 
 def func_proto(lines, lineno):
     '''
