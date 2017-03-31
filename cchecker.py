@@ -91,7 +91,7 @@ if __name__ == '__main__':
         opf.write(obs.text)
     opf.write("\nGlobal Var = ")
     for obs in pinst.global_vars:
-        opf.write(obs,text)
+        opf.write(obs.text)
     opf.write("\nUnrecognised = ")
     for obs in pinst.unrecognized:
         opf.write(obs)

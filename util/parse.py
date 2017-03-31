@@ -73,10 +73,10 @@ def global_comments(lines, lineno):
 		return lineno
 
 	elif lines[lineno].startswith('/*'):
-	    for i in xrange(index, len(lines_list)):
-	        if '*/' in lines_list[i]:
+	    for i in xrange(lineno, len(lines)):
+	        if '*/' in lines[i]:
 	            return i
-	    return len(lines_list)-1  # This won't have to execute		
+	    return len(lines)-1  # This won't have to execute		
 
 	return lineno
 
