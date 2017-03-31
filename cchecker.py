@@ -16,6 +16,11 @@ def check_args(parser, args):
 
     #TODO: add more exceptions here (required)
     #TODO: add an error class (Low priority)
+
+    if not args.dir and not args.file:
+        raise Exception(colors.FAIL + "You have to mention either directory or files" +
+                colors.ENDC)
+
     if not os.path.isfile(args.file):
         raise Exception(colors.FAIL + "File not found: " + str(args.file) +
                 colors.ENDC)
@@ -56,7 +61,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--spec',
                     help="Specification file of rules", default='all')
-    parser.add_argument('-f', '--file', help="C input file", required=True)
+    parser.add_argument('-f', '--file', help="C input file")
+    parser.add_argument('-d', '--dir', help="Directory containing C files")
     args = parser.parse_args()
     # If there's any error with provided input files
     check_args(parser, args)
