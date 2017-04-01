@@ -127,11 +127,11 @@ def is_function(lines, lineno):
 
 def is_global_var(lines, lineno):
     #Unable to identify initialised variables or array definitions 
-    if re.search(r'([^=]=[^=])|(\,)', lines[lineno]):
-        return True
     if '(' in lines[lineno]:
         # Function call of def/decl, make sure to exclude " quoted string
         return False
+    if re.search(r'([^=]=[^=])|(\,)', lines[lineno]):
+        return True
     regex = r'\b(' + '|'.join(bd) + ')\W'
     if re.search(regex, lines[lineno]):
         return True
