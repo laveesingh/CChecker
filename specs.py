@@ -56,7 +56,6 @@ def assignments_in_conditions(pinst):
 	#print func_name + "Not yet coded!"
 	result = helper.conditions(pinst)
 	if not result:
-		print "No violations for check 4 found"
 		return
 	#print "Following lines have violated the check 4"
 	for line in result:
@@ -85,7 +84,6 @@ def goto_continue(pinst):
 	#print func_name + "Not yet coded!"
 	result = helper.find_goto(pinst)
 	if not result:
-		print "No violations for check 8 found"
 		return
 	#print "Following lines have violated check 8"
 	for line in result:
@@ -99,7 +97,6 @@ def allocs(pinst):
 	#print func_name + "Not yet coded!"
 	result = helper.find_dynamic_memory_allocation(pinst)
 	if not result:
-		print "No violations for check 9 found"
 		return
 	#print "Following lines have violated check 9"
 	for line in result:
@@ -116,6 +113,14 @@ def comments_style(pinst):
 	'''There should not be any // style comments. All comments should be of the form /* ... */'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	res = helper.single_comments(pinst)
+	if not res:
+		return
+	for line in res:
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(11)
+
 
 def code_commented(pinst):
 	'''Sections of code should not be commented out.'''
