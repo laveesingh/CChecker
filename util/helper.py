@@ -335,8 +335,11 @@ def if_else(pinst):
                 i -= 1
     if i > 0:
         print previous_ifs
+
+
 def is_assignment(line):
     '''
     checkes if given line is assignment of some kind
     '''
-    pass
+    pat = r'[\w\]\s]=[^=]'
+    return bool(re.search(pat, line))
