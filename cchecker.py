@@ -101,42 +101,44 @@ if __name__ == '__main__':
             opfile.write(lines + '        ' + str(nline))
         if was_nl:
             opfile.write('\n')
-        #lno = lno + 1
-    #vars_dict = helper.parse_vars(pinst)
-    #assign_list = helper.conditions(pinst)
-    #helper.comparison_floating(pinst)
-    #helper.parse_comments(pinst)
+
+    opn = args.file[:-2] + '.bhosrike'
+    opf = open(opn, 'w+')
+    vars_dict = helper.parse_vars(pinst)
+    assign_list = helper.conditions(pinst)
+    helper.comparison_floating(pinst)
+    helper.parse_comments(pinst)
     #uncommment the line below to test the parse comment function in helper
-    #helper.parse_comments(pinst)
-    #opf.write("Preprocessors = ")
-    #for obs in pinst.preprocessors:
-    #    opf.write(''.join(obs.text))
-    #opf.write("\nFunctions = ")
-    #for obs in pinst.functions:
-    #    opf.write(''.join(obs.text))
-    #    opf.write("Variables = " + str(obs.vars) + "\n")
-    #    opf.write("Assignment in conditions = " + str(obs.assignments_in_cond) + "\n")
-    #    opf.write("Comments in fn's = " + str(obs.comments) + "\n")
-    #opf.write("\nStruct = ")
-    #for obs in pinst.structs:
-    #    opf.write(''.join(obs.text))
-    #opf.write("\nComments = ")
-    #for obs in pinst.global_comments:
-    #    opf.write(''.join(obs.text))
-    #opf.write("\nFunctions Proto = ")
-    #for obs in pinst.func_prototypes:
-    #    opf.write(''.join(obs.text))
-    #opf.write("\nGlobal Var = ")
-    #for obs in pinst.global_vars:
-    #    opf.write(''.join(obs.text))
-    #opf.write("\nUnion = ")
-    #for obs in pinst.union:
-    #    opf.write(obs.text)
-    #opf.write("\nUnrecognised = ")
-    #for obs in pinst.unrecognized:
-    #    opf.write(obs)
-    #opf.write(resstr)
+    helper.parse_comments(pinst)
+    opf.write("Preprocessors = ")
+    for obs in pinst.preprocessors:
+        opf.write(''.join(obs.text))
+    opf.write("\nFunctions = ")
+    for obs in pinst.functions:
+        opf.write(''.join(obs.text))
+        opf.write("Variables = " + str(obs.vars) + "\n")
+        opf.write("Assignment in conditions = " + str(obs.assignments_in_cond) + "\n")
+        opf.write("Comments in fn's = " + str(obs.comments) + "\n")
+    opf.write("\nStruct = ")
+    for obs in pinst.structs:
+        opf.write(''.join(obs.text))
+    opf.write("\nComments = ")
+    for obs in pinst.global_comments:
+        opf.write(''.join(obs.text))
+    opf.write("\nFunctions Proto = ")
+    for obs in pinst.func_prototypes:
+        opf.write(''.join(obs.text))
+    opf.write("\nGlobal Var = ")
+    for obs in pinst.global_vars:
+        opf.write(''.join(obs.text))
+    opf.write("\nUnion = ")
+    for obs in pinst.union:
+        opf.write(obs.text)
+    opf.write("\nUnrecognised = ")
+    for obs in pinst.unrecognized:
+        opf.write(obs)
     opfile.close()
+    opf.close()
 
     #if oldname and fileEquals(opname, oldname):
     #    pass
