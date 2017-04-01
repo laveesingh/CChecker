@@ -48,12 +48,12 @@ def parse_specs(spec_file):
                 raise Exception("Unable to parse specification file due to its invalid bad format")
     return specs
 
-def eval_specs(specs_list):
+def eval_specs(pinst, specs_list):
     '''This function will accept a list of specification numbers and call the related functions'''
     for spec_no in specs_list:
         fname = specs.num_to_name[spec_no]
         try:
-            getattr(specs, fname)()
+            getattr(specs, fname)(pinst)
         except AttributeError:
             raise Exception("The source code sucks")
 
@@ -69,6 +69,7 @@ if __name__ == '__main__':
     specs = parse_specs(args.spec)
     pinst = program.program()
     pinst.load_attrs(open(args.file, 'r+'))
+    eval_specs(pinst, specs)
     vars_dict = helper.parse_vars(pinst)
     assign_list = helper.conditions(pinst)
     helper.comparison_floating(pinst)

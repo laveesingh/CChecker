@@ -31,107 +31,107 @@ num_to_name = {
 	25: 'booleans_switch',
 }
 
-def imp_type_conv():
+def imp_type_conv(pinst):
 	'''There should not be implicit type conversions between integer and floating point types, signed and unsigned types.'''
 	pass
 
-def evaluate_diff_sidewise():
+def evaluate_diff_sidewise(pinst):
 	'''Statements that evaluate differently left to right and right to left should not be allowed. eg: statements like a = b[j] + j++;'''
 	pass
 
-def bitwise_op():
+def bitwise_op(pinst):
 	'''Bitwise operations are not allowed on signed data types.'''
 	pass
 
-def assignments_in_conditions():
+def assignments_in_conditions(pinst):
 	'''Assignment statements in expressions resulting in Boolean value are not allowed. eg: if( b = a)'''
 	pass
 
-def comparing_floats():
+def comparing_floats(pinst):
 	'''Equalities (==) and inequalities (<=, >=) between floating point values are not allowed.'''
 	pass
 
-def gvar_ar_fnpar():
+def gvar_ar_fnpar(pinst):
 	'''Global variables are not allowed as function parameters.'''
 	pass
 
-def check_init():
+def check_init(pinst):
 	'''Automatic (local) variables should have a value before they are used.'''
 	pass
 
-def goto_continue():
+def goto_continue(pinst):
 	'''goto and continue statements should not be used.'''
 	pass
 
-def allocs():
+def allocs(pinst):
 	'''Dynamic heap memory allocation should not be used. Hence functions such as malloc, calloc, realloc, free should not be used.'''
 	pass
 
-def recursion():
+def recursion(pinst):
 	'''There should not be any recursion.'''
 	pass
 
-def comments_style():
+def comments_style(pinst):
 	'''There should not be any // style comments. All comments should be of the form /* ... */'''
 	pass
 
-def code_commented():
+def code_commented(pinst):
 	'''Sections of code should not be commented out.'''
 	pass
 
-def seq_in_comment():
+def seq_in_comment(pinst):
 	'''Inside a comment, the character sequence /* should not be used.'''
 	pass
 
-def identifiers_scoping():
+def identifiers_scoping(pinst):
 	'''Identifier in an inner scope should not have the same name as an identifier
 	in an outer scope, and hide the identifier in the outer scope.'''
 	pass
 
-def proto_decl():
+def proto_decl(pinst):
 	'''All functions shall have prototype declarations that are visible at both function definition and function call.'''
 	pass
 
-def sizeof_effects():
+def sizeof_effects(pinst):
 	'''sizeof operator should not be used on expressions with side effect. Eg: sizeof(x=10) is not allowed, as this will not set x to 10.'''
 	pass
 
-def rhshift_limits():
+def rhshift_limits(pinst):
 	'''Right-hand operand of shift operator should lie between zero and one less than the width in bits of the left-hand side operand.
 	Eg: x << 9 is not permitted if x is of width 8-bits.'''
 	pass
 
-def unarymin_on_unsigned():
+def unarymin_on_unsigned(pinst):
 	'''Unary minus operator should not be used on an expression whose type is unsigned.'''
 	pass
 
-def loop_iterator():
+def loop_iterator(pinst):
 	'''Numeric variable used in a for loop for controlling loop iterations shall not be modified inside the loop.
 	Eg: for(i=0; i<10; i++) {...i=i+3; ...} is not allowed.'''
 	pass
 
-def else_check():
+def else_check(pinst):
 	'''All if...else if... constructs should be terminated with an else clause.'''
 	pass
 
-def pointer_level():
+def pointer_level(pinst):
 	'''More than two levels of pointer indirection should not be used.'''
 	pass
 
-def unions():
+def unions(pinst):
 	'''Unions should not be used.'''
 	pass
 
-def unreachable():
+def unreachable(pinst):
 	'''There shall not be any unreachable code (code which will not be executed under any circumstances
 	and which can be detected at compile-time).'''
 	pass
 
-def default_check():
+def default_check(pinst):
 	'''All switch statements should have a default clause.'''
 	pass
 
-def booleans_switch():
+def booleans_switch(pinst):
 	'''A switch expression should not be effectively Boolean. Eg: switch(x==10) should not be used,
 	as x==10 is effectively Boolean.'''
 	pass
