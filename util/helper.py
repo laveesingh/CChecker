@@ -54,7 +54,7 @@ def conditions(pinst):
                 elif match.group('type') == 'while':
                     ct = match.group('cond')  # while and do while
                 if re.search(r'[\w ]+=[\w ]+', ct):
-                    res.append((line, 0)) #exists
+                    func.assignments_in_cond.append(line) #exists
                     continue
             res.append((line, 1))
     return res

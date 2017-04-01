@@ -9,6 +9,7 @@ class function:
         self.end = lines[1]
         self.vars = None
         self.comments = None
+        self.assignments_in_cond = []
 
     def __eq__(self, other):
         first = self.name == other.name
