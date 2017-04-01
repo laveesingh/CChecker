@@ -1,10 +1,11 @@
 
 class union:
 
-    def __init__(self, index, level, text):
-        self.index = index
-        self.level = level
-        self.text = text
+    def __init__(self, text, lines):
+        self.text = '\n'.join(text)
+        self.start = lines[0]
+        self.end = lines[1]
 
     def ex():
         pass
+

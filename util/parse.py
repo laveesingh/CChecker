@@ -120,7 +120,8 @@ def is_function(lines, lineno):
     return False
 
 def is_global_var(lines, lineno):
-    regex = r'((const)|(static))?\s*((void)|(int)|(float)|(char))\s*(?P<name>(\w+)\,?)\s*;'
+    #Unable to identify initialised variables or array definitions 
+    regex = r'((const)|(static))?\s*((void)|(int)|(float)|(char))\s*(?P<name>(\w+)\s*\,?)\s*;'
     if re.search(regex, lines[lineno]):
         return True
     return False
@@ -154,9 +155,14 @@ def is_struct(lines, lineno):
         };
     '''
     line = lines[lineno].strip()
+    #print lineno
+    #print line.startswith('typedef struct')
     if line.startswith('struct'):
-    #if re.search(regex, lines[lineno]):
         return True
+    if line.startswith('typedef struct'):
+        #print 'Hey'
+        return True
+    #print 'This is not the struct'
     return False
 
 def is_global_comments(lines, lineno):
@@ -169,3 +175,34 @@ def is_global_comments(lines, lineno):
         Multiline comment: /* ... */ type
     '''	
     return lines[lineno].startswith('//') or lines[lineno].startswith('/*')
+
+def is_union(lines, lineno):
+    '''
+    For this line to be union, it has to follow the pattern:
+    >>> union name{
+            body
+        };
+    >>> typedef union name{
+            body
+        };
+    '''
+    line = lines[lineno].strip()
+    if line.startswith('union'):
+         return True
+    if line.startswith('typedef union'):
+         return True
+    return False
+
+def union(lines, lineno):
+     ''''''
+     no_of_cbraces = 0
+     if '{' in lines[lineno]:
+         no_of_cbraces = 1
+     linep = lineno +1
+     while True:
+         no_of_cbraces += lines[linep].count('{')
+         no_of_cbraces -= lines[linep].count('}')
+         if no_of_cbraces == 0 or linep == len(lines) - 1:
+             return linep
+         linep += 1
+

@@ -12,6 +12,7 @@ import components.preprocessor as preprocessor
 import components.func_prototype as func_prototype
 import components.global_var as global_var
 import components.global_comment as global_comment
+import components.union as union
 
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
@@ -26,6 +27,7 @@ class program:
 		self.func_prototypes = []
 		self.global_comments = []
 		self.lines = []
+		self.union=[]
 		# Make sure we track things which we are unable to parse
 		self.unrecognized = []
 
@@ -65,6 +67,9 @@ class program:
 			if flag:
 				continue
 			flag, lineno = self.fglobal_comments(lineno)
+			if flag:
+				continue
+			flag, lineno = self.funion(lineno)
 			if flag:
 				continue
 			self.unrecognized.append(self.lines[lineno])
@@ -189,3 +194,23 @@ class program:
 			return True, endline
 
 		return False, lineno
+
+	def funion(self, lineno):
+		'''It will check whether the given line is the beginning
+		of a union or not. If it is the beginning it will do following
+		things:
+		1. Find the end(last line) of this union
+		2. Make a object of union class
+		3. Add that object to self.union list
+		4. Return the line number next to where this union ends
+ 
+		If it's not the beginning of a union, then it will
+		return the same line number which was passed.'''
+		if parse.is_union(self.lines, lineno):
+			endline = parse.union(self.lines, lineno)
+ 			text = self.lines[lineno : endline + 1]
+			sclass = union.union(text, [lineno, endline])
+			self.union.append(sclass)
+			return True, lineno
+		return False, lineno
+

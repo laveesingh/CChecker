@@ -8,7 +8,7 @@
 #define MOD 1000000007
 #define BUF 4096
 char ibuf[BUF];
-int ipt = BUF;
+int ipt, i, i;
 
 int readInt() {
 	while (ipt < BUF && ibuf[ipt] < '0') ipt++;
@@ -27,6 +27,9 @@ int readInt() {
 	return n;
 }
 
+union A{
+int a;
+};
 
 
 using namespace std;
