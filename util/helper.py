@@ -252,48 +252,70 @@ def comparison_floating(pinst):
                     continue
                 #print line
                 if match.group('type') in condition_st:
-                    res = re.search(r"(\w*\(\s*(?P<a>[\w\*\\+-]+)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]+)\s*\).*)", line)
+                    res = re.search(r"(\w*\(\s*(?P<a>[\w\*\(\)\+-/]+)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\(\)\+-/]+)\s*\).*)", line)
                     if res:
-                        at = which_type(res.group('a'))
-                        bt = which_type(res.group('b'))
+                        ares = (res.group('a').strip('(')).strip(')')
+                        bres = (res.group('b').strip('(')).strip(')')
+                        ares, bres = handle_eq(ares, bres)
+                        at = which_type(ares)
+                        bt = which_type(bres)
                         if at is 3:
-                            print "Shit Happens!" + res.group('a')
+                            #print "Shit Happens!" + ares
+                            pass
                         elif at is 0:
-                            print func.vars, res.group('a')
-                            at = func.vars.get(res.group('a'))[0]
+                            #print func.vars, ares
+                            at = func.vars.get(ares)
                             if at is None:
-                                print "Sucks!" + res.group('a')
+                                #print "Sucks!" + ares
+                                pass
+                            else:
+                                at = at[0]
                         if bt is 3:
-                            print "Shit Happens!" + res.group('b')
+                            #print "Shit Happens!" + bres
+                            pass
                         elif bt is 0:
-                            print func.vars, res.group('b')
-                            bt = func.vars.get(res.group('b'))[0]
+                            #print func.vars, bres
+                            bt = func.vars.get(bres)
                             if bt is None:
-                                print "Sucks!" + res.group('b')
+                                #print "Sucks!" + bres
+                                pass
+                            else:
+                                bt = bt[0]
                         if at in ['float', 'double'] and bt in ['float', 'double']:
                             result.append(lineno+1)
                         #print res.group('a'), res.group('b')
                 elif match.group('type') in loops:
                     #print match.group('type')
                     cond = match.group('cond').split(';')[1]
-                    res = re.search(r"(\s*(?P<a>[\w\*\\+-]+)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s+)", cond)
+                    res = re.search(r"(\s*(?P<a>[\w\*\(\)+-/]+)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\(\)\+-/]*)\s+)", cond)
                     if res:
-                        at = which_type(res.group('a'))
-                        bt = which_type(res.group('b'))
+                        ares = (res.group('a').strip('(')).strip(')')
+                        bres = (res.group('b').strip('(')).strip(')')
+                        ares, bres = handle_eq(ares, bres)
+                        at = which_type(ares)
+                        bt = which_type(bres)
                         if at is 3:
-                            print "Shit Happens!" + res.group('a')
+                            #print "Shit Happens!" + ares
+                            pass
                         elif at is 0:
-                            print func.vars, res.group('a')
-                            at = func.vars.get(res.group('a'))[0]
+                            print func.vars, ares
+                            at = func.vars.get(ares)
                             if at is None:
-                                print "Sucks!" + res.group('a')
+                                #print "Sucks!" + ares
+                                pass
+                            else:
+                                at = at[0]
                         if bt is 3:
-                            print "Shit Happens!" + res.group('b')
+                            #print "Shit Happens!" + bres
+                            pass
                         elif bt is 0:
-                            print func.vars, res.group('b')
-                            bt = func.vars.get(res.group('b'))[0]
+                            #print func.vars, bres
+                            bt = func.vars.get(bres)
                             if bt is None:
-                                print "Sucks!" + res.group('b')
+                                #print "Sucks!" + bres
+                                pass
+                            else:
+                                bt = bt[0]
                         if at in ['float', 'double'] and bt in ['float', 'double']:
                             result.append(lineno+1)
                         #print res.group('a'), res.group('b')
@@ -309,6 +331,24 @@ def which_type(val):
     except ValueError:
         return 0
     return 3
+
+def handle_eq(x, y):
+    ''''''
+    matched = re.search(r'((?P<x>\w*)\s*((\+)|(-)|(\*)|(/))\s*(?P<y>\w*))', x)
+    if matched:
+        try:
+            int(matched.group('x'))
+            x = matched.group('y')
+        except ValueError:
+            x = matched.group('x')
+    matched = re.search(r'((?P<x>\w*)\s*((\+)|(-)|(\*)|(/))\s*(?P<y>\w*))', y)
+    if matched:
+        try:
+            int(matched.group('x'))
+            y = matched.group('y')
+        except ValueError:
+            y = matched.group('x')
+    return x, y
 
 def single_comments(pinst):
     ''''''
