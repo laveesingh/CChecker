@@ -151,7 +151,7 @@ def single_comments(pinst):
     ''''''
     res = []
     for comm in pinst.global_comments:
-        text = comm.text.strip()
+        text = comm.text[0].strip()
         lno = comm.start
         if text.startswith('//'):
             res.append(lno + 1)
