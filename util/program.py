@@ -27,7 +27,7 @@ class program:
 		self.func_prototypes = []
 		self.global_comments = []
 		self.lines = []
-		self.union=[]
+		self.unions =[]
 		# Make sure we track things which we are unable to parse
 		self.unrecognized = []
 
