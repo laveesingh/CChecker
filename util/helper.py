@@ -3,6 +3,15 @@ from store import (
     builtin_datatypes as bd
 )
 
+
+def is_assignment(line):
+    '''
+    checkes if given line is assignment of some kind
+    '''
+    pat = r'[\w\]\s]=[^=]'
+    return bool(re.search(pat, line))
+
+
 def parse_vars(program_instance):
     '''
     Takes a program instance and returns a dictionary containing all varibles
@@ -109,7 +118,6 @@ def parse_union_vars(program_instance):
                     match = re.search(pat, declaration)
                     vars_dict[match.group('name')] = (dtype, unsigned)
         union.vars = vars_dict
-
 
 def parse_global_vars(program_instance):
     '''
@@ -337,9 +345,62 @@ def if_else(pinst):
         print previous_ifs
 
 
-def is_assignment(line):
-    '''
-    checkes if given line is assignment of some kind
-    '''
-    pat = r'[\w\]\s]=[^=]'
-    return bool(re.search(pat, line))
+def check_implicit_type_conversion(pinst):
+    lines_list = []
+    pat = r'.*(?<var1>\w+)\W*= (|((?P<tcast>\w+)\))?(?<var2>\w+)' #this pattern can be malicious, adding \s* at the end may redefine
+    for function in pinst.functions:
+        lines_list = function.text
+        for line in lines_list:
+            if is_assignment(line):
+                statements = line.split(',')
+                for statement in statements:
+                    if is_assignment(statement):
+                        match = re.search(pat, statement)
+                        if function.vars.get(match.group('var1')) is None or function.vars.get(match.group('var2')) is None:  # This variable isn't set
+                            continue
+                        type1 = function.vars[match.group('var1')]
+                        type2 = function.vars[match.group('var2')]
+                        if is_float(type1) or is_float(type2):
+                            print "implicite type conversion violated.  line:", statement
+    for struct in pinst.structs:
+        lines_list = struct.text
+        for line in lines_list:
+            if is_assignment(line):
+                statements = line.split(',')
+                for statement in statements:
+                    if is_assignment(statement):
+                        match = re.search(pat, statement)
+                        if struct.vars.get(match.group('var1')) is None or struct.vars.get(match.group('var2')) is None:  # This variable isn't set
+                            continue
+                        type1 = struct.vars[match.group('var1')]
+                        type2 = struct.vars[match.group('var2')]
+                        if is_float(type1) or is_float(type2):
+                            print "implicite type conversion violated.  line:", statement
+    for union in pinst.unions:
+        lines_list = union.text
+        for line in lines_list:
+            if is_assignment(line):
+                statements = line.split(',')
+                for statement in statements:
+                    if is_assignment(statement):
+                        match = re.search(pat, statement)
+                        if union.vars.get(match.group('var1')) is None or union.vars.get(match.group('var2')) is None:  # This variable isn't set
+                            continue
+                        type1 = union.vars[match.group('var1')]
+                        type2 = union.vars[match.group('var2')]
+                        if is_float(type1) or is_float(type2):
+                            print "implicite type conversion violated.  line:", statement
+    # Global vars remaining are remaining 
+    for line in pinst.global_vars:
+        if is_assignment(line):
+            statements = line.split(',')
+            for statement in statements:
+                if is_assignment(statement):
+                    match = re.search(pat, statement)
+                    if pinst.global_vars_dict.get(match.group('var1')) is None or pinst.global_vars_dict.get(match.group('var2')) is None:
+                        # Either of these variables isn't set in base
+                        continue
+                    type1 = pinst.global_vars_dict[match.group('var1')]
+                    type2 = pinst.global_vars_dict[match.group('var2')]
+                    if is_float(type1) or is_float(type2):
+                        print "implicite type conversion violated.  line:", statement
