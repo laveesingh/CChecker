@@ -9,8 +9,8 @@ def parse_vars(program_instance):
     Takes a program instance and returns a dictionary containing all varibles
     along with their datatypes
     '''
-    pattern = r'\W(?P<type>(' + '|'.join(bd + ed) + '))\*{0,2}\s+.*?(?P<name>\w+)'
-    vars_dict = {}
+    modifiers = r'(const|auto|static|register|extern|volatile| )*'
+    pattern = r'\W' + modifiers + '(?P<type>(' + '|'.join(bd + ed) + '))\*{0,2}\s+.*?' + modifiers + '(?P<name>\w+)[^\(\)]*$'
     for function in program_instance.functions:
         vars_dict = {}
         #text_lines = [text_line for text_line in function.text.split('\n') if text_line.strip()]
@@ -30,7 +30,7 @@ def parse_vars(program_instance):
                     pat = r'(?P<name>\w+).*'
                     match = re.search(pat, declaration)
                     vars_dict[match.group('name')] = dtype
-            function.vars = vars_dict
+        function.vars = vars_dict
 
 condition_st = ('if', 'else if')
 loops = ('for', 'while')

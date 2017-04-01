@@ -4,6 +4,8 @@ Functions = int main(void){
   int a, b = 10;
   printf("This is the assignment statement we were talking about\n");
 }
+Variables = {'a': 'int', 'b': 'int'}
+Assignment in conditions = []
 
 Struct = 
 Comments = 
