@@ -342,6 +342,7 @@ def parse_switch(pinst):
     result = []
     for func in pinst.functions:
         line_text=func.text
+        ostart = func.start
         index=0
         while index < len(line_text):
             if is_switch(line_text[index]):
@@ -357,13 +358,13 @@ def parse_switch(pinst):
                         ends = index
                         break
                     index += 1
-                    text=''.join(line_text[starts:ends+1])
-                    #match = re.search(r'\((?P<cond>.*)\)', text)
-                    if 'default' not in text:
-                        result.append(starts)
-                    #func.switch=(match.group('cond'),state)
-                    #print func.switch
-                    #print 'Text Switch : ',line_text[starts:ends+1]
+                text=''.join(line_text[starts:index+1])
+                #match = re.search(r'\((?P<cond>.*)\)', text)
+                if 'default' not in text:
+                    result.append(ostarts + starts)
+                #func.switch=(match.group('cond'),state)
+                #print func.switch
+                #print 'Text Switch : ',line_text[starts:ends+1]
             else:
                 index += 1
                 pass
