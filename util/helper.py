@@ -32,8 +32,8 @@ def parse_vars(program_instance):
                     vars_dict[match.group('name')] = dtype
         function.vars = vars_dict
 
-condition_st = ('if', 'else if')
-loops = ('for', 'while')
+condition_st = ('if', 'else if', 'while')
+loops = ('for')
 
 def conditions(pinst):
     ''''''
@@ -51,8 +51,6 @@ def conditions(pinst):
                     ct = match.group('cond')
                 elif match.group('type') == 'for':
                     ct = match.group('cond').split(';')[1]  # for loop only
-                elif match.group('type') == 'while':
-                    ct = match.group('cond')  # while and do while
                 if re.search(r'[\w ]+=[\w ]+', ct):
                     func.assignments_in_cond.append(line) #exists
                     continue
@@ -107,3 +105,29 @@ def find_dynamic_memory_allocation(program):
                 print line
             if 'free' in line:
                 print line
+
+def comparison_floating(pinst):
+    ''''''
+    comp_op = ["==", "<=", ">=", "!=", "<", ">"]
+    for func in pinst.functions:
+        if func.vars is None:
+            parse_vars(pinst)
+        for line in func.text:
+            if any(cmp in line for cmp in comp_op):
+                line = line.strip()
+                match = re.search(r'(?P<type>\w*)\((?P<cond>.*)\)', line)
+                if not match:
+                    continue
+                #print line
+                if match.group('type') in condition_st:
+                    res = re.search(r"(\w*\(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*\).*)", line)
+                    if res:
+                        print res.group('a'), res.group('b')
+                elif match.group('type') in loops:
+                    cond = match.group('cond').split(';')[1]
+                    res = re.search(r"(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*)", cond)
+                    if res:
+                        print res.group('a'), res.group('b')
+                
+
+

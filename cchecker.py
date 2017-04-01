@@ -71,6 +71,7 @@ if __name__ == '__main__':
     pinst.load_attrs(open(args.file, 'r+'))
     vars_dict = helper.parse_vars(pinst)
     assign_list = helper.conditions(pinst)
+    helper.comparison_floating(pinst)
     opname = args.file[:-2] + '.OP'
     #if os.path.exists(opname):
     #    oldname = opname
