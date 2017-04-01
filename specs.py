@@ -198,6 +198,14 @@ def default_check(pinst):
 	'''All switch statements should have a default clause.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	result = helper.parse_switch(pinst)
+	if not result:
+		return
+	for line in result:
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(24)
+
 
 def booleans_switch(pinst):
 	'''A switch expression should not be effectively Boolean. Eg: switch(x==10) should not be used,

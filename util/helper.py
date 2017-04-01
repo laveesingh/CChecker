@@ -238,10 +238,13 @@ def find_dynamic_memory_allocation(pinst):
 def comparison_floating(pinst):
     ''''''
     comp_op = ["==", "<=", ">=", "!=", "<", ">"]
+    result = []
     for func in pinst.functions:
         if func.vars is None:
             parse_vars(pinst)
+        lineno = func.start -1
         for line in func.text:
+            lineno += 1
             if any(cmp in line for cmp in comp_op):
                 line = line.strip()
                 match = re.search(r'(?P<type>\w*)\s*\(\s*(?P<cond>.*)\s*\).*', line)
@@ -251,15 +254,61 @@ def comparison_floating(pinst):
                 if match.group('type') in condition_st:
                     res = re.search(r"(\w*\(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*\).*)", line)
                     if res:
-                        pass
+                        at = which_type(res.group('a'))
+                        bt = which_type(res.group('b'))
+                        if at is 3:
+                            print "Shit Happens!" + res.group('a')
+                        elif at is 0:
+                            print func.vars, res.group('a')
+                            at = func.vars.get(res.group('a'))[0]
+                            if at is None:
+                                print "Sucks!" + res.group('a')
+                        if bt is 3:
+                            print "Shit Happens!" + res.group('b')
+                        elif bt is 0:
+                            print func.vars, res.group('b')
+                            bt = func.vars.get(res.group('b'))[0]
+                            if bt is None:
+                                print "Sucks!" + res.group('b')
+                        if at in ['float', 'double'] and bt in ['float', 'double']:
+                            result.append(lineno)
                         #print res.group('a'), res.group('b')
                 elif match.group('type') in loops:
                     #print match.group('type')
                     cond = match.group('cond').split(';')[1]
                     res = re.search(r"(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*)", cond)
                     if res:
-                        pass
+                        at = which_type(res.group('a'))
+                        bt = which_type(res.group('b'))
+                        if at is 3:
+                            print "Shit Happens!" + res.group('a')
+                        elif at is 0:
+                            print func.vars, res.group('a')
+                            at = func.vars.get(res.group('a'))[0]
+                            if at is None:
+                                print "Sucks!" + res.group('a')
+                        if bt is 3:
+                            print "Shit Happens!" + res.group('b')
+                        elif bt is 0:
+                            print func.vars, res.group('b')
+                            bt = func.vars.get(res.group('b'))[0]
+                            if bt is None:
+                                print "Sucks!" + res.group('b')
+                        if at in ['float', 'double'] and bt in ['float', 'double']:
+                            result.append(lineno)
                         #print res.group('a'), res.group('b')
+    return result
+
+def which_type(val):
+    ''''''
+    if '.' in val:
+        return 'float' 
+    try:
+        int(val)
+        return 'int'
+    except ValueError:
+        return 0
+    return 3
 
 def single_comments(pinst):
     ''''''
@@ -287,41 +336,39 @@ def is_switch(line):
 	res = re.search(r'(;)?switch(.*).*',line)
 	if res : 
 		return True
-	else :
-		return False
+	return False
 
 def parse_switch(pinst):
-	for func in pinst.functions:
-		line_text=func.text
-		index=0
-		while index < len(line_text):
-			if(is_switch(line_text[index])):
-				starts=index
-				no_of_cbraces = 0
-				if '{' in line_text[index]:
-					no_of_cbraces = 1
-					index = index + 1
-				else:
-					index = index + 1
-				while True:
-					no_of_cbraces += line_text[index].count('{')
-					no_of_cbraces -= line_text[index].count('}')
-					if no_of_cbraces == 0 or index == len(line_text) - 1:
-						ends = index
-						break;
-					index = index + 1
-				text=''.join(line_text[starts:ends+1])
-				match = re.search(r'\((?P<cond>.*)\)', text)
-				if('default' in text): 
-					state=1;
-				else:
-					state=0
-				func.switch=(match.group('cond'),state)
-				#print func.switch
-				#print 'Text Switch : ',line_text[starts:ends+1]
-			else:
-				index = index + 1
-				pass
+    result = []
+    for func in pinst.functions:
+        line_text=func.text
+        ostart = func.start
+        index=0
+        while index < len(line_text):
+            if is_switch(line_text[index]):
+                starts=index
+                no_of_cbraces = 0
+                if '{' in line_text[index]:
+                    no_of_cbraces = 1
+                index += 1
+                while True:
+                    no_of_cbraces += line_text[index].count('{')
+                    no_of_cbraces -= line_text[index].count('}')
+                    if no_of_cbraces == 0 or index == len(line_text) - 1:
+                        ends = index
+                        break
+                    index += 1
+                text=''.join(line_text[starts:index+1])
+                #match = re.search(r'\((?P<cond>.*)\)', text)
+                if 'default' not in text:
+                    result.append(ostart + starts + 1)
+                #func.switch=(match.group('cond'),state)
+                #print func.switch
+                #print 'Text Switch : ',line_text[starts:ends+1]
+            else:
+                index += 1
+                pass
+    return result
 
 def if_else(pinst):
     if_pattern = r'(\W*)(if)(\b)(\W*)'
