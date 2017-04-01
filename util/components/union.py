@@ -7,4 +7,4 @@ class union:
         self.end = lines[1]
         self.vars = []
         self.commnets = []
-        elf.assignments_in_cond = []
+        self.assignments_in_cond = []

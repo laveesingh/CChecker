@@ -176,8 +176,9 @@ def parse_comments(pinst):
     '''
     
     for function in pinst.functions:
-        i=0
+        orstart = function.start
         text_lines = function.text
+        i = 0
         while i < len(text_lines):
             #i = i + 1
             #print str(i),':',line
@@ -187,14 +188,14 @@ def parse_comments(pinst):
                 while line.endswith('\\\n'):
                     i = i + 1
                     line = text_lines[i]
-                function.comments.append(text_lines[starts:i+1])
+                function.comments[function.start + starts] = text_lines[starts:i+1]
             if '/*' in line:
                 starts = i
                 #print 'Hey'
                 while '*/' not in line:
                     i = i + 1 
                     line = text_lines[i]
-                function.comments.append(text_lines[starts:i+1])
+                function.comments[function.start + starts] = text_lines[starts:i+1]
             i = i + 1
 
 def find_goto(pinst):
@@ -258,6 +259,18 @@ def single_comments(pinst):
         lno = comm.start
         if text.startswith('//'):
             res.append(lno + 1)
+
+    parse_comments(pinst)
+
+    for fun in pinst.functions:
+        #print fun.comments
+        for lno in fun.comments:
+            #print comm, lno
+            text = fun.comments[lno][0].strip()
+            #print lno, text
+            if text.startswith('//'):
+                res.append(lno + 1)
+
     return res
 
                 
