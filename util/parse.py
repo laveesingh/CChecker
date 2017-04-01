@@ -94,7 +94,7 @@ def is_preprocessor(lines, lineno):
         or some other preprocessor
     '''
     #TODO: improve this regex
-    regex = r'\#((include)|(define)).*'
+    regex = r'\#\s*((include)|(define)).*'
     if re.search(regex, lines[lineno]):
         return True
     return False
