@@ -238,10 +238,13 @@ def find_dynamic_memory_allocation(pinst):
 def comparison_floating(pinst):
     ''''''
     comp_op = ["==", "<=", ">=", "!=", "<", ">"]
+    result = []
     for func in pinst.functions:
         if func.vars is None:
             parse_vars(pinst)
+        lineno = func.start -1
         for line in func.text:
+            lineno += 1
             if any(cmp in line for cmp in comp_op):
                 line = line.strip()
                 match = re.search(r'(?P<type>\w*)\s*\(\s*(?P<cond>.*)\s*\).*', line)
@@ -251,15 +254,61 @@ def comparison_floating(pinst):
                 if match.group('type') in condition_st:
                     res = re.search(r"(\w*\(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*\).*)", line)
                     if res:
-                        pass
+                        at = which_type(res.group('a'))
+                        bt = which_type(res.group('b'))
+                        if at is 3:
+                            print "Shit Happens!" + res.group('a')
+                        elif at is 0:
+                            print func.vars, res.group('a')
+                            at = func.vars.get(res.group('a'))[0]
+                            if at is None:
+                                print "Sucks!" + res.group('a')
+                        if bt is 3:
+                            print "Shit Happens!" + res.group('b')
+                        elif bt is 0:
+                            print func.vars, res.group('b')
+                            bt = func.vars.get(res.group('b'))[0]
+                            if bt is None:
+                                print "Sucks!" + res.group('b')
+                        if at in ['float', 'double'] and bt in ['float', 'double']:
+                            result.append(lineno)
                         #print res.group('a'), res.group('b')
                 elif match.group('type') in loops:
                     #print match.group('type')
                     cond = match.group('cond').split(';')[1]
                     res = re.search(r"(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*)", cond)
                     if res:
-                        pass
+                        at = which_type(res.group('a'))
+                        bt = which_type(res.group('b'))
+                        if at is 3:
+                            print "Shit Happens!" + res.group('a')
+                        elif at is 0:
+                            print func.vars, res.group('a')
+                            at = func.vars.get(res.group('a'))[0]
+                            if at is None:
+                                print "Sucks!" + res.group('a')
+                        if bt is 3:
+                            print "Shit Happens!" + res.group('b')
+                        elif bt is 0:
+                            print func.vars, res.group('b')
+                            bt = func.vars.get(res.group('b'))[0]
+                            if bt is None:
+                                print "Sucks!" + res.group('b')
+                        if at in ['float', 'double'] and bt in ['float', 'double']:
+                            result.append(lineno)
                         #print res.group('a'), res.group('b')
+    return result
+
+def which_type(val):
+    ''''''
+    if '.' in val:
+        return 'float' 
+    try:
+        int(val)
+        return 'int'
+    except ValueError:
+        return 0
+    return 3
 
 def single_comments(pinst):
     ''''''

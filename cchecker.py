@@ -106,9 +106,8 @@ if __name__ == '__main__':
     opf = open(opn, 'w+')
     vars_dict = helper.parse_vars(pinst)
     assign_list = helper.conditions(pinst)
-    helper.comparison_floating(pinst)
-    helper.parse_comments(pinst)
-    #uncommment the line below to test the parse comment function in helper
+    #uncomment the below line when we starts parsing loop variables
+    #helper.comparison_floating(pinst)
     helper.parse_comments(pinst)
     helper.parse_switch(pinst)
     opf.write("Preprocessors = ")
