@@ -5,6 +5,6 @@ class struct:
         self.text = text
         self.start = lines[0]
         self.end = lines[1]
-
-    def ex():
-        pass
+        self.vars = []
+        self.comments = []
+        self.assignment_in_cond = []
