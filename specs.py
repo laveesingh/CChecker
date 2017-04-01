@@ -179,6 +179,14 @@ def unions(pinst):
 	'''Unions should not be used.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	res = []
+	if not pinst.unions:
+		return
+	for union in pinst.unions:
+		line = union.start
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(22)
 
 def unreachable(pinst):
 	'''There shall not be any unreachable code (code which will not be executed under any circumstances
