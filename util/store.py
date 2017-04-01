@@ -21,10 +21,9 @@ keywords = [
         '#define', '#elif', '#else', '#endif', '#if', '#ifdef', '#ifndef', '#include', '#line', '#pragma', '#undef', 'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else', 'enum', 'extern', 'float', 'for', 'goto', 'if', 'int', 'long', 'register', 'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned', 'void', 'volatile', 'while'
 ]
 
-builtin_datatypes = [ 
-        'int', 'float', 'double', 'char', 'void', 'long long', 'long', 'short', 'bool', 'int8', 'int16' 'int32', 'int64', 'int8_t', 'int16_t' 'int32_t', 'int64_t', 'size_t', 'long int', 'long long int', 'long double', 'long float'
+builtin_datatypes = [
+        'long long int', 'long double', 'long float', 'long long', 'long int', 'int16_t', 'int32_t', 'int64_t', 'double', 'int8_t', 'size_t', 'float', 'short', 'int16', 'int32', 'int64', 'char', 'void', 'long', 'bool', 'int8', 'int'
 ]
-builtin_datatypes.sort(key=len)  # For non-greedy matching for lengthiest patterns first
 
 root = dict()  # Stores major details of program
 functions = dict()
