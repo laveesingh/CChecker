@@ -126,9 +126,7 @@ def is_function(lines, lineno):
 
 def is_global_var(lines, lineno):
     #Unable to identify initialised variables or array definitions 
-    if re.search(r'([^=]=[^=])|(\,)', lines[lineno]):
-        return True  # Assignment operator csv in global scope implies variable occurence
-    regex = r'(\b(' + '|'.join(bd+ed) + ')\*{0,2}\s+)'
+    regex = r'(\b(' + '|'.join(bd+ed) + ')\s+(\w+)'
     if re.search(regex, lines[lineno]):
         return True
     return False
