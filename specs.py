@@ -5,6 +5,8 @@ import util.helper as helper
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
 
+error_dic = {}
+
 num_to_name = {
 	1: 'imp_type_conv',
 	2: 'evaluate_diff_sidewise',
@@ -56,8 +58,11 @@ def assignments_in_conditions(pinst):
 	if not result:
 		print "No violations for check 4 found"
 		return
-	print "Following lines have violated the check 4"
-	print result
+	#print "Following lines have violated the check 4"
+	for line in result:
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(4)
 
 def comparing_floats(pinst):
 	'''Equalities (==) and inequalities (<=, >=) between floating point values are not allowed.'''
@@ -82,8 +87,11 @@ def goto_continue(pinst):
 	if not result:
 		print "No violations for check 8 found"
 		return
-	print "Following lines have violated check 8"
-	print result
+	#print "Following lines have violated check 8"
+	for line in result:
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(8)
 
 def allocs(pinst):
 	'''Dynamic heap memory allocation should not be used. Hence functions such as malloc, calloc, realloc, free should not be used.'''
@@ -93,8 +101,11 @@ def allocs(pinst):
 	if not result:
 		print "No violations for check 9 found"
 		return
-	print "Following lines have violated check 9"
-	print result
+	#print "Following lines have violated check 9"
+	for line in result:
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(9)
 
 def recursion(pinst):
 	'''There should not be any recursion.'''

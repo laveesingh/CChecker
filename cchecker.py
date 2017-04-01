@@ -6,6 +6,8 @@ import util.colors as colors
 from util.store import *
 from util import helper, program
 
+import specs as specmod
+
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
 
@@ -54,7 +56,6 @@ def parse_specs(spec_file, spec_list):
 
 def eval_specs(pinst, specs_list):
     '''This function will accept a list of specification numbers and call the related functions'''
-    import specs as specmod
 
     for spec_no in specs_list:
         fname = specmod.num_to_name[spec_no]
@@ -77,46 +78,65 @@ if __name__ == '__main__':
     pinst = program.program()
     pinst.load_attrs(open(args.file, 'r+'))
     eval_specs(pinst, specs)
-    vars_dict = helper.parse_vars(pinst)
-    assign_list = helper.conditions(pinst)
-    helper.comparison_floating(pinst)
-    helper.parse_comments(pinst)
+    res_dic = specmod.error_dic
     opname = args.file[:-2] + '.OP'
     #if os.path.exists(opname):
     #    oldname = opname
     #    opname = opname + '.temp'
-    opf = open(opname, 'w+')
+    opfile = open(opname, 'w+')
+    lno = 0
+    was_nl = True
+    for lines in open(args.file, 'r').readlines():
+        lno = lno + 1
+        res_line = res_dic.get(lno)
+        if res_line is None:
+            opfile.write(lines)
+            continue
+        if lines.endswith('\n'):
+            lines = lines[:-1]
+            was_nl = True
+        for sp in res_line:
+            nline = "/*This line fails check no %d */" % sp
+            #print nline, lines
+            opfile.write(lines + '        ' + str(nline))
+        if was_nl:
+            opfile.write('\n')
+        #lno = lno + 1
+    #vars_dict = helper.parse_vars(pinst)
+    #assign_list = helper.conditions(pinst)
+    #helper.comparison_floating(pinst)
+    #helper.parse_comments(pinst)
     #uncommment the line below to test the parse comment function in helper
     #helper.parse_comments(pinst)
-    opf.write("Preprocessors = ")
-    for obs in pinst.preprocessors:
-        opf.write(''.join(obs.text))
-    opf.write("\nFunctions = ")
-    for obs in pinst.functions:
-        opf.write(''.join(obs.text))
-        opf.write("Variables = " + str(obs.vars) + "\n")
-        opf.write("Assignment in conditions = " + str(obs.assignments_in_cond) + "\n")
-        opf.write("Comments in fn's = " + str(obs.comments) + "\n")
-    opf.write("\nStruct = ")
-    for obs in pinst.structs:
-        opf.write(''.join(obs.text))
-    opf.write("\nComments = ")
-    for obs in pinst.global_comments:
-        opf.write(''.join(obs.text))
-    opf.write("\nFunctions Proto = ")
-    for obs in pinst.func_prototypes:
-        opf.write(''.join(obs.text))
-    opf.write("\nGlobal Var = ")
-    for obs in pinst.global_vars:
-        opf.write(''.join(obs.text))
-    opf.write("\nUnion = ")
-    for obs in pinst.union:
-        opf.write(obs.text)
-    opf.write("\nUnrecognised = ")
-    for obs in pinst.unrecognized:
-        opf.write(obs)
+    #opf.write("Preprocessors = ")
+    #for obs in pinst.preprocessors:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nFunctions = ")
+    #for obs in pinst.functions:
+    #    opf.write(''.join(obs.text))
+    #    opf.write("Variables = " + str(obs.vars) + "\n")
+    #    opf.write("Assignment in conditions = " + str(obs.assignments_in_cond) + "\n")
+    #    opf.write("Comments in fn's = " + str(obs.comments) + "\n")
+    #opf.write("\nStruct = ")
+    #for obs in pinst.structs:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nComments = ")
+    #for obs in pinst.global_comments:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nFunctions Proto = ")
+    #for obs in pinst.func_prototypes:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nGlobal Var = ")
+    #for obs in pinst.global_vars:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nUnion = ")
+    #for obs in pinst.union:
+    #    opf.write(obs.text)
+    #opf.write("\nUnrecognised = ")
+    #for obs in pinst.unrecognized:
+    #    opf.write(obs)
     #opf.write(resstr)
-    opf.close()
+    opfile.close()
 
     #if oldname and fileEquals(opname, oldname):
     #    pass
