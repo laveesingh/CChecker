@@ -96,7 +96,20 @@ builtin_datatypes = [
         'float',
         'double',
         'char',
-        'void'
+        'void',
+        'long long',
+        'long',
+        'short',
+        'bool',
+        'int8',
+        'int16'
+        'int32',
+        'int64',
+        'int8_t',
+        'int16_t'
+        'int32_t',
+        'int64_t',
+        'size_t',
 ]
 
 extended_datatypes = [
