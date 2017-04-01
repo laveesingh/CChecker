@@ -13,103 +13,16 @@ keywords = None  # list of all keywords
 header = None  # list of all header files
 
 
-header = [
-        'assert'
-        'complex',
-        'ctype',
-        'errno',
-        'fenv',
-        'float',
-        'inttypes',
-        'iso646',
-        'limits',
-        'locale',
-        'math',
-        'setjmp',
-        'signal',
-        'stdalign',
-        'stdarg',
-        'stdatomic',
-        'stdbool',
-        'stddef',
-        'stdint',
-        'stdio',
-        'stdlib',
-        'stdnoreturn',
-        'string',
-        'tgmath',
-        'threads',
-        'time',
-        'uchar',
-        'wchar',
-        'wctype'
+header = [ 
+        'assert' 'complex', 'ctype', 'errno', 'fenv', 'float', 'inttypes', 'iso646', 'limits', 'locale', 'math', 'setjmp', 'signal', 'stdalign', 'stdarg', 'stdatomic', 'stdbool', 'stddef', 'stdint', 'stdio', 'stdlib', 'stdnoreturn', 'string', 'tgmath', 'threads', 'time', 'uchar', 'wchar', 'wctype'
 ]
 
-keywords = [
-        '#define',
-        '#elif',
-        '#else',
-        '#endif',
-        '#if',
-        '#ifdef',
-        '#ifndef',
-        '#include',
-        '#line',
-        '#pragma',
-        '#undef',
-        'auto',
-        'break',
-        'case',
-        'char',
-        'const',
-        'continue',
-        'default',
-        'do',
-        'double',
-        'else',
-        'enum',
-        'extern',
-        'float',
-        'for',
-        'goto',
-        'if',
-        'int',
-        'long',
-        'register',
-        'return',
-        'short',
-        'signed',
-        'sizeof',
-        'static',
-        'struct',
-        'switch',
-        'typedef',
-        'union',
-        'unsigned',
-        'void',
-        'volatile',
-        'while'
+keywords = [ 
+        '#define', '#elif', '#else', '#endif', '#if', '#ifdef', '#ifndef', '#include', '#line', '#pragma', '#undef', 'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else', 'enum', 'extern', 'float', 'for', 'goto', 'if', 'int', 'long', 'register', 'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned', 'void', 'volatile', 'while'
 ]
 
-builtin_datatypes = [
-        'int',
-        'float',
-        'double',
-        'char',
-        'void',
-        'long long',
-        'long',
-        'short',
-        'bool',
-        'int8',
-        'int16'
-        'int32',
-        'int64',
-        'int8_t',
-        'int16_t'
-        'int32_t',
-        'int64_t',
-        'size_t',
+builtin_datatypes = [ 
+        'int', 'float', 'double', 'char', 'void', 'long long', 'long', 'short', 'bool', 'int8', 'int16' 'int32', 'int64', 'int8_t', 'int16_t' 'int32_t', 'int64_t', 'size_t', 'long int', 'long long int', 'long double', 'long float'
 ]
 
 extended_datatypes = [
