@@ -4,6 +4,11 @@ preprocessors, etc.'''
 
 import re
 
+from store import (
+        builtin_datatypes as bd,
+        extended_datatypes as ed
+)
+
 #from . import extents, utilities
 
 def preprocessor(lines, lineno):
@@ -38,7 +43,7 @@ def function(lines, lineno):
 
 
 def global_var(lines, lineno):
-	return lineno
+    return lineno
 
 def func_proto(lines, lineno):
     '''
@@ -68,30 +73,30 @@ def struct(lines, lineno):
     #print no_of_cbraces, lines[lineno]
 
 def global_comments(lines, lineno):
-	''''''
-	if lines[lineno].startswith('//'):
-		return lineno
+    ''''''
+    if lines[lineno].startswith('//'):
+        return lineno
 
-	elif lines[lineno].startswith('/*'):
-	    for i in xrange(lineno, len(lines)):
-	        if '*/' in lines[i]:
-	            return i
-	    return len(lines)-1  # This won't have to execute		
+    elif lines[lineno].startswith('/*'):
+        for i in xrange(lineno, len(lines)):
+            if '*/' in lines[i]:
+                return i
+        return len(lines)-1  # This won't have to execute        
 
-	return lineno
+    return lineno
 
 def is_preprocessor(lines, lineno):
-	'''
-		For this line to be a preprocessor, it has to follow the pattern:
-	    >>> #include something
-	    >>> #define something
-	    or some other preprocessor
-	'''
-	#TODO: improve this regex
-	regex = r'\#((include)|(define)).*'
-	if re.search(regex, lines[lineno]):
-	    return True
-	return False
+    '''
+        For this line to be a preprocessor, it has to follow the pattern:
+        >>> #include something
+        >>> #define something
+        or some other preprocessor
+    '''
+    #TODO: improve this regex
+    regex = r'\#((include)|(define)).*'
+    if re.search(regex, lines[lineno]):
+        return True
+    return False
 
 def is_function(lines, lineno):
     '''
@@ -121,7 +126,7 @@ def is_function(lines, lineno):
 
 def is_global_var(lines, lineno):
     #Unable to identify initialised variables or array definitions 
-    regex = r'((const)|(static))?\s*((void)|(int)|(float)|(char))\s*(?P<name>(\w+)\s*\,?)\s*;'
+    regex = r'(\b(' + '|'.join(bd+ed) + ')\s+(\w+)'
     if re.search(regex, lines[lineno]):
         return True
     return False
@@ -173,7 +178,7 @@ def is_global_comments(lines, lineno):
         But here we're looking, if line starts with comment
 
         Multiline comment: /* ... */ type
-    '''	
+    '''    
     return lines[lineno].startswith('//') or lines[lineno].startswith('/*')
 
 def is_union(lines, lineno):

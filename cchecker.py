@@ -71,8 +71,10 @@ if __name__ == '__main__':
     pinst.load_attrs(open(args.file, 'r+'))
     vars_dict = helper.parse_vars(pinst)
     print "Variables dictionary is:", vars_dict
-    retv = helper.conditions(pinst)
-    print retv
+    assign_list = helper.conditions(pinst)
+    print "Assignment consitions list is:"
+    for line in assign_list:
+        print line
     opname = args.file[:-2] + '.OP'
     #if os.path.exists(opname):
     #    oldname = opname
