@@ -94,7 +94,7 @@ def allocs(pinst):
 		print "No violations for check 9 found"
 		return
 	print "Following lines have violated check 9"
-	pirnt result
+	print result
 
 def recursion(pinst):
 	'''There should not be any recursion.'''
