@@ -212,6 +212,6 @@ class program:
  			text = self.lines[lineno : endline + 1]
 			sclass = union.union(text, [lineno, endline])
 			self.unions.append(sclass)
-			return True, lineno
+			return True, endline
 		return False, lineno
 
