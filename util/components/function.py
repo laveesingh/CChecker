@@ -10,6 +10,7 @@ class function:
         self.vars = None
         self.comments = {}
         self.assignments_in_cond = []
+        self.switch=None
 
     def __eq__(self, other):
         first = self.name == other.name

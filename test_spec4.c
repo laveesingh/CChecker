@@ -1,6 +1,11 @@
 #include<stdio.h>
 int main()
 {
+	switch(1)
+	{
+		case 1: break;
+		case 2:break;
+	}
 	int a;
 	int *c;
 	int b=0;

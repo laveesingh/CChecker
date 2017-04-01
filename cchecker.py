@@ -110,6 +110,7 @@ if __name__ == '__main__':
     helper.parse_comments(pinst)
     #uncommment the line below to test the parse comment function in helper
     helper.parse_comments(pinst)
+    helper.parse_switch(pinst)
     opf.write("Preprocessors = ")
     for obs in pinst.preprocessors:
         opf.write(''.join(obs.text))
