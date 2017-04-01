@@ -2,7 +2,7 @@
 class struct:
 
     def __init__(self, text, lines):
-        self.text = ''.join(text)
+        self.text = text
         self.start = lines[0]
         self.end = lines[1]
 
