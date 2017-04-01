@@ -55,6 +55,7 @@ def assignments_in_conditions(pinst):
 	result = helper.conditions(pinst)
 	if not result:
 		print "No violations for check 4 found"
+		return
 	print "Following lines have violated the check 4"
 	print result
 

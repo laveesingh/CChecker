@@ -50,17 +50,18 @@ def conditions(pinst):
             st += 1
             line = line.strip()
             #res.append(line)
-            match = re.search(r'(?P<type>\w*)\s*\(\s*(?P<cond>.*)\s*\).*', line)
+            match = re.search(r'(?P<type>\w*)\s*\(\s*(?P<cond>[\w\*\\+-=]*)\s*\).*', line)
             if not match:
                 continue
             if match.group('type') in condition_st or match.group('type') in loops:
+                ct = None
                 if match.group('type') in condition_st:
                     ct = match.group('cond')
                 elif match.group('type') == 'for':
                     ct = match.group('cond').split(';')[1]  # for loop only
-                if re.search(r'[\w ]+=[\w ]+', ct):
-                    res.append(st) #exists
-                    continue
+                if ct and re.search(r'[\w ]+=[\w ]+', ct):
+                    print ct
+                    res.append(st+1) #exists
     return res
 
 def parse_comments(pinst):
