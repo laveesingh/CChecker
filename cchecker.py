@@ -5,9 +5,7 @@ import sys
 import specs
 import util.colors as colors
 from util.store import *
-from util import program
-
-from util.helper import *
+from util import helper, program
 
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
@@ -71,8 +69,10 @@ if __name__ == '__main__':
     specs = parse_specs(args.spec)
     pinst = program.program()
     pinst.load_attrs(open(args.file, 'r+'))
-    vars_dict = parse_vars(pinst)
+    vars_dict = helper.parse_vars(pinst)
     print "Variables dictionary is:", vars_dict
+    retv = helper.conditions(pinst)
+    print retv
     opname = args.file[:-2] + '.OP'
     #if os.path.exists(opname):
     #    oldname = opname
@@ -80,22 +80,22 @@ if __name__ == '__main__':
     opf = open(opname, 'w+')
     opf.write("Preprocessors = ")
     for obs in pinst.preprocessors:
-        opf.write(obs.text)
+        opf.write(''.join(obs.text))
     opf.write("\nFunctions = ")
     for obs in pinst.functions:
-        opf.write(obs.text)
+        opf.write(''.join(obs.text))
     opf.write("\nStruct = ")
     for obs in pinst.structs:
-        opf.write(obs.text)
+        opf.write(''.join(obs.text))
     opf.write("\nComments = ")
     for obs in pinst.global_comments:
-        opf.write(obs.text)
+        opf.write(''.join(obs.text))
     opf.write("\nFunctions Proto = ")
     for obs in pinst.func_prototypes:
-        opf.write(obs.text)
+        opf.write(''.join(obs.text))
     opf.write("\nGlobal Var = ")
     for obs in pinst.global_vars:
-        opf.write(obs.text)
+        opf.write(''.join(obs.text))
     opf.write("\nUnrecognised = ")
     for obs in pinst.unrecognized:
         opf.write(obs)

@@ -3,7 +3,6 @@ from store import (
     builtin_datatypes as bd,
     extended_datatypes as ed
 )
-import utilities
 
 def parse_vars(program_instance):
     '''
@@ -33,3 +32,28 @@ def parse_vars(program_instance):
                     match = re.search(pat, declaration)
                     vars_dict[match.group('name')] = dtype
     return vars_dict
+
+condition_st = ('if', 'else if')
+loops = ('for', 'while')
+
+def conditions(pinst):
+	''''''
+	res = []
+	for func in pinst.functions:
+		textlines = func.text
+		for line in textlines:
+			line = line.strip()
+			#res.append(line)
+			match = re.search(r'(?P<type>\w*)\((?P<cond>.*)\)', line)
+			if not match:
+				continue
+			if match.group('type') in condition_st or match.group('type') in loops:
+				if match.group('type') in condition_st:
+					ct = match.group('cond')
+				elif match.group('type') in loops:
+					ct = match.group('cond').split(';')[1]
+				if re.search(r'[\w ]*=[\w ]*', ct):
+					res.append((line, 0)) #exists
+					continue
+			res.append((line, 1))
+	return res
