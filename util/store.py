@@ -25,10 +25,6 @@ builtin_datatypes = [
         'int', 'float', 'double', 'char', 'void', 'long long', 'long', 'short', 'bool', 'int8', 'int16' 'int32', 'int64', 'int8_t', 'int16_t' 'int32_t', 'int64_t', 'size_t', 'long int', 'long long int', 'long double', 'long float'
 ]
 
-extended_datatypes = [
-        'unsigned int',
-        ]  # TODO: More to be added
-
 root = dict()  # Stores major details of program
 functions = dict()
 root['keywords'] = keywords

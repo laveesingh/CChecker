@@ -1,7 +1,6 @@
 import re
 from store import (
-    builtin_datatypes as bd,
-    extended_datatypes as ed
+    builtin_datatypes as bd
 )
 
 def parse_vars(program_instance):
@@ -9,8 +8,8 @@ def parse_vars(program_instance):
     Takes a program instance and returns a dictionary containing all varibles
     along with their datatypes
     '''
-    modifiers = r'(const|auto|static|register|extern|volatile| )*'
-    pattern = r'\W' + modifiers + '(?P<type>(' + '|'.join(bd + ed) + '))\*{0,2}\s+.*?' + modifiers + '(?P<name>\w+)[^\(\)]*$'
+    modifiers = r'(const|auto|static|register|extern|volatile|signed|unsigned )*'
+    pattern = r'\W' + modifiers + '(?P<type>(' + '|'.join(bd) + '))\*{0,2}\s+.*?' + modifiers + '(?P<name>\w+)[^\(\)]*$'
     for function in program_instance.functions:
         vars_dict = {}
         #text_lines = [text_line for text_line in function.text.split('\n') if text_line.strip()]

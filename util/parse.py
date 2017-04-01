@@ -5,8 +5,7 @@ preprocessors, etc.'''
 import re
 
 from store import (
-        builtin_datatypes as bd,
-        extended_datatypes as ed
+        builtin_datatypes as bd
 )
 
 #from . import extents, utilities
@@ -133,7 +132,7 @@ def is_global_var(lines, lineno):
     if '(' in lines[lineno]:
         # Function call of def/decl, make sure to exclude " quoted string
         return False
-    regex = r'\b(' + '|'.join(bd+ed) + ')\W'
+    regex = r'\b(' + '|'.join(bd + ed) + ')\W'
     if re.search(regex, lines[lineno]):
         return True
     return False
