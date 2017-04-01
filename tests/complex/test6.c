@@ -32,7 +32,9 @@ typedef struct st_chunked_encoder_t {
 static void send_chunk(h2o_ostream_t *_self, h2o_req_t *req, h2o_iovec_t *inbufs, size_t inbufcnt, h2o_send_state_t state)
 {
     chunked_encoder_t *self = (void *)_self;
-    h2o_iovec_t *outbufs = alloca(sizeof(h2o_iovec_t) * (inbufcnt + 2));
+    h2o_iovec_t *outbufs = alloca(sizeof(h2o_iovec_t) * (inbufcnt + 2)); // hello\
+	hello\
+	hello
     size_t chunk_size, outbufcnt = 0, i;
 
     /* calc chunk size */

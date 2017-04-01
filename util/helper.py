@@ -63,38 +63,28 @@ def parse_comments(pinst):
     '''
     Takes the programs and it will help in parsing the comments in lines
     '''
+    
     for function in pinst.functions:
-        textlines = function.text
-        for line in textlines:
-            line  = line.strip()
+        i=0
+        text_lines = function.text
+        while i < len(text_lines):
+            #i = i + 1
+            #print str(i),':',line
+            line = text_lines[i]
             if '//' in line:
-                comment_starts = line.find('//')
+                starts = i
+                while line.endswith('\\\n'):
+                    i = i + 1
+                    line = text_lines[i]
+                print text_lines[starts+1:i]
             if '/*' in line:
-                multiline_comment_starts = line.find('/*')
-            
-            print line[comment_starts+2:]
-            print line[multiline_comment_starts+2:]
-            
-            if '/*' in line:
-                starting_multiline_comment =True
-                print line
-            
-            if starting_multiline_comment is True:
-                if line.endswith('*/'):
-                    starting_multiline_comment = True
-                else:
-                    starting_multiline_comment = False
-                print line
-
-            if '//' in line and line.endswith('\\'):
-                present_backslash = True
-            
-            if present_backslash is True:
-                if line.endswith('\\'):
-                    present_backslash = True
-                else:
-                    present_backslash = False
-                print line
+                starts = i
+                #print 'Hey'
+                while '*/' not in line:
+                    i = i + 1 
+                    line = text_lines[i]
+                print text_lines[starts:i+1]
+            i = i + 1
 
 def find_goto(program):
     for function in pinst.functions:
