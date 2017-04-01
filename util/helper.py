@@ -48,21 +48,23 @@ def conditions(pinst):
     res = []
     for func in pinst.functions:
         textlines = func.text
+        st = func.start - 1
         for line in textlines:
+            st += 1
             line = line.strip()
             #res.append(line)
-            match = re.search(r'(?P<type>\w*)\((?P<cond>.*)\)', line)
+            match = re.search(r'(?P<type>\w*)\s*\(\s*(?P<cond>[\w\*\\+-=]*)\s*\).*', line)
             if not match:
                 continue
             if match.group('type') in condition_st or match.group('type') in loops:
+                ct = None
                 if match.group('type') in condition_st:
                     ct = match.group('cond')
                 elif match.group('type') == 'for':
                     ct = match.group('cond').split(';')[1]  # for loop only
-                if re.search(r'[\w ]+=[\w ]+', ct):
-                    func.assignments_in_cond.append(line) #exists
-                    continue
-            res.append((line, 1))
+                if ct and re.search(r'[\w ]+=[\w ]+', ct):
+                    print ct
+                    res.append(st+1) #exists
     return res
 
 def parse_comments(pinst):
@@ -82,31 +84,42 @@ def parse_comments(pinst):
                 while line.endswith('\\\n'):
                     i = i + 1
                     line = text_lines[i]
-                print text_lines[starts+1:i]
+                function.comments.append(text_lines[starts:i+1])
             if '/*' in line:
                 starts = i
                 #print 'Hey'
                 while '*/' not in line:
                     i = i + 1 
                     line = text_lines[i]
-                print text_lines[starts:i+1]
+                function.comments.append(text_lines[starts:i+1])
             i = i + 1
 
-def find_goto(program):
+def find_goto(pinst):
+    ''''''
+    goto_list = []
     for function in pinst.functions:
         textlines = function.text
-        pattern = r'(\W+)|(\b)(goto|continue)(\W+)|(\b)'
+        st = function.start - 1
+        pattern = r'(\W+)(goto|continue)(\b)(' ')?'
         for line in textlines:
+            st += 1
             if re.search(pattern, line):
-                print line
+                goto_list.append(st + 1)
+    return goto_list
 
-def find_dynamic_memory_allocation(program):
+def find_dynamic_memory_allocation(pinst):
+    ''''''
+    dynamic_list = []
     for function in pinst.functions:
         textlines = function.text
-        pattern = r'(\W+)|(\b)(malloc|calloc|realloc|free)(\W+)|(\b)'
+        st = function.start - 1
+        pattern = r'(\W+)(malloc|calloc|realloc|free)(\b)(' ')?'
         for line in textlines:
+            st += 1
+            line = line.strip('\n')
             if re.search(pattern, line):
-                print line
+                dynamic_list.append(st)
+    return dynamic_list
 
 def comparison_floating(pinst):
     ''''''
@@ -117,7 +130,7 @@ def comparison_floating(pinst):
         for line in func.text:
             if any(cmp in line for cmp in comp_op):
                 line = line.strip()
-                match = re.search(r'(?P<type>\w*)\((?P<cond>.*)\)', line)
+                match = re.search(r'(?P<type>\w*)\s*\(\s*(?P<cond>.*)\s*\).*', line)
                 if not match:
                     continue
                 #print line
@@ -127,6 +140,7 @@ def comparison_floating(pinst):
                         pass
                         #print res.group('a'), res.group('b')
                 elif match.group('type') in loops:
+                    #print match.group('type')
                     cond = match.group('cond').split(';')[1]
                     res = re.search(r"(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*)", cond)
                     if res:
