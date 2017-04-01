@@ -30,7 +30,8 @@ int readInt() {
 	return n;
 }
 
-union A{
+union A
+{
 int a;
 };
 

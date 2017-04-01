@@ -6,5 +6,5 @@ class union:
         self.start = lines[0]
         self.end = lines[1]
         self.vars = []
-        self.commnets = []
+        self.comments = []
         self.assignments_in_cond = []
