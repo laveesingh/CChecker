@@ -83,7 +83,7 @@ def goto_continue(pinst):
 		print "No violations for check 8 found"
 		return
 	print "Following lines have violated check 8"
-	pirnt result
+	print result
 
 def allocs(pinst):
 	'''Dynamic heap memory allocation should not be used. Hence functions such as malloc, calloc, realloc, free should not be used.'''
