@@ -124,7 +124,7 @@ def comparison_floating(pinst):
         for line in func.text:
             if any(cmp in line for cmp in comp_op):
                 line = line.strip()
-                match = re.search(r'(?P<type>\w*)\((?P<cond>.*)\)', line)
+                match = re.search(r'(?P<type>\w*)\s*\(\s*(?P<cond>.*)\s*\).*', line)
                 if not match:
                     continue
                 #print line
@@ -134,6 +134,7 @@ def comparison_floating(pinst):
                         pass
                         #print res.group('a'), res.group('b')
                 elif match.group('type') in loops:
+                    #print match.group('type')
                     cond = match.group('cond').split(';')[1]
                     res = re.search(r"(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*)", cond)
                     if res:

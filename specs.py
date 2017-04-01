@@ -53,6 +53,9 @@ def assignments_in_conditions(pinst):
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
 	result = helper.conditions(pinst)
+	if not result:
+		print "No violations for check 4 found"
+	print "Following lines have violated the check 4"
 	print result
 
 def comparing_floats(pinst):
