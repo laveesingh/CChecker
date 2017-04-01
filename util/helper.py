@@ -101,7 +101,7 @@ def find_goto(pinst):
     for function in pinst.functions:
         textlines = function.text
         st = function.start - 1
-        pattern = r'(\W+)(goto|continue)(\b)(' ')?'
+        pattern = r'(\W*)(goto|continue)(\b)(' ')?'
         for line in textlines:
             st += 1
             if re.search(pattern, line):
@@ -114,7 +114,7 @@ def find_dynamic_memory_allocation(pinst):
     for function in pinst.functions:
         textlines = function.text
         st = function.start - 1
-        pattern = r'(\W+)(malloc|calloc|realloc|free)(\b)(' ')?'
+        pattern = r'(\W*)(malloc|calloc|realloc|free)(\b)(' ')?'
         for line in textlines:
             st += 1
             line = line.strip('\n')
