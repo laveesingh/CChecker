@@ -87,7 +87,7 @@ if __name__ == '__main__':
     for obs in pinst.functions:
         opf.write(''.join(obs.text))
         opf.write("Variables = " + str(obs.vars) + "\n")
-        opf.write("Assignment in conditions = " + str(obs.assignments_in_cond))
+        opf.write("Assignment in conditions = " + str(obs.assignments_in_cond) + "\n")
     opf.write("\nStruct = ")
     for obs in pinst.structs:
         opf.write(''.join(obs.text))
