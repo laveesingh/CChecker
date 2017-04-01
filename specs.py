@@ -1,5 +1,7 @@
 import sys
 
+import util.helper as helper
+
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
 
@@ -49,7 +51,8 @@ def bitwise_op(pinst):
 def assignments_in_conditions(pinst):
 	'''Assignment statements in expressions resulting in Boolean value are not allowed. eg: if( b = a)'''
 	func_name = sys._getframe().f_code.co_name
-	print func_name + "Not yet coded!"
+	#print func_name + "Not yet coded!"
+	result = helper.conditions(pinst)
 
 def comparing_floats(pinst):
 	'''Equalities (==) and inequalities (<=, >=) between floating point values are not allowed.'''
