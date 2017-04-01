@@ -87,23 +87,17 @@ def parse_comments(pinst):
 def find_goto(program):
     for function in pinst.functions:
         textlines = function.text
+        pattern = r'(\W+)|(\b)(goto|continue)(\W+)|(\b)'
         for line in textlines:
-            if 'goto' in line:
-                print line
-            if 'continue' in line:
+            if re.search(pattern, line):
                 print line
 
 def find_dynamic_memory_allocation(program):
     for function in pinst.functions:
         textlines = function.text
+        pattern = r'(\W+)|(\b)(malloc|calloc|realloc|free)(\W+)|(\b)'
         for line in textlines:
-            if 'malloc' in line:
-                print line
-            if 'calloc' in line:
-                print line
-            if 'realloc' in line:
-                print line
-            if 'free' in line:
+            if re.search(pattern, line):
                 print line
 
 def comparison_floating(pinst):
