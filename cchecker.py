@@ -102,7 +102,7 @@ if __name__ == '__main__':
         if was_nl:
             opfile.write('\n')
 
-    opn = args.file[:-2] + '.bhosrike'
+    opn = args.file[:-2] + '.opd'
     opf = open(opn, 'w+')
     vars_dict = helper.parse_vars(pinst)
     assign_list = helper.conditions(pinst)
