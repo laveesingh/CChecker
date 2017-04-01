@@ -391,6 +391,10 @@ def if_else(pinst):
     if i > 0:
         print previous_ifs
 
+def is_float(dtype):
+    if 'float' in dtype or 'double' in dtype:
+        return True
+    return False
 
 def check_implicit_type_conversion(pinst):
     lines_list = []
@@ -407,6 +411,9 @@ def check_implicit_type_conversion(pinst):
                             continue
                         type1 = function.vars[match.group('var1')]
                         type2 = function.vars[match.group('var2')]
+                        if match.group('tcast'):
+                            # Type cast is explicit
+                            continue
                         if is_float(type1) or is_float(type2):
                             print "implicite type conversion violated.  line:", statement
     for struct in pinst.structs:
@@ -421,6 +428,9 @@ def check_implicit_type_conversion(pinst):
                             continue
                         type1 = struct.vars[match.group('var1')]
                         type2 = struct.vars[match.group('var2')]
+                        if match.group('tcast'):
+                            # Type cast is explicit
+                            continue
                         if is_float(type1) or is_float(type2):
                             print "implicite type conversion violated.  line:", statement
     for union in pinst.unions:
@@ -435,6 +445,9 @@ def check_implicit_type_conversion(pinst):
                             continue
                         type1 = union.vars[match.group('var1')]
                         type2 = union.vars[match.group('var2')]
+                        if match.group('tcast'):
+                            # Type cast is explicit
+                            continue
                         if is_float(type1) or is_float(type2):
                             print "implicite type conversion violated.  line:", statement
     # Global vars remaining are remaining 
@@ -449,5 +462,58 @@ def check_implicit_type_conversion(pinst):
                         continue
                     type1 = pinst.global_vars_dict[match.group('var1')]
                     type2 = pinst.global_vars_dict[match.group('var2')]
+                    if match.group('tcast'):
+                        # Type cast is explicit
+                        continue
                     if is_float(type1) or is_float(type2):
                         print "implicite type conversion violated.  line:", statement
+
+def check_initialized_variable(pinst):
+    pat = r'.*(?<var1>\w+)\W*= (?<rhs>.*)'  #This pattern may malfunction
+    for function in pinst.functions:
+        initialized = {}
+        for gvar in pinst.global_vars_dict:
+            initialized[gvar] = True
+        for line in function.text:
+            if is_assignment(line):
+                statements = line.split(',')
+                for statement in statements:
+                    if is_assignment(statement):
+                        match = re.search(pat, statement)
+                        varname = match.group('var1')
+                        initialized[varname] = True
+                        rhs = match.group('rhs')
+                        words = re.findall(r'\w+', rhs)
+                        for word in words:
+                            if word in function.vars and not initialized.get(word):
+                                print "Suspicious initialization statement:",statement
+    for struct in pinst.structs:
+        initialized = {}
+        for line in struct.text:
+            if is_assignment(line):
+                statements = line.split(',')
+                for statement in statements:
+                    if is_assignment(statement):
+                        match = re.search(pat, statement)
+                        varname = match.group('var1')
+                        initialized[varname] = True
+                        rhs = match.group('rhs')
+                        words = re.findall(r'\w+', rhs)
+                        for word in words:
+                            if word in struct.vars and not initialized.get(word):
+                                print "Suspicious initialization statement:",statement
+    for union in pinst.unions:
+        initialized = {}
+        for line in union.text:
+            if is_assignment(line):
+                statements = line.split(',')
+                for statement in statements:
+                    if is_assignment(statement):
+                        match = re.search(pat, statement)
+                        varname = match.group('var1')
+                        initialized[varname] = True
+                        rhs = match.group('rhs')
+                        words = re.findall(r'\w+', rhs)
+                        for word in words:
+                            if word in union.vars and not initialized.get(word):
+                                print "Suspicious initialization statement:",statement
