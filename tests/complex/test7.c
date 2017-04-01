@@ -9,6 +9,9 @@
 #define BUF 4096
 char ibuf[BUF];
 int ipt, i, i;
+//hello\
+hello\
+hello
 
 int readInt() {
 	while (ipt < BUF && ibuf[ipt] < '0') ipt++;

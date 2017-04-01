@@ -75,6 +75,8 @@ def struct(lines, lineno):
 def global_comments(lines, lineno):
     ''''''
     if lines[lineno].startswith('//'):
+        while lines[lineno].endswith('\\\n'):
+            lineno = lineno + 1
         return lineno
 
     elif lines[lineno].startswith('/*'):

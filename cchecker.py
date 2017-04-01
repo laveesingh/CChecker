@@ -70,16 +70,14 @@ if __name__ == '__main__':
     pinst = program.program()
     pinst.load_attrs(open(args.file, 'r+'))
     vars_dict = helper.parse_vars(pinst)
-    print "Variables dictionary is:", vars_dict
     assign_list = helper.conditions(pinst)
-    print "Assignment consitions list is:"
-    for line in assign_list:
-        print line
     opname = args.file[:-2] + '.OP'
     #if os.path.exists(opname):
     #    oldname = opname
     #    opname = opname + '.temp'
     opf = open(opname, 'w+')
+    #uncommment the line below to test the parse comment function in helper
+    #helper.parse_comments(pinst)
     opf.write("Preprocessors = ")
     for obs in pinst.preprocessors:
         opf.write(''.join(obs.text))
