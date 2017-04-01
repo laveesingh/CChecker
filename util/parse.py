@@ -132,7 +132,7 @@ def is_global_var(lines, lineno):
     if '(' in lines[lineno]:
         # Function call of def/decl, make sure to exclude " quoted string
         return False
-    regex = r'\b(' + '|'.join(bd + ed) + ')\W'
+    regex = r'\b(' + '|'.join(bd) + ')\W'
     if re.search(regex, lines[lineno]):
         return True
     return False
