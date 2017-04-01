@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+int a, b=1, *c=10;
+
 int main(void){
   int a = 10, j=9;
   char ch = 'b';
