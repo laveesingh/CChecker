@@ -67,6 +67,13 @@ def comparing_floats(pinst):
 	'''Equalities (==) and inequalities (<=, >=) between floating point values are not allowed.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	res = helper.comparison_floating(pinst)
+	if not res:
+		return
+	for line in res:
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(5)
 
 def gvar_as_fnpar(pinst):
 	'''Global variables are not allowed as function parameters.'''

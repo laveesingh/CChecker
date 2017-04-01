@@ -271,7 +271,7 @@ def comparison_floating(pinst):
                             if bt is None:
                                 print "Sucks!" + res.group('b')
                         if at in ['float', 'double'] and bt in ['float', 'double']:
-                            result.append(lineno)
+                            result.append(lineno+1)
                         #print res.group('a'), res.group('b')
                 elif match.group('type') in loops:
                     #print match.group('type')
@@ -295,7 +295,7 @@ def comparison_floating(pinst):
                             if bt is None:
                                 print "Sucks!" + res.group('b')
                         if at in ['float', 'double'] and bt in ['float', 'double']:
-                            result.append(lineno)
+                            result.append(lineno+1)
                         #print res.group('a'), res.group('b')
     return result
 
