@@ -314,3 +314,23 @@ def parse_switch(pinst):
 				index = index + 1
 				pass
 
+def if_else(pinst):
+    if_pattern = r'(\W*)(if)(\b)(\W*)'
+    else_if_pattern = r'(\W*)(else if)(\b)(\W*)'
+    else_pattern = r'(\W*)(else)(\b)(\W*)'
+    i = 0
+    previous_ifs = ''
+    for function in pinst.functions:
+        for line in function.text:
+            if re.search(else_if_pattern, line):
+                continue
+            if re.search(if_pattern, line):
+                if i > 1:
+                    print previous_ifs
+                    i = 0
+                previous_ifs = line
+                i += 1
+            if re.search(else_pattern, line):
+                i -= 1
+    if i > 0:
+        print previous_ifs
