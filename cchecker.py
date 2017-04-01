@@ -96,7 +96,7 @@ if __name__ == '__main__':
             lines = lines[:-1]
             was_nl = True
         for sp in res_line:
-            nline = "/*This line fails check no %d */" % sp
+            nline = "/*This line fails check no " + str(res_line) + " */"
             #print nline, lines
             opfile.write(lines + '        ' + str(nline))
         if was_nl:
