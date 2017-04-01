@@ -119,7 +119,7 @@ def find_dynamic_memory_allocation(pinst):
             st += 1
             line = line.strip('\n')
             if re.search(pattern, line):
-                dynamic_list.append(st)
+                dynamic_list.append(st+1)
     return dynamic_list
 
 def comparison_floating(pinst):
