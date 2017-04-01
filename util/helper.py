@@ -247,12 +247,12 @@ def comparison_floating(pinst):
             lineno += 1
             if any(cmp in line for cmp in comp_op):
                 line = line.strip()
-                match = re.search(r'(?P<type>\w*)\s*\(\s*(?P<cond>.*)\s*\).*', line)
+                match = re.search(r'(?P<type>\w+)\s*\(\s*(?P<cond>.+)\s*\).*', line)
                 if not match:
                     continue
                 #print line
                 if match.group('type') in condition_st:
-                    res = re.search(r"(\w*\(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*\).*)", line)
+                    res = re.search(r"(\w*\(\s*(?P<a>[\w\*\\+-]+)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]+)\s*\).*)", line)
                     if res:
                         at = which_type(res.group('a'))
                         bt = which_type(res.group('b'))
@@ -276,7 +276,7 @@ def comparison_floating(pinst):
                 elif match.group('type') in loops:
                     #print match.group('type')
                     cond = match.group('cond').split(';')[1]
-                    res = re.search(r"(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*)", cond)
+                    res = re.search(r"(\s*(?P<a>[\w\*\\+-]+)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s+)", cond)
                     if res:
                         at = which_type(res.group('a'))
                         bt = which_type(res.group('b'))
@@ -549,3 +549,21 @@ def function_declaration(pinst):
             else:
                 print 'NO'
                 break
+
+def is_assignment(line):
+    '''
+    checkes if given line is assignment of some kind
+    '''
+    pass
+
+def bitwise_op(pinst):
+    ''''''
+    bit_op = ['&', '|', '^', '~', '<<', '>>']
+    re1 = r'((?P<first>[\w\*\\\(\)+-]+)\s*((&)|(\|)|(\^))\s*(?P<second>[\w\*\\\(\)+-]+))'
+    re2 = r'\s*(~)\s*(?P<var>[\w\*\\\(\)+-]+)'
+    re3 = r'((?P<first>[\w\*\\\(\)+-]+)\s*((>>)|(<<))\s*(?P<second>[\w\*\\\(\)+-]+))'
+    result = []
+    for fun in pinst.functions:
+        st = fun.start - 1
+        for line in fun.text:
+            st += 1
