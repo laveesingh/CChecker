@@ -24,6 +24,7 @@ class program:
 		self.preprocessors = []
 		self.structs = []
 		self.global_vars = []
+                self.global_vars_dict = {}
 		self.func_prototypes = []
 		self.global_comments = []
 		self.lines = []

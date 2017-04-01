@@ -109,6 +109,40 @@ def parse_union_vars(program_instance):
         union.vars = vars_dict
 
 
+def parse_global_vars(program_instance):
+    '''
+    Takes a program instance and returns a dictionary containing all varibles
+    within all structures along with their datatypes
+    '''
+    modifiers = r'(?P<mod>(const|auto|static|register|extern|volatile|signed|unsigned| )*)'
+    fpattern = r'' + modifiers + '\s+(?P<type>' 
+    spattern = ')\*{0,2}\s+.*?(?P<name>\w+)'
+    vars_dict = {}
+    for statement in program_instance.global_vars:
+        match = None
+        for pos_dtype in bd:
+            pattern = fpattern + pos_dtype + spattern
+            match = re.search(pattern, statement)
+            if match:
+                break
+        if not match:
+            continue
+        dtype = match.group('type')
+        varname = match.group('name')
+        unsigned = 0
+        if match.group('mod') is not None and 'unsigned' in match.group('mod'):
+            unsigned = 1
+        vars_dict[varname] = (dtype, unsigned)
+        csv = statement.split(',')[1:]
+        if csv:
+            for declaration in csv:
+                pat = r'(?P<name>\w+).*'
+                match = re.search(pat, declaration)
+                vars_dict[match.group('name')] = (dtype, unsigned)
+    
+    program_instance.global_vars_dict = vars_dict
+
+
 condition_st = ('if', 'else if', 'while')
 loops = ('for')
 
