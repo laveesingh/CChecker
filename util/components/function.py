@@ -8,7 +8,7 @@ class function:
         self.start = lines[0]
         self.end = lines[1]
         self.vars = None
-        self.comments = None
+        self.comments = []
         self.assignments_in_cond = []
 
     def __eq__(self, other):

@@ -79,14 +79,14 @@ def parse_comments(pinst):
                 while line.endswith('\\\n'):
                     i = i + 1
                     line = text_lines[i]
-                print text_lines[starts+1:i]
+                function.comments.append(text_lines[starts:i+1])
             if '/*' in line:
                 starts = i
                 #print 'Hey'
                 while '*/' not in line:
                     i = i + 1 
                     line = text_lines[i]
-                print text_lines[starts:i+1]
+                function.comments.append(text_lines[starts:i+1])
             i = i + 1
 
 def find_goto(program):

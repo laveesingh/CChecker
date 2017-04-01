@@ -74,6 +74,7 @@ if __name__ == '__main__':
     vars_dict = helper.parse_vars(pinst)
     assign_list = helper.conditions(pinst)
     helper.comparison_floating(pinst)
+    helper.parse_comments(pinst)
     opname = args.file[:-2] + '.OP'
     #if os.path.exists(opname):
     #    oldname = opname
@@ -89,6 +90,7 @@ if __name__ == '__main__':
         opf.write(''.join(obs.text))
         opf.write("Variables = " + str(obs.vars) + "\n")
         opf.write("Assignment in conditions = " + str(obs.assignments_in_cond) + "\n")
+        opf.write("Comments in fn's = " + str(obs.comments) + "\n")
     opf.write("\nStruct = ")
     for obs in pinst.structs:
         opf.write(''.join(obs.text))
