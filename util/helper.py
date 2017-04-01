@@ -95,3 +95,25 @@ def parse_comments(pinst):
                 else:
                     present_backslash = False
                 print line
+
+def find_goto(program):
+    for function in pinst.functions:
+        textlines = function.text
+        for line in textlines:
+            if 'goto' in line:
+                print line
+            if 'continue' in line:
+                print line
+
+def find_dynamic_memory_allocation(program):
+    for function in pinst.functions:
+        textlines = function.text
+        for line in textlines:
+            if 'malloc' in line:
+                print line
+            if 'calloc' in line:
+                print line
+            if 'realloc' in line:
+                print line
+            if 'free' in line:
+                print line
