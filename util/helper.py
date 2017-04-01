@@ -57,3 +57,40 @@ def conditions(pinst):
 					continue
 			res.append((line, 1))
 	return res
+
+def parse_comments(pinst):
+    '''
+    Takes the programs and it will help in parsing the comments in lines
+    '''
+    for function in pinst.functions:
+        textlines = function.text
+        for line in textlines:
+            line  = line.strip()
+            if '//' in line:
+                comment_starts = line.find('//')
+            if '/*' in line:
+                multiline_comment_starts = line.find('/*')
+            
+            print line[comment_starts+2:]
+            print line[multiline_comment_starts+2:]
+            
+            if '/*' in line:
+                starting_multiline_comment =True
+                print line
+            
+            if starting_multiline_comment is True:
+                if line.endswith('*/'):
+                    starting_multiline_comment = True
+                else:
+                    starting_multiline_comment = False
+                print line
+
+            if '//' in line and line.endswith('\\'):
+                present_backslash = True
+            
+            if present_backslash is True:
+                if line.endswith('\\'):
+                    present_backslash = True
+                else:
+                    present_backslash = False
+                print line
