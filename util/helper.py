@@ -517,3 +517,35 @@ def check_initialized_variable(pinst):
                         for word in words:
                             if word in union.vars and not initialized.get(word):
                                 print "Suspicious initialization statement:",statement
+
+def function_declaration(pinst):
+    '''
+    prototype
+        >>> rettype funcname(parameter_list);
+    definition
+        >>> rettype func(args){
+            body
+        }
+    '''
+    d = {}
+    for prototype in pinst.func_prototypes:
+        for line in prototype.text:
+            d[line.strip()] = prototype.start
+    # print d
+    string = ''
+    for function in pinst.functions:
+        for line in function.text:
+            line = line.strip()
+            string += ' '
+            string += line
+        for key, value in d.items():
+            if string.find(key):
+                if value < function.start:
+                    print 'YES'
+
+                else:
+                    print 'NO'
+                    break
+            else:
+                print 'NO'
+                break
