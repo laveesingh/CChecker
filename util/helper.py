@@ -12,14 +12,17 @@ def parse_vars(program_instance):
     pattern = r'\W(?P<type>(' + '|'.join(bd + ed) + '))\*{0,2}\s+.*?(?P<name>\w+)'
     vars_dict = {}
     for function in program_instance.functions:
+        vars_dict = {}
         #text_lines = [text_line for text_line in function.text.split('\n') if text_line.strip()]
-        text_lines = function.text
-        for text_line in text_lines:
+        for text_line in function.text:
+            #print "text line:",text_line
             match = re.search(pattern, text_line)
             if not match:
+                #print "Match not found"
                 continue
             dtype = match.group('type')
             varname = match.group('name')
+            #print "First var,dtype",varname,dtype
             vars_dict[varname] = dtype
             csv = text_line.split(',')[1:]
             if csv:
@@ -27,7 +30,7 @@ def parse_vars(program_instance):
                     pat = r'(?P<name>\w+).*'
                     match = re.search(pat, declaration)
                     vars_dict[match.group('name')] = dtype
-    return vars_dict
+            function.vars = vars_dict
 
 condition_st = ('if', 'else if')
 loops = ('for', 'while')

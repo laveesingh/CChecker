@@ -7,6 +7,8 @@ class function:
         self.text = text
         self.start = lines[0]
         self.end = lines[1]
+        self.vars = None
+        self.comments = None
 
     def __eq__(self, other):
         first = self.name == other.name
