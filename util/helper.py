@@ -8,9 +8,9 @@ def parse_vars(program_instance):
     Takes a program instance and returns a dictionary containing all varibles
     along with their datatypes
     '''
-    modifiers = r'(const|auto|static|register|extern|volatile|signed|unsigned )*'
-    fpattern = r'\W' + modifiers + '(?P<type>'
-    spattern = ')\*{0,2}\s+.*?' + modifiers + '(?P<name>\w+)[^\(\)]*$'
+    modifiers = r'(?P<mod>(const|auto|static|register|extern|volatile|signed|unsigned| )*)'
+    fpattern = r'' + modifiers + '\s+(?P<type>' 
+    spattern = ')\*{0,2}\s+.*?(?P<name>\w+)'
     for function in program_instance.functions:
         vars_dict = {}
         #text_lines = [text_line for text_line in function.text.split('\n') if text_line.strip()]
@@ -28,13 +28,16 @@ def parse_vars(program_instance):
             dtype = match.group('type')
             varname = match.group('name')
             #print "First var,dtype",varname,dtype
-            vars_dict[varname] = dtype
+            unsigned = 0
+            if match.group('mod') is not None and 'unsigned' in match.group('mod'):
+                unsigned = 1
+            vars_dict[varname] = (dtype, unsigned) # unsigned is 1 if dtype is unsigned, 0 otherwise
             csv = text_line.split(',')[1:]
             if csv:
                 for declaration in csv:
                     pat = r'(?P<name>\w+).*'
                     match = re.search(pat, declaration)
-                    vars_dict[match.group('name')] = dtype
+                    vars_dict[match.group('name')] = (dtype, unsigned)
         function.vars = vars_dict
 
 condition_st = ('if', 'else if', 'while')
