@@ -9,7 +9,7 @@ def parse_vars(program_instance):
     Takes a program instance and returns a dictionary containing all varibles
     along with their datatypes
     '''
-    pattern = r'(?P<type>(' + '|'.join(bd + ed) + ')\s*\*{0,2}\s*)(?P<name>\w+)'
+    pattern = r'\W(?P<type>(' + '|'.join(bd + ed) + '))\*{0,2}\s+.*?(?P<name>\w+)'
     print "The pattern is ",pattern
     vars_dict = {}
     for function in program_instance.functions:
