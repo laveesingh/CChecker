@@ -54,7 +54,7 @@ def conditions(pinst):
             line = line.strip()
             #res.append(line)
             #match = re.search(r'(?P<type>\w*)\s*\(\s*(?P<cond>[\w\*\\+-=]*)\s*\).*', line)
-            match = re.search(r'(?P<type>\w*)\s*\((?P<cond>.*?)\).*', line)
+            match = re.search(r'(?P<type>\w*)\s*\((?P<cond>.*?)\)', line)
             if not match:
                 continue
             if match.group('type') in condition_st or match.group('type') in loops:
