@@ -41,13 +41,13 @@ def parse_specs(spec_file, spec_list):
     if spec_file == 'all':
         name = [x for x in range(1,26)]
     else:
-        lines = open(spec_file, 'r+').read()
+        lines = [line for line in open(spec_file, 'r+').read().split('\n') if line.strip()]
         for line in lines:
             # We have assumed the current spec file to be like a spec number per line
             # though we can and we need to make this parser more smart and decide on
             # various formats which can be there
             try:
-                name.append(list(map(int,line.split(' '))))
+                name.extend(map(int,line.split()))
             except ValueError:
                 raise Exception("Unable to parse specification file due to its invalid bad format")
     return name

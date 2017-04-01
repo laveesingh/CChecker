@@ -64,7 +64,6 @@ def conditions(pinst):
                 elif match.group('type') == 'for':
                     ct = match.group('cond').split(';')[1]  # for loop only
                 if ct and re.search(r'[\w ]+=[\w ]+', ct):
-                    print ct
                     res.append(st+1) #exists
     return res
 
