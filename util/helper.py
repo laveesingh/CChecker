@@ -96,25 +96,27 @@ def find_goto(pinst):
     goto_list = []
     for function in pinst.functions:
         textlines = function.text
+        st = function.start - 1
         pattern = r'(\W+)(goto|continue)(\b)(' ')?'
         for line in textlines:
+            st += 1
             if re.search(pattern, line):
-                goto_list.append(line)
-    for i in goto_list:
-        print i,
+                goto_list.append(st + 1)
+    return goto_list
 
 def find_dynamic_memory_allocation(pinst):
     ''''''
     dynamic_list = []
     for function in pinst.functions:
         textlines = function.text
+        st = function.start - 1
         pattern = r'(\W+)(malloc|calloc|realloc|free)(\b)(' ')?'
         for line in textlines:
+            st += 1
             line = line.strip('\n')
             if re.search(pattern, line):
-                dynamic_list.append(line)
-    for i in dynamic_list:
-        print i,
+                dynamic_list.append(st)
+    return dynamic_list
 
 def comparison_floating(pinst):
     ''''''

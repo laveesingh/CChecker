@@ -78,11 +78,23 @@ def goto_continue(pinst):
 	'''goto and continue statements should not be used.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	result = helper.find_goto(pinst)
+	if not result:
+		print "No violations for check 8 found"
+		return
+	print "Following lines have violated check 8"
+	pirnt result
 
 def allocs(pinst):
 	'''Dynamic heap memory allocation should not be used. Hence functions such as malloc, calloc, realloc, free should not be used.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	result = helper.find_dynamic_memory_allocation(pinst)
+	if not result:
+		print "No violations for check 9 found"
+		return
+	print "Following lines have violated check 9"
+	pirnt result
 
 def recursion(pinst):
 	'''There should not be any recursion.'''
