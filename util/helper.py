@@ -90,21 +90,30 @@ def parse_comments(pinst):
                 function.comments.append(text_lines[starts:i+1])
             i = i + 1
 
-def find_goto(program):
+def find_goto(pinst):
+    ''''''
+    goto_list = []
     for function in pinst.functions:
         textlines = function.text
-        pattern = r'(\W+)|(\b)(goto|continue)(\W+)|(\b)'
+        pattern = r'(\W+)(goto|continue)(\b)(' ')?'
         for line in textlines:
             if re.search(pattern, line):
-                print line
+                goto_list.append(line)
+    for i in goto_list:
+        print i,
 
-def find_dynamic_memory_allocation(program):
+def find_dynamic_memory_allocation(pinst):
+    ''''''
+    dynamic_list = []
     for function in pinst.functions:
         textlines = function.text
-        pattern = r'(\W+)|(\b)(malloc|calloc|realloc|free)(\W+)|(\b)'
+        pattern = r'(\W+)(malloc|calloc|realloc|free)(\b)(' ')?'
         for line in textlines:
+            line = line.strip('\n')
             if re.search(pattern, line):
-                print line
+                dynamic_list.append(line)
+    for i in dynamic_list:
+        print i,
 
 def comparison_floating(pinst):
     ''''''
