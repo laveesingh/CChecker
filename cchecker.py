@@ -2,7 +2,6 @@ import argparse
 import os
 import sys
 
-import specs
 import util.colors as colors
 from util.store import *
 from util import helper, program
@@ -33,9 +32,9 @@ def parse_specs(spec_file):
     '''This function will parse the spec file and return a list of
     check numbers which are required to perform.'''
 
-    specs = []
+    name = []
     if spec_file == 'all':
-        specs = [x for x in range(1,26)]
+        name = [x for x in range(1,26)]
     else:
         lines = open(spec_file, 'r+').read()
         for line in lines:
@@ -43,19 +42,21 @@ def parse_specs(spec_file):
             # though we can and we need to make this parser more smart and decide on
             # various formats which can be there
             try:
-                specs.append(list(map(int,line.split(' '))))
+                name.append(list(map(int,line.split(' '))))
             except ValueError:
                 raise Exception("Unable to parse specification file due to its invalid bad format")
-    return specs
+    return name
 
 def eval_specs(pinst, specs_list):
     '''This function will accept a list of specification numbers and call the related functions'''
+    import specs as specmod
+
     for spec_no in specs_list:
-        fname = specs.num_to_name[spec_no]
+        fname = specmod.num_to_name[spec_no]
         try:
-            getattr(specs, fname)(pinst)
+            getattr(specmod, fname)(pinst)
         except AttributeError:
-            raise Exception("The source code sucks")
+            raise #Exception("The source code sucks")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

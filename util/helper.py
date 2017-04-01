@@ -115,12 +115,12 @@ def comparison_floating(pinst):
                 if match.group('type') in condition_st:
                     res = re.search(r"(\w*\(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*\).*)", line)
                     if res:
-                        print res.group('a'), res.group('b')
+                        #print res.group('a'), res.group('b')
                 elif match.group('type') in loops:
                     cond = match.group('cond').split(';')[1]
                     res = re.search(r"(\s*(?P<a>[\w\*\\+-]*)\s*((>=)|(>)|(<)|(<=)|(==)|(!=))\s*(?P<b>[\w\*\\+-]*)\s*)", cond)
                     if res:
-                        print res.group('a'), res.group('b')
+                        #print res.group('a'), res.group('b')
                 
 
 
