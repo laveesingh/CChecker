@@ -1,0 +1,15 @@
+Preprocessors = #include <stdio.h>
+
+Functions = int main(void){
+
+  int a, b = 10;
+
+  printf("This is the assignment statement we were talking about\n");
+
+}
+
+Struct = 
+Comments = 
+Functions Proto = 
+Global Var = 
+Unrecognised = 
