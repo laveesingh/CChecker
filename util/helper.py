@@ -336,41 +336,38 @@ def is_switch(line):
 	res = re.search(r'(;)?switch(.*).*',line)
 	if res : 
 		return True
-	else :
-		return False
+	return False
 
 def parse_switch(pinst):
-	for func in pinst.functions:
-		line_text=func.text
-		index=0
-		while index < len(line_text):
-			if(is_switch(line_text[index])):
-				starts=index
-				no_of_cbraces = 0
-				if '{' in line_text[index]:
-					no_of_cbraces = 1
-					index = index + 1
-				else:
-					index = index + 1
-				while True:
-					no_of_cbraces += line_text[index].count('{')
-					no_of_cbraces -= line_text[index].count('}')
-					if no_of_cbraces == 0 or index == len(line_text) - 1:
-						ends = index
-						break;
-					index = index + 1
-				text=''.join(line_text[starts:ends+1])
-				match = re.search(r'\((?P<cond>.*)\)', text)
-				if('default' in text): 
-					state=1;
-				else:
-					state=0
-				func.switch=(match.group('cond'),state)
-				#print func.switch
-				#print 'Text Switch : ',line_text[starts:ends+1]
-			else:
-				index = index + 1
-				pass
+    result = []
+    for func in pinst.functions:
+        line_text=func.text
+        index=0
+        while index < len(line_text):
+            if is_switch(line_text[index]):
+                starts=index
+                no_of_cbraces = 0
+                if '{' in line_text[index]:
+                    no_of_cbraces = 1
+                index += 1
+                while True:
+                    no_of_cbraces += line_text[index].count('{')
+                    no_of_cbraces -= line_text[index].count('}')
+                    if no_of_cbraces == 0 or index == len(line_text) - 1:
+                        ends = index
+                        break
+                    index += 1
+                    text=''.join(line_text[starts:ends+1])
+                    #match = re.search(r'\((?P<cond>.*)\)', text)
+                    if 'default' not in text:
+                        result.append(starts)
+                    #func.switch=(match.group('cond'),state)
+                    #print func.switch
+                    #print 'Text Switch : ',line_text[starts:ends+1]
+            else:
+                index += 1
+                pass
+    return result
 
 def if_else(pinst):
     if_pattern = r'(\W*)(if)(\b)(\W*)'
