@@ -146,6 +146,16 @@ def comparison_floating(pinst):
                     if res:
                         pass
                         #print res.group('a'), res.group('b')
+
+def single_comments(pinst):
+    ''''''
+    res = []
+    for comm in pinst.global_comments:
+        text = comm.text.strip()
+        lno = comm.start
+        if text.startswith('//'):
+            res.append()
+
                 
 
 
