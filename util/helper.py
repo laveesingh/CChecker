@@ -10,18 +10,20 @@ def parse_vars(program_instance):
     along with their datatypes
     '''
     modifiers = r'(?P<mod>(const|auto|static|register|extern|volatile|signed|unsigned| )*)'
-    fpattern = r'' + modifiers + '\s+(?P<type>' 
+    fpattern = r'' + modifiers + '\s*(?P<type>' 
     spattern = ')\*{0,2}\s+.*?(?P<name>\w+)'
     for function in program_instance.functions:
         vars_dict = {}
         #text_lines = [text_line for text_line in function.text.split('\n') if text_line.strip()]
         for text_line in function.text:
-            #print "text line:",text_line
+            #print "text line:",text_line,
             match = None
             for pos_dtype in bd:
                 pattern = fpattern + pos_dtype + spattern
+                #print "pattern:",pattern
                 match = re.search(pattern, text_line)
                 if match:
+                    #print "match"
                     break
             if not match:
                 #print "Match not found"
@@ -273,7 +275,6 @@ def single_comments(pinst):
 
     return res
 
-                
 def is_switch(line):
 	res = re.search(r'(;)?switch(.*).*',line)
 	if res : 
@@ -334,3 +335,8 @@ def if_else(pinst):
                 i -= 1
     if i > 0:
         print previous_ifs
+def is_assignment(line):
+    '''
+    checkes if given line is assignment of some kind
+    '''
+    pass
