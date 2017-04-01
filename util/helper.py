@@ -361,7 +361,7 @@ def parse_switch(pinst):
                 text=''.join(line_text[starts:index+1])
                 #match = re.search(r'\((?P<cond>.*)\)', text)
                 if 'default' not in text:
-                    result.append(ostarts + starts)
+                    result.append(ostart + starts + 1)
                 #func.switch=(match.group('cond'),state)
                 #print func.switch
                 #print 'Text Switch : ',line_text[starts:ends+1]

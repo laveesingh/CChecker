@@ -33,8 +33,6 @@ int main() {
             break;
 
         // operator is doesn't match any case constant (+, -, *, /)
-        default:
-            printf("Error! operator is not correct");
     }
 
     return 0;
