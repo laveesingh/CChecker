@@ -91,13 +91,17 @@ keywords = [
         'while'
 ]
 
-datatypes = [
+builtin_datatypes = [
         'int',
         'float',
         'double',
         'char',
         'void'
 ]
+
+extended_datatypes = [
+        'unsigned int',
+        ]  # TODO: More to be added
 
 root = dict()  # Stores major details of program
 functions = dict()

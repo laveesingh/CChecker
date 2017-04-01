@@ -7,6 +7,8 @@ import util.colors as colors
 from util.store import *
 from util import program
 
+from util.helper import *
+
 # disable creation of *.pyc files
 sys.dont_write_bytecode = True
 
@@ -69,6 +71,8 @@ if __name__ == '__main__':
     specs = parse_specs(args.spec)
     pinst = program.program()
     pinst.load_attrs(open(args.file, 'r+'))
+    vars_dict = parse_vars(pinst)
+    print "Variables dictionary is:", vars_dict
     opname = args.file[:-2] + '.OP'
     #if os.path.exists(opname):
     #    oldname = opname
