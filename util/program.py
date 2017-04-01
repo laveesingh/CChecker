@@ -211,7 +211,7 @@ class program:
 			endline = parse.union(self.lines, lineno)
  			text = self.lines[lineno : endline + 1]
 			sclass = union.union(text, [lineno, endline])
-			self.union.append(sclass)
+			self.unions.append(sclass)
 			return True, lineno
 		return False, lineno
 
