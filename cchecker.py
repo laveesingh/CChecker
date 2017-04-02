@@ -140,8 +140,8 @@ if __name__ == '__main__':
 
     opn = args.file[:-2] + '.opd'
     opf = open(opn, 'w+')
-    for lineno, errono in specs.error_dic:
-        opf.write(lineno + " : " + str(errorno))
+    for lineno, errono in specmod.error_dic.iteritems():
+        opf.write(str(lineno) + " : " + str(errono))
     opf.close()
     #vars_dict = helper.parse_vars(pinst)
     #assign_list = helper.conditions(pinst)
