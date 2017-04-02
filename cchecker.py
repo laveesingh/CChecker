@@ -142,7 +142,9 @@ if __name__ == '__main__':
             opfile.write('\n')
 
     opfile.write("<font color = \"blue\">Total number of violations found = %d</font>" % tno)
-    for a in xrange(1, len(specmod.no_of_error))
+    for a in xrange(1, len(specmod.no_of_errors)):
+        if specmod.no_of_errors[a] >= 1:
+            opfile.write("<font color = \"blue\">Spec %d failed: %d\n</font>" % (a, specmod.no_of_errors[a]))
     opfile.write('</p></pre></body></html>') 
 
     #if args.html:
