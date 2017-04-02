@@ -186,7 +186,6 @@ def parse_comments(pinst):
     '''
     Takes the programs and it will help in parsing the comments in lines
     '''
-
     for function in pinst.functions:
         orstart = function.start
         text_lines = function.text
@@ -371,7 +370,22 @@ def single_comments(pinst):
             #print lno, text
             if text.startswith('//'):
                 res.append(lno + 1)
-
+    for fun in pinst.structs:
+        #print fun.comments
+        for lno in fun.comments:
+            #print comm, lno
+            text = fun.comments[lno][0].strip()
+            #print lno, text
+            if text.startswith('//'):
+                res.append(lno + 1)
+    for fun in pinst.unions:
+        #print fun.comments
+        for lno in fun.comments:
+            #print comm, lno
+            text = fun.comments[lno][0].strip()
+            #print lno, text
+            if text.startswith('//'):
+                res.append(lno + 1)
     return res
 
 def is_switch(line):
@@ -422,6 +436,38 @@ def if_else(pinst):
     for function in pinst.functions:
         lineno = function.start - 1
         for line in function.text:
+            lineno += 1
+            if re.search(else_if_pattern, line):
+                continue
+            if re.search(if_pattern, line):
+                if i > 1:
+                    result.append(previous_ifs + 1)
+                    i = 0
+                previous_ifs = lineno
+                i += 1
+            if re.search(else_pattern, line):
+                i -= 1
+    if i > 0:
+        result.append(previous_ifs + 1)
+    for struc in pinst.structs:
+        lineno = struc.start - 1
+        for line in struc.text:
+            lineno += 1
+            if re.search(else_if_pattern, line):
+                continue
+            if re.search(if_pattern, line):
+                if i > 1:
+                    result.append(previous_ifs + 1)
+                    i = 0
+                previous_ifs = lineno
+                i += 1
+            if re.search(else_pattern, line):
+                i -= 1
+    if i > 0:
+        result.append(previous_ifs + 1)
+    for uni in pinst.unions:
+        lineno = uni.start - 1
+        for line in uni.text:
             lineno += 1
             if re.search(else_if_pattern, line):
                 continue
@@ -860,6 +906,7 @@ def no_unary_minus(pinst):
  
 def check_shifts(pinst):
     pat = r'(?P<var>\w+)\s*(<<|>>)=?\s*(?P<amount>\d+)'
+    result = []
     lengths = {
             'int': 32,
             'long long': 64,
@@ -871,7 +918,9 @@ def check_shifts(pinst):
     for function in pinst.functions:
         if not function.vars:
             parse_vars(pinst)
+        st = function.start - 1
         for line in function.text:
+            st += 1
             match = re.search(pat, line)
             if match is None:
                 continue
@@ -882,11 +931,14 @@ def check_shifts(pinst):
             if dtype in lengths:
                 max_shift = lengths[dtype]
             if amount >= max_shift:
-                print "max shifts exceeded, line:",line
+                result.append(st+1)
+                #print "max shifts exceeded, line:",line
     for struct in pinst.structs:
         if not struct.vars:
             parse_struct_vars(pinst)
+        st = struct.start - 1
         for line in struct.text:
+            st += 1
             match = re.search(pat, line)
             if match is None:
                 continue
@@ -897,11 +949,14 @@ def check_shifts(pinst):
             if dtype in lengths:
                 max_shift = lengths[dtype]
             if amount >= max_shift:
-                print "max shifts exceeded, line:",line
+                result.append(st+1)
+                #print "max shifts exceeded, line:",line
     for union in pinst.unions:
         if not union.vars:
             parse_union_vars(pinst)
+        st = union.start - 1
         for line in union.text:
+            st += 1
             match = re.search(pat, line)
             if match is None:
                 continue
@@ -912,10 +967,12 @@ def check_shifts(pinst):
             if dtype in lengths:
                 max_shift = lengths[dtype]
             if amount >= max_shift:
-                print "max shifts exceeded, line:",line
+                result.append(st + 1)
+                #print "max shifts exceeded, line:",line
     for gvar in pinst.global_vars:
         # gvar may not be set yet
         line = gvar.text[0]
+        st = gvar.start
         match = re.search(pat, line)
         if match is None:
             continue
@@ -926,4 +983,5 @@ def check_shifts(pinst):
         if dtype in lengths:
             max_shift = lengths[dtype]
         if amount >= max_shift:
-            print "max shifts exceeded, line:", line
+            result.append(st + 1)
+            #print "max shifts exceeded, line:", line

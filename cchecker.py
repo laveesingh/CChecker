@@ -91,16 +91,13 @@ def eval_dir(dirname, specs):
             eval_specs(pinst, specs)
 
 if __name__ == '__main__':
-    helptext = "CChecker: Hey, I will make sure you feel safe while running your C program.\
-                \n\n\
-                \
-                The mandatory things which I need to work is either a C file or a directory containing C files"
+    helptext = "A program to test your C programs for coding violations which may lead to runtime errors and unexpected results."
     parser = argparse.ArgumentParser(description=helptext)
     parser.add_argument('-s', '--spec',
-                    help="Specification file of rules", default='all')
-    parser.add_argument('-f', '--file', help="C input file")
+                    help="Specification file containing checks", default='all')
+    parser.add_argument('-f', '--file', help="C input file to be checked")
     #parser.add_argument('-d', '--dir', help="Directory containing C files")
-    parser.add_argument('-l', '--list', help="List of specs")
+    parser.add_argument('-l', '--list', help="List of specs from command line")
     parser.add_argument('-d', '--dir', help="Directory containing C files")
     args = parser.parse_args()
     # If there's any error with provided input files
@@ -140,8 +137,8 @@ if __name__ == '__main__':
 
     opn = args.file[:-2] + '.opd'
     opf = open(opn, 'w+')
-    for lineno, errono in specmod.error_dic.iteritems():
-        opf.write(str(lineno) + " : " + str(errono))
+    for lineno in sorted(specmod.error_dic):
+        opf.write(str(lineno) + " : " + str(specmod.error_dic[lineno]) + "\n")
     opf.close()
     #vars_dict = helper.parse_vars(pinst)
     #assign_list = helper.conditions(pinst)
