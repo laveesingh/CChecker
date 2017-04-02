@@ -22,7 +22,19 @@ def check_args(parser, args):
     #    raise Exception(colors.FAIL + "You have to mention either directory or files" +
     #            colors.ENDC)
 
-    if not os.path.isfile(args.file):
+    if not args.file and not args.dir:
+        raise Exception(colors.FAIL + "You must mention either -f or -d " + 
+                colors.ENDC)
+
+    #if args.file and args.dir:
+    #    raise Exception(colors.FAIL + "Can't use both -f and -d " + 
+    #            colors.ENDC)
+
+    if args.dir and not os.path.isdir(args.dir):
+        raise Exception(colors.FAIL + "Directory not found: " + str(args.dir) +
+                colors.ENDC)
+
+    if args.file and not os.path.isfile(args.file):
         raise Exception(colors.FAIL + "File not found: " + str(args.file) +
                 colors.ENDC)
 
@@ -64,20 +76,38 @@ def eval_specs(pinst, specs_list):
         except AttributeError:
             raise #Exception("The source code sucks")
 
+def eval_dir(dirname, specs):
+    ''''''
+    if not os.path.isdir(dirname):
+        print "Man this code sucks!"
+
+    files = os.listdir(dirname)
+    for file in files:
+        if os.path.isdir(file):
+            eval_dir(file, specs)
+        if file.endswith('.c'):
+            pinst = program.program()
+            pinst.load_attrs(open(file), 'r+')
+            eval_specs(pinst, specs)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--spec',
                     help="Specification file of rules", default='all')
-    parser.add_argument('-f', '--file', help="C input file", required=True)
+    parser.add_argument('-f', '--file', help="C input file")
     #parser.add_argument('-d', '--dir', help="Directory containing C files")
     parser.add_argument('-l', '--list', help="List of specs")
+    parser.add_argument('-d', '--dir', help="Directory containing C files")
     args = parser.parse_args()
     # If there's any error with provided input files
     check_args(parser, args)
     specs = parse_specs(args.spec, args.list)
-    pinst = program.program()
-    pinst.load_attrs(open(args.file, 'r+'))
-    eval_specs(pinst, specs)
+    if args.file:
+        pinst = program.program()
+        pinst.load_attrs(open(args.file, 'r+'))
+        eval_specs(pinst, specs)
+    if args.dir:
+        eval_dir(args.dir, specs)
     res_dic = specmod.error_dic
     opname = args.file[:-2] + '.OP'
     #if os.path.exists(opname):
