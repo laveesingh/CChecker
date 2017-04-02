@@ -276,3 +276,11 @@ def booleans_switch(pinst):
 	as x==10 is effectively Boolean.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	result = helper.check_switch_condition(pinst)
+	if not result:
+		return
+	for line in result:
+		no_of_errors[25] += 1
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(25)

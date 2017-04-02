@@ -762,31 +762,41 @@ def check_recursion(pinst):
 
 def check_switch_condition(pinst):
     pat = r'\bswitch\b\s*\((?P<cond>.*?)\)'
+    result = []
     for function in pinst.functions:
+        st = function.start -1
         for line in function.text:
+            st += 1
             match = re.search(pat, line)
             if match is None:
                 continue
             cond = match.group('cond')
             if not ok_switch_condition(cond):
-                print "switch condition violation, line:", line
+                result.append(st+1)
+                #print "switch condition violation, line:", line
     for struct in pinst.structs:
+        st = struct.start - 1
         for line in struct.text:
+            st += 1
             match = re.search(pat, line)
             if match is None:
                 continue
             cond = match.group('cond')
             if not ok_switch_condition(cond):
-                print "switch condition violation, line:", line
+                result.append(st+1)
+                #print "switch condition violation, line:", line
     for union in pinst.unions:
+        st = union.start -1
         for line in union.text:
+            st += 1
             match = re.search(pat, line)
             if match is None:
                 continue
             cond = match.group('cond')
             if not ok_switch_condition(cond):
-                print "switch condition violation, line:", line
-    
+                result.append(st+1)
+                #print "switch condition violation, line:", line
+    result    
 
 def ok_switch_condition(cond):
     comps = ['==', '!=', '>', '<', '<=', '>=']
