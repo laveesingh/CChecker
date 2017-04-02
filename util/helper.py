@@ -2,6 +2,7 @@ import re
 from store import (
     builtin_datatypes as bd
 )
+from collections import defaultdict
 
 
 def is_assignment(line):
@@ -19,7 +20,7 @@ def parse_vars(program_instance):
     along with their datatypes
     '''
     modifiers = r'(?P<mod>(const|auto|static|register|extern|volatile|signed|unsigned| )*)'
-    fpattern = r'' + modifiers + '\s*(?P<type>' 
+    fpattern = r'' + modifiers + '\s*(?P<type>'
     spattern = ')\*{0,2}\s+.*?(?P<name>\w+)'
     for function in program_instance.functions:
         vars_dict = {}
@@ -58,7 +59,7 @@ def parse_struct_vars(program_instance):
     within all structures along with their datatypes
     '''
     modifiers = r'(?P<mod>(const|auto|static|register|extern|volatile|signed|unsigned| )*)'
-    fpattern = r'' + modifiers + '\s+(?P<type>' 
+    fpattern = r'' + modifiers + '\s+(?P<type>'
     spattern = ')\*{0,2}\s+.*?(?P<name>\w+)'
     for struct in program_instance.structs:
         vars_dict = {}
@@ -92,7 +93,7 @@ def parse_union_vars(program_instance):
     within all structures along with their datatypes
     '''
     modifiers = r'(?P<mod>(const|auto|static|register|extern|volatile|signed|unsigned| )*)'
-    fpattern = r'' + modifiers + '\s+(?P<type>' 
+    fpattern = r'' + modifiers + '\s+(?P<type>'
     spattern = ')\*{0,2}\s+.*?(?P<name>\w+)'
     for union in program_instance.unions:
         vars_dict = {}
@@ -125,7 +126,7 @@ def parse_global_vars(program_instance):
     within all structures along with their datatypes
     '''
     modifiers = r'(?P<mod>(const|auto|static|register|extern|volatile|signed|unsigned| )*)'
-    fpattern = r'' + modifiers + '\s+(?P<type>' 
+    fpattern = r'' + modifiers + '\s+(?P<type>'
     spattern = ')\*{0,2}\s+.*?(?P<name>\w+)'
     vars_dict = {}
     for statement in program_instance.global_vars:
@@ -149,7 +150,7 @@ def parse_global_vars(program_instance):
                 pat = r'(?P<name>\w+).*'
                 match = re.search(pat, declaration)
                 vars_dict[match.group('name')] = (dtype, unsigned)
-    
+
     program_instance.global_vars_dict = vars_dict
 
 
@@ -184,7 +185,7 @@ def parse_comments(pinst):
     '''
     Takes the programs and it will help in parsing the comments in lines
     '''
-    
+
     for function in pinst.functions:
         orstart = function.start
         text_lines = function.text
@@ -203,7 +204,7 @@ def parse_comments(pinst):
                 starts = i
                 #print 'Hey'
                 while '*/' not in line:
-                    i = i + 1 
+                    i = i + 1
                     line = text_lines[i]
                 function.comments[function.start + starts] = text_lines[starts:i+1]
             i = i + 1
@@ -324,7 +325,7 @@ def comparison_floating(pinst):
 def which_type(val):
     ''''''
     if '.' in val:
-        return 'float' 
+        return 'float'
     try:
         int(val)
         return 'int'
@@ -374,7 +375,7 @@ def single_comments(pinst):
 
 def is_switch(line):
 	res = re.search(r'(;)?switch(.*).*',line)
-	if res : 
+	if res :
 		return True
 	return False
 
@@ -622,3 +623,45 @@ def verify_sizeof(pinst):
                 None
             else valid_sizeof_exp(exp):
                 print "invalid sizeof expression, line:",line
+
+def parse_function_calls(pinst):
+    exclude = ['return', 'for', 'if', 'scanf', 'printf', 'qsort']
+    for func in pinst.functions:
+        i = 0
+        for line in func.text:
+            #print line
+            f=re.search(r'(?P<fname>\w*)\W*\(.*\)',line)
+            if f :
+                if i == 0 :
+                    i=1
+                    func.function_name = f.group('fname')
+                    #print 'fvalue',f.group('fname')
+                else:
+                    y = f.group('fname')
+                    if y not in exclude:
+                        func.function_calls.append(y)
+        print func.function_name, ' has these function calls :', func.function_calls
+
+def check_recursion(pinst):
+    adj = defaultdict(list)
+    for func in pinst.functions:
+        adj[func.function_name] = func.function_calls
+    for func in pinst.functions:
+        source = func.function_name
+        #print 'Source : ',source
+        flag=0
+        visited = {}
+        stack = list()
+        stack.append(source)
+        while stack:
+            cur = stack.pop()
+            if visited.get(cur):
+                flag=1
+                break# cycle detected
+            visited[cur] = 1
+            for Adj in adj[cur]:
+        #        print adj[cur]
+                stack.append(Adj)
+        func.recursion = flag
+        print func.function_name,' : ',flag
+

@@ -5,7 +5,8 @@ int main()
 {
     int n,count=1;
     scanf("%d",&n);
-    int a[n],b[n];
+    n=main();
+	int a[n],b[n];
     for(int i=0;i<n;i++)scanf("%d",&a[i]);
     qsort(a,n,sizeof(int),cmp);
     //for(int i=0;i<n;i++)printf("%d ",a[i]);
