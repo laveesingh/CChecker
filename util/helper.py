@@ -435,6 +435,38 @@ def if_else(pinst):
                 i -= 1
     if i > 0:
         result.append(previous_ifs + 1)
+    for struc in pinst.structs:
+        lineno = struc.start - 1
+        for line in struc.text:
+            lineno += 1
+            if re.search(else_if_pattern, line):
+                continue
+            if re.search(if_pattern, line):
+                if i > 1:
+                    result.append(previous_ifs + 1)
+                    i = 0
+                previous_ifs = lineno
+                i += 1
+            if re.search(else_pattern, line):
+                i -= 1
+    if i > 0:
+        result.append(previous_ifs + 1)
+    for uni in pinst.unions:
+        lineno = uni.start - 1
+        for line in uni.text:
+            lineno += 1
+            if re.search(else_if_pattern, line):
+                continue
+            if re.search(if_pattern, line):
+                if i > 1:
+                    result.append(previous_ifs + 1)
+                    i = 0
+                previous_ifs = lineno
+                i += 1
+            if re.search(else_pattern, line):
+                i -= 1
+    if i > 0:
+        result.append(previous_ifs + 1)
     return result 
 
 def is_float(dtype):
