@@ -413,25 +413,28 @@ def parse_switch(pinst):
     return result
 
 def if_else(pinst):
+    result = []
     if_pattern = r'(\W*)(if)(\b)(\W*)'
     else_if_pattern = r'(\W*)(else if)(\b)(\W*)'
     else_pattern = r'(\W*)(else)(\b)(\W*)'
     i = 0
-    previous_ifs = ''
+    previous_ifs = None
     for function in pinst.functions:
+        lineno = function.start - 1
         for line in function.text:
+            lineno += 1
             if re.search(else_if_pattern, line):
                 continue
             if re.search(if_pattern, line):
                 if i > 1:
-                    print previous_ifs
+                    result.append(previous_ifs + 1)
                     i = 0
-                previous_ifs = line
+                previous_ifs = lineno
                 i += 1
             if re.search(else_pattern, line):
                 i -= 1
     if i > 0:
-        print previous_ifs
+        result.append(previous_ifs + 1)
 
 def is_float(dtype):
     if 'float' in dtype or 'double' in dtype:

@@ -6,6 +6,7 @@ import util.helper as helper
 sys.dont_write_bytecode = True
 
 error_dic = {}
+no_of_errors = [0 for a in xrange(0, 26)]
 
 num_to_name = {
 	1: 'imp_type_conv',
@@ -43,6 +44,7 @@ def imp_type_conv(pinst):
 	if not res:
 		return
 	for line in res:
+		no_of_errors[1] += 1
 		if error_dic.get(line) is None:
 			error_dic[line] = []
 		error_dic[line].append(1)
@@ -66,6 +68,7 @@ def assignments_in_conditions(pinst):
 		return
 	#print "Following lines have violated the check 4"
 	for line in result:
+		no_of_errors[4] += 1
 		if error_dic.get(line) is None:
 			error_dic[line] = []
 		error_dic[line].append(4)
@@ -78,6 +81,7 @@ def comparing_floats(pinst):
 	if not res:
 		return
 	for line in res:
+		no_of_errors[5] += 1
 		if error_dic.get(line) is None:
 			error_dic[line] = []
 		error_dic[line].append(5)
@@ -101,6 +105,7 @@ def goto_continue(pinst):
 		return
 	#print "Following lines have violated check 8"
 	for line in result:
+		no_of_errors[8] += 1
 		if error_dic.get(line) is None:
 			error_dic[line] = []
 		error_dic[line].append(8)
@@ -114,6 +119,7 @@ def allocs(pinst):
 		return
 	#print "Following lines have violated check 9"
 	for line in result:
+		no_of_errors[9] += 1
 		if error_dic.get(line) is None:
 			error_dic[line] = []
 		error_dic[line].append(9)
@@ -127,6 +133,7 @@ def recursion(pinst):
 	if not res:
 		return
 	for line in res:
+		no_of_errors[10] += 1
 		if error_dic.get(line) is None:
 			error_dic[line] = []
 		error_dic[line].append(10)
@@ -139,6 +146,7 @@ def comments_style(pinst):
 	if not res:
 		return
 	for line in res:
+		no_of_errors[11] += 1
 		if error_dic.get(line) is None:
 			error_dic[line] = []
 		error_dic[line].append(11)
@@ -173,6 +181,7 @@ def sizeof_effects(pinst):
 	if not res:
 		return
 	for line in res:
+		no_of_errors[16] += 1
 		if error_dic.get(line) is None:
 			error_dic[line] = []
 		error_dic[line].append(16)
@@ -198,6 +207,14 @@ def else_check(pinst):
 	'''All if...else if... constructs should be terminated with an else clause.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	res = helper.if_else(pinst)
+	if not res:
+		return
+	for line in res:
+		no_of_errors[20] += 1
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(20)
 
 def pointer_levels(pinst):
 	'''More than two levels of pointer indirection should not be used.'''
@@ -212,6 +229,7 @@ def unions(pinst):
 	if not pinst.unions:
 		return
 	for union in pinst.unions:
+		no_of_errors[22] += 1
 		line = union.start
 		if error_dic.get(line) is None:
 			error_dic[line] = []
@@ -231,6 +249,7 @@ def default_check(pinst):
 	if not result:
 		return
 	for line in result:
+		no_of_errors[24] += 1
 		if error_dic.get(line) is None:
 			error_dic[line] = []
 		error_dic[line].append(24)
