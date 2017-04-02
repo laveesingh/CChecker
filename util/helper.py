@@ -621,7 +621,19 @@ def verify_sizeof(pinst):
             if exp in function.vars or exp in bd: # This surely can be extended
                 #either exp is function variable or it's datatype
                 None
-            else valid_sizeof_exp(exp):
+            else:
+                print "invalid sizeof expression, line:",line
+    for struct in pinst.structs:
+        lines_list = struct.text
+        for line in lines_list:
+            match = re.search(pat, line)
+            if match is None:
+                continue
+            exp = match.group('exp')
+            if exp in struct.vars or exp in bd: # This surely can be extended
+                #either exp is function variable or it's datatype
+                None
+            else: 
                 print "invalid sizeof expression, line:",line
 
 def parse_function_calls(pinst):
@@ -665,3 +677,5 @@ def check_recursion(pinst):
         func.recursion = flag
         print func.function_name,' : ',flag
 
+def check_switch_condition(pinst):
+    pass
