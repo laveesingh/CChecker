@@ -119,7 +119,8 @@ def is_function(lines, lineno):
         4. Parantheses contain argument list, closing parantheses is followed
         by a { or newline;
     '''
-    regex = r'(?P<type>(int)|(void)|(double)|(float)|(char))\s+(?P<name>(\w+))\((?P<arg>(.*))\)\s*'
+    regex = r'.+[\*\w]+\s*\(.*?\)'
+    #regex = r'(?P<type>(int)|(void)|(double)|(float)|(char))\s+(?P<name>(\w+))\((?P<arg>(.*))\)\s*'
     if re.search(regex, lines[lineno]):
         #print lines[lineno]
         return True

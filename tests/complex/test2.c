@@ -7,8 +7,12 @@ LL n;
 int q;
 char str[100010];
 
-int main(void)
-{
+int not_main (void) {
+  int sum = a + b;
+  printf("The sum is %d\n", sum);
+}
+
+int main (void) {
     //freopen("tree.in","r",stdin);
     //freopen("tree.out","w",stdout);
     scanf("%I64d%d",&n,&q);

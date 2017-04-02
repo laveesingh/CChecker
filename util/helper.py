@@ -20,8 +20,8 @@ def parse_vars(program_instance):
     along with their datatypes
     '''
     modifiers = r'(?P<mod>(const|auto|static|register|extern|volatile|signed|unsigned| )*)'
-    fpattern = r'' + modifiers + '\s*(?P<type>'
-    spattern = ')\*{0,2}\s+.*?(?P<name>\w+)'
+    fpattern = r'' + modifiers + r'\s*(?P<type>'
+    spattern = r')\*{0,2}.*?(?P<name>\w+)[^\(]*$'
     for function in program_instance.functions:
         vars_dict = {}
         #text_lines = [text_line for text_line in function.text.split('\n') if text_line.strip()]
