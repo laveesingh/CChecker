@@ -39,6 +39,13 @@ def imp_type_conv(pinst):
 	'''There should not be implicit type conversions between integer and floating point types, signed and unsigned types.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	res = helper.check_implicit_type_conversion(pinst)
+	if not res:
+		return
+	for line in res:
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(1)
 
 def evaluate_diff_sidewise(pinst):
 	'''Statements that evaluate differently left to right and right to left should not be allowed. eg: statements like a = b[j] + j++;'''

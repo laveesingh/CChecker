@@ -438,11 +438,14 @@ def is_float(dtype):
     return False
 
 def check_implicit_type_conversion(pinst):
+    result = []
     lines_list = []
     pat = r'.*(?<var1>\w+)\W*= (|((?P<tcast>\w+)\))?(?<var2>\w+)' #this pattern can be malicious, adding \s* at the end may redefine
     for function in pinst.functions:
         lines_list = function.text
+        lineno = function.start - 1
         for line in lines_list:
+            lineno += 1
             if is_assignment(line):
                 statements = line.split(',')
                 for statement in statements:
@@ -456,10 +459,13 @@ def check_implicit_type_conversion(pinst):
                             # Type cast is explicit
                             continue
                         if is_float(type1) or is_float(type2):
-                            print "implicite type conversion violated.  line:", statement
+                            result.append(lineno + 1)
+                            #print "implicite type conversion violated.  line:", statement
     for struct in pinst.structs:
         lines_list = struct.text
+        lineno = struct.start - 1
         for line in lines_list:
+            lineno += 1
             if is_assignment(line):
                 statements = line.split(',')
                 for statement in statements:
@@ -473,10 +479,13 @@ def check_implicit_type_conversion(pinst):
                             # Type cast is explicit
                             continue
                         if is_float(type1) or is_float(type2):
-                            print "implicite type conversion violated.  line:", statement
+                            result.append(lineno + 1)
+                            #print "implicite type conversion violated.  line:", statement
     for union in pinst.unions:
         lines_list = union.text
+        lineno = union.start - 1
         for line in lines_list:
+            lineno += 1
             if is_assignment(line):
                 statements = line.split(',')
                 for statement in statements:
@@ -490,9 +499,12 @@ def check_implicit_type_conversion(pinst):
                             # Type cast is explicit
                             continue
                         if is_float(type1) or is_float(type2):
-                            print "implicite type conversion violated.  line:", statement
+                            result.append(lineno + 1)
+                            #print "implicite type conversion violated.  line:", statement
     # Global vars remaining are remaining 
-    for line in pinst.global_vars:
+    for gvar in pinst.global_vars:
+        line = gvar.text
+        lineno = gvar.start
         if is_assignment(line):
             statements = line.split(',')
             for statement in statements:
@@ -507,7 +519,9 @@ def check_implicit_type_conversion(pinst):
                         # Type cast is explicit
                         continue
                     if is_float(type1) or is_float(type2):
-                        print "implicite type conversion violated.  line:", statement
+                        result.append(lineno + 1)
+                        #print "implicite type conversion violated.  line:", statement
+    return result
 
 def check_initialized_variable(pinst):
     pat = r'.*(?<var1>\w+)\W*= (?<rhs>.*)'  #This pattern may malfunction

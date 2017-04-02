@@ -19,18 +19,18 @@ sys.dont_write_bytecode = True
 
 class program:
 
-	def __init__(self):
-		self.functions = []
-		self.preprocessors = []
-		self.structs = []
-		self.global_vars = []
-                self.global_vars_dict = {}
-		self.func_prototypes = []
-		self.global_comments = []
-		self.lines = []
-		self.unions =[]
-		# Make sure we track things which we are unable to parse
-		self.unrecognized = []
+    def __init__(self):
+        self.functions = []
+        self.preprocessors = []
+        self.structs = []
+        self.global_vars = []
+        self.global_vars_dict = {}
+        self.func_prototypes = []
+        self.global_comments = []
+        self.lines = []
+        self.unions =[]
+        # Make sure we track things which we are unable to parse
+        self.unrecognized = []
 
 	def load_attrs(self, fp):
 		text = fp.readlines()
