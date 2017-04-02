@@ -129,7 +129,8 @@ def parse_global_vars(program_instance):
     fpattern = r'' + modifiers + '\s+(?P<type>'
     spattern = ')\*{0,2}\s+.*?(?P<name>\w+)'
     vars_dict = {}
-    for statement in program_instance.global_vars:
+    for gv in program_instance.global_vars:
+        statement = gv.text[0]
         match = None
         for pos_dtype in bd:
             pattern = fpattern + pos_dtype + spattern
@@ -509,7 +510,8 @@ def check_implicit_type_conversion(pinst):
                             #print "implicite type conversion violated.  line:", statement
     # Global vars remaining are remaining 
     for gvar in pinst.global_vars:
-        line = gvar.text
+        line = gvar.text[0]
+        #print line
         lineno = gvar.start
         if is_assignment(line):
             statements = line.split(',')
