@@ -687,4 +687,4 @@ def check_recursion(pinst):
         print func.function_name,' : ',flag
 
 def check_switch_condition(pinst):
-
+    pat = r'\bswitch\b\s*\((?P<cond>.*?)\)'
