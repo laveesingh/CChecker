@@ -435,6 +435,7 @@ def if_else(pinst):
                 i -= 1
     if i > 0:
         result.append(previous_ifs + 1)
+    return result 
 
 def is_float(dtype):
     if 'float' in dtype or 'double' in dtype:
@@ -784,15 +785,17 @@ def ok_switch_condition(cond):
 def no_star_comments(pinst):
     ''''''
     res = []
+    # parse_comments(pinst)
     for comment in pinst.global_comments:
+        print comment
         text = comment.text[0].strip()
+        print text
         if '/*' in text:
             print 'Violation'
-
-    parse_comments(pinst)
 
     for function in pinst.functions:
         for line in function.comments:
             text = function.comments[line][0].strip()
+            print text
             if '/*' in text:
                 print 'Violation'
