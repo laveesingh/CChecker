@@ -811,6 +811,7 @@ def check_switch_condition(pinst):
                 result.append(st+1)
                 #print "switch condition violation, line:", line
 
+
 def ok_switch_condition(cond):
     comps = ['==', '!=', '>', '<', '<=', '>=']
     pat = r'.+(' + '|'.join(comps) + ').+'
@@ -857,3 +858,73 @@ def no_unary_minus(pinst):
                     if(vars_dict[p][1]==1):
                         l.append(p)
     print l
+ 
+def check_shifts(pinst):
+    pat = r'(?P<var>\w+)\s*(<<|>>)\s*(?P<amount>\d+)'
+    lengths = {
+            'int': 32,
+            'long long': 64,
+            'char': 8,
+            'short': 16,
+            'long long int': 64,
+            'long int': 64,
+    }
+    for function in pinst.functions:
+        if not function.vars:
+            parse_vars(pinst)
+        for line in function.text:
+            match = re.search(pat, line)
+            if match is None:
+                continue
+            varname = match.group('var')
+            amount = int(match.group('amount').strip())
+            dtype, unsigned = function.vars[varname]
+            max_shift = 32
+            if dtype in lengths:
+                max_shift = lengths[dtype]
+            if amount >= max_shift:
+                print "max shifts exceeded, line:",line
+    for struct in pinst.structs:
+        if not struct.vars:
+            parse_struct_vars(pinst)
+        for line in struct.text:
+            match = re.search(pat, line)
+            if match is None:
+                continue
+            varname = match.group('var')
+            amount = int(match.group('amount').strip())
+            dtype, unsigned = struct.vars[varname]
+            max_shift = 32
+            if dtype in lengths:
+                max_shift = lengths[dtype]
+            if amount >= max_shift:
+                print "max shifts exceeded, line:",line
+    for union in pinst.unions:
+        if not union.vars:
+            parse_union_vars(pinst)
+        for line in union.text:
+            match = re.search(pat, line)
+            if match is None:
+                continue
+            varname = match.group('var')
+            amount = int(match.group('amount').strip())
+            dtype, unsigned = union.vars[varname]
+            max_shift = 32
+            if dtype in lengths:
+                max_shift = lengths[dtype]
+            if amount >= max_shift:
+                print "max shifts exceeded, line:",line
+    for gvar in pinst.global_vars:
+        # gvar may not be set yet
+        line = gvar.text[0]
+        match = re.search(pat, line)
+        if match is None:
+            continue
+        varname = match.group('var')
+        amount = int(match.group('amount').strip())
+        dtype, unsigned = gvar.vars[varname]
+        max_shift = 32
+        if dtype in lengths:
+            max_shift = lengths[dtype]
+        if amount >= max_shift:
+            print "max shifts exceeded, line:", line
