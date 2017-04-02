@@ -23,7 +23,7 @@ int not_main (void) {
     {
         scanf("%I64d%s",&u,str);
         for(j=0;str[j];j++)
-<font color = "red">            if( str[j]=='L' && u>LB(u)/2 )        /*This line fails check no [20] */ </font>
+<font color = "red">            if( str[j]=='L' && u>LB(u)/2 )        /*This line fails check no [20, 20, 20] */ </font>
                 u-=LB(u)/2;
             else if( str[j]=='R' && u+LB(u)/2<=n )
                 u+=LB(u)/2;
@@ -35,4 +35,4 @@ int not_main (void) {
     }
     return 0;
 }
-<font color = "blue">Total number of violations found = 4</font></p></pre></body></html>
+<font color = "blue">Total number of violations found = 6</font></p></pre></body></html>
