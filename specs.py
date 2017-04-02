@@ -58,6 +58,14 @@ def bitwise_op(pinst):
 	'''Bitwise operations are not allowed on signed data types.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	res = helper.bitwise_op(pinst)
+	if not res:
+		return
+	for line in res:
+		no_of_errors[3] += 1
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(3)
 
 def assignments_in_conditions(pinst):
 	'''Assignment statements in expressions resulting in Boolean value are not allowed. eg: if( b = a)'''

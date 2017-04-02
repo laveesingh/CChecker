@@ -649,7 +649,7 @@ def bitwise_op(pinst):
                 b = res1.group('second')
                 if fun.vars.get(a) and fun.vars.get(a)[1] is 0:
                     result.append(st)
-                else if fun.vars.get(b) and fun.vars.get(b)[1] is 0:
+                elif fun.vars.get(b) and fun.vars.get(b)[1] is 0:
                     result.append(st)
             res2 = re.search(re2, line)
             if res2:
