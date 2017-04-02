@@ -702,7 +702,36 @@ def check_recursion(pinst):
 
 def check_switch_condition(pinst):
     pat = r'\bswitch\b\s*\((?P<cond>.*?)\)'
-    pass
+    for function in pinst.functions:
+        for line in function.text:
+            match = re.search(pat, line)
+            if match is None:
+                continue
+            cond = match.group('cond')
+            if not ok_switch_condition(cond):
+                print "switch condition violation, line:", line
+    for struct in pinst.structs:
+        for line in struct.text:
+            match = re.search(pat, line)
+            if match is None:
+                continue
+            cond = match.group('cond')
+            if not ok_switch_condition(cond):
+                print "switch condition violation, line:", line
+    for union in pinst.unions:
+        for line in union.text:
+            match = re.search(pat, line)
+            if match is None:
+                continue
+            cond = match.group('cond')
+            if not ok_switch_condition(cond):
+                print "switch condition violation, line:", line
+    
+
+def ok_switch_condition(cond):
+    comps = ['==', '!=', '>', '<', '<=', '>=']
+    pat = r'.+(' + '|'.join(comps) + ').+'
+    return bool(re.search(pat, cond))
 
 def no_star_comments(pinst):
     ''''''
