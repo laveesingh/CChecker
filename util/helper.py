@@ -9,7 +9,7 @@ def is_assignment(line):
     '''
     checkes if given line is assignment of some kind
     '''
-    pat = r'[\w\]\s]=[^=]'
+    pat = r'[\w ]=[\w ]'
     return bool(re.search(pat, line))
 
 
@@ -440,17 +440,22 @@ def is_float(dtype):
 def check_implicit_type_conversion(pinst):
     result = []
     lines_list = []
-    pat = r'.*(?<var1>\w+)\W*= (|((?P<tcast>\w+)\))?(?<var2>\w+)' #this pattern can be malicious, adding \s* at the end may redefine
+    pat = r'(?P<var1>\w+)\s*=\s*(\((?P<tcast>\w+)\))?.*?(?P<var2>\w+)' #this pattern can be malicious, adding \s* at the end may redefine
     for function in pinst.functions:
         lines_list = function.text
         lineno = function.start - 1
         for line in lines_list:
+            print "line:",line
             lineno += 1
+            print 'isassignment:',is_assignment(line)
             if is_assignment(line):
                 statements = line.split(',')
+                print "statements:",statements
                 for statement in statements:
                     if is_assignment(statement):
                         match = re.search(pat, statement)
+                        if not function.vars:
+                            parse_vars(pinst)
                         if function.vars.get(match.group('var1')) is None or function.vars.get(match.group('var2')) is None:  # This variable isn't set
                             continue
                         type1 = function.vars[match.group('var1')]
@@ -459,6 +464,7 @@ def check_implicit_type_conversion(pinst):
                             # Type cast is explicit
                             continue
                         if is_float(type1) or is_float(type2):
+                            print "appending line no:",lineno+1
                             result.append(lineno + 1)
                             #print "implicite type conversion violated.  line:", statement
     for struct in pinst.structs:
@@ -471,6 +477,8 @@ def check_implicit_type_conversion(pinst):
                 for statement in statements:
                     if is_assignment(statement):
                         match = re.search(pat, statement)
+                        if not struct.vars:
+                            parse_struct_vars(pinst)
                         if struct.vars.get(match.group('var1')) is None or struct.vars.get(match.group('var2')) is None:  # This variable isn't set
                             continue
                         type1 = struct.vars[match.group('var1')]
@@ -479,6 +487,7 @@ def check_implicit_type_conversion(pinst):
                             # Type cast is explicit
                             continue
                         if is_float(type1) or is_float(type2):
+                            print "appending line no:",lineno+1
                             result.append(lineno + 1)
                             #print "implicite type conversion violated.  line:", statement
     for union in pinst.unions:
@@ -491,6 +500,8 @@ def check_implicit_type_conversion(pinst):
                 for statement in statements:
                     if is_assignment(statement):
                         match = re.search(pat, statement)
+                        if not union.vars:
+                            parse_union_vars(pinst)
                         if union.vars.get(match.group('var1')) is None or union.vars.get(match.group('var2')) is None:  # This variable isn't set
                             continue
                         type1 = union.vars[match.group('var1')]
@@ -499,6 +510,7 @@ def check_implicit_type_conversion(pinst):
                             # Type cast is explicit
                             continue
                         if is_float(type1) or is_float(type2):
+                            print "appending line no:",lineno+1
                             result.append(lineno + 1)
                             #print "implicite type conversion violated.  line:", statement
     # Global vars remaining are remaining 
@@ -510,6 +522,8 @@ def check_implicit_type_conversion(pinst):
             for statement in statements:
                 if is_assignment(statement):
                     match = re.search(pat, statement)
+                    if not pinst.global_vars_dict:
+                        parse_global_vars(pinst)
                     if pinst.global_vars_dict.get(match.group('var1')) is None or pinst.global_vars_dict.get(match.group('var2')) is None:
                         # Either of these variables isn't set in base
                         continue
@@ -519,6 +533,7 @@ def check_implicit_type_conversion(pinst):
                         # Type cast is explicit
                         continue
                     if is_float(type1) or is_float(type2):
+                        print "appending line no:",lineno+1
                         result.append(lineno + 1)
                         #print "implicite type conversion violated.  line:", statement
     return result
@@ -605,11 +620,6 @@ def function_declaration(pinst):
                 print 'NO'
                 break
 
-def is_assignment(line):
-    '''
-    checkes if given line is assignment of some kind
-    '''
-    pass
 
 def bitwise_op(pinst):
     ''''''
