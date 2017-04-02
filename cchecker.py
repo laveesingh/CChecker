@@ -145,6 +145,7 @@ if __name__ == '__main__':
     helper.check_recursion(pinst)
     helper.parse_comments(pinst)
     helper.parse_switch(pinst)
+    helper.function_declaration(pinst)
     opf.write("Preprocessors = ")
     for obs in pinst.preprocessors:
         opf.write(''.join(obs.text))

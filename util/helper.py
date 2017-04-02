@@ -603,29 +603,31 @@ def function_declaration(pinst):
             body
         }
     '''
-    d = {}
+    proto = {}
+    defin = {}
     for prototype in pinst.func_prototypes:
-        for line in prototype.text:
-            d[line.strip()] = prototype.start
-    # print d
-    string = ''
+        for line in prototype.text: 
+            proto[line.strip()] = prototype.start
+    # print proto
     for function in pinst.functions:
-        for line in function.text:
-            line = line.strip()
-            string += ' '
-            string += line
-        for key, value in d.items():
-            if string.find(key):
-                if value < function.start:
-                    print 'YES'
-
-                else:
-                    print 'NO'
-                    break
-            else:
-                print 'NO'
-                break
-
+        if 'main ()' in function.text[0].strip() or 'main()' in function.text[0].strip():
+            continue
+        defin[function.text[0].strip()] = function.start
+    # print defin
+    result = []
+    if not proto:
+        if not defin:
+            return result
+        for key, items in defin.items():
+            result.append(key)
+        return result
+    else:
+        for proto_name, proto_start in proto.items():
+            for defin_name, defin_start in defin.items():
+                if defin_name in proto_name:
+                    if proto_start>defin_start:
+                        result_append(defin_name)
+    return result
 
 def bitwise_op(pinst):
     ''''''
