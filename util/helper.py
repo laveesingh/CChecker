@@ -688,3 +688,20 @@ def check_recursion(pinst):
 
 def check_switch_condition(pinst):
     pat = r'\bswitch\b\s*\((?P<cond>.*?)\)'
+    pass
+
+def no_star_comments(pinst):
+    ''''''
+    res = []
+    for comment in pinst.global_comments:
+        text = comment.text[0].strip()
+        if '/*' in text:
+            print 'Violation'
+
+    parse_comments(pinst)
+
+    for function in pinst.functions:
+        for line in function.comments:
+            text = function.comments[line][0].strip()
+            if '/*' in text:
+                print 'Violation'
