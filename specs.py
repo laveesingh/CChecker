@@ -103,15 +103,15 @@ def check_init(pinst):
 	'''Automatic (local) variables should have a value before they are used.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
-	result = helper.check_initialized_variable(pinst)
-	if not result:
-		return
+	#result = helper.check_initialized_variable(pinst)
+	#if not result:
+	#	return
 	#print "Following lines have violated check 8"
-	for line in result:
-		no_of_errors[7] += 1
-		if error_dic.get(line) is None:
-			error_dic[line] = []
-		error_dic[line].append(7)
+	#for line in result:
+	#	no_of_errors[7] += 1
+	#	if error_dic.get(line) is None:
+	#		error_dic[line] = []
+	#	error_dic[line].append(7)
 
 def goto_continue(pinst):
 	'''goto and continue statements should not be used.'''

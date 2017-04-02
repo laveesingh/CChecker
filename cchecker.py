@@ -91,7 +91,11 @@ def eval_dir(dirname, specs):
             eval_specs(pinst, specs)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    helptext = "CChecker: Hey, I will make sure you feel safe while running your C program.\
+                \n\n\
+                \
+                The mandatory things which I need to work is either a C file or a directory containing C files"
+    parser = argparse.ArgumentParser(description=helptext)
     parser.add_argument('-s', '--spec',
                     help="Specification file of rules", default='all')
     parser.add_argument('-f', '--file', help="C input file")
@@ -101,6 +105,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     # If there's any error with provided input files
     check_args(parser, args)
+    #print args
     specs = parse_specs(args.spec, args.list)
     if args.file:
         pinst = program.program()
@@ -108,11 +113,9 @@ if __name__ == '__main__':
         eval_specs(pinst, specs)
     if args.dir:
         eval_dir(args.dir, specs)
+
     res_dic = specmod.error_dic
     opname = args.file[:-2] + '.OP'
-    #if os.path.exists(opname):
-    #    oldname = opname
-    #    opname = opname + '.temp'
     opfile = open(opname, 'w+')
     lno = 0
     was_nl = True
@@ -137,8 +140,11 @@ if __name__ == '__main__':
 
     opn = args.file[:-2] + '.opd'
     opf = open(opn, 'w+')
-    vars_dict = helper.parse_vars(pinst)
-    assign_list = helper.conditions(pinst)
+    for lineno, errono in specs.error_dic:
+        opf.write(lineno + " : " + str(errorno))
+    opf.close()
+    #vars_dict = helper.parse_vars(pinst)
+    #assign_list = helper.conditions(pinst)
     #uncomment the below line when we starts parsing loop variables
     #helper.comparison_floating(pinst)
     # helper.parse_function_calls(pinst)
@@ -146,36 +152,36 @@ if __name__ == '__main__':
     # helper.parse_comments(pinst)
     # helper.parse_switch(pinst)
     # helper.function_declaration(pinst)
-    helper.no_star_comments(pinst)
-    opf.write("Preprocessors = ")
-    for obs in pinst.preprocessors:
-        opf.write(''.join(obs.text))
-    opf.write("\nFunctions = ")
-    for obs in pinst.functions:
-        opf.write(''.join(obs.text))
-        opf.write("Variables = " + str(obs.vars) + "\n")
-        opf.write("Assignment in conditions = " + str(obs.assignments_in_cond) + "\n")
-        opf.write("Comments in fn's = " + str(obs.comments) + "\n")
-    opf.write("\nStruct = ")
-    for obs in pinst.structs:
-        opf.write(''.join(obs.text))
-    opf.write("\nComments = ")
-    for obs in pinst.global_comments:
-        opf.write(''.join(obs.text))
-    opf.write("\nFunctions Proto = ")
-    for obs in pinst.func_prototypes:
-        opf.write(''.join(obs.text))
-    opf.write("\nGlobal Var = ")
-    for obs in pinst.global_vars:
-        opf.write(''.join(obs.text))
-    opf.write("\nUnion = ")
-    for obs in pinst.unions:
-        opf.write(''.join(obs.text))
-    opf.write("\nUnrecognised = ")
-    for obs in pinst.unrecognized:
-        opf.write(obs)
+    #helper.no_star_comments(pinst)
+    #opf.write("Preprocessors = ")
+    #for obs in pinst.preprocessors:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nFunctions = ")
+    #for obs in pinst.functions:
+    #    opf.write(''.join(obs.text))
+    #    opf.write("Variables = " + str(obs.vars) + "\n")
+    #    opf.write("Assignment in conditions = " + str(obs.assignments_in_cond) + "\n")
+    #    opf.write("Comments in fn's = " + str(obs.comments) + "\n")
+    #opf.write("\nStruct = ")
+    #for obs in pinst.structs:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nComments = ")
+    #for obs in pinst.global_comments:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nFunctions Proto = ")
+    #for obs in pinst.func_prototypes:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nGlobal Var = ")
+    #for obs in pinst.global_vars:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nUnion = ")
+    #for obs in pinst.unions:
+    #    opf.write(''.join(obs.text))
+    #opf.write("\nUnrecognised = ")
+    #for obs in pinst.unrecognized:
+    #    opf.write(obs)
     opfile.close()
-    opf.close()
+    #opf.close()
 
     #if oldname and fileEquals(opname, oldname):
     #    pass
