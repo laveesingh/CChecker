@@ -145,8 +145,8 @@ if __name__ == '__main__':
     for a in xrange(1, len(specmod.no_of_error))
     opfile.write('</p></pre></body></html>') 
 
-    if args.html:
-        os.system("xdg-open "+opname)
+    #if args.html:
+    #    os.system("xdg-open "+opname)
     opn = args.file[:-2] + '.opd'
     opf = open(opn, 'w+')
     for lineno in sorted(specmod.error_dic):
