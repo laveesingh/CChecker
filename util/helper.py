@@ -445,12 +445,9 @@ def check_implicit_type_conversion(pinst):
         lines_list = function.text
         lineno = function.start - 1
         for line in lines_list:
-            print "line:",line
             lineno += 1
-            print 'isassignment:',is_assignment(line)
             if is_assignment(line):
                 statements = line.split(',')
-                print "statements:",statements
                 for statement in statements:
                     if is_assignment(statement):
                         match = re.search(pat, statement)
@@ -464,7 +461,6 @@ def check_implicit_type_conversion(pinst):
                             # Type cast is explicit
                             continue
                         if is_float(type1) or is_float(type2):
-                            print "appending line no:",lineno+1
                             result.append(lineno + 1)
                             #print "implicite type conversion violated.  line:", statement
     for struct in pinst.structs:
@@ -487,7 +483,6 @@ def check_implicit_type_conversion(pinst):
                             # Type cast is explicit
                             continue
                         if is_float(type1) or is_float(type2):
-                            print "appending line no:",lineno+1
                             result.append(lineno + 1)
                             #print "implicite type conversion violated.  line:", statement
     for union in pinst.unions:
@@ -510,7 +505,6 @@ def check_implicit_type_conversion(pinst):
                             # Type cast is explicit
                             continue
                         if is_float(type1) or is_float(type2):
-                            print "appending line no:",lineno+1
                             result.append(lineno + 1)
                             #print "implicite type conversion violated.  line:", statement
     # Global vars remaining are remaining 
@@ -533,7 +527,6 @@ def check_implicit_type_conversion(pinst):
                         # Type cast is explicit
                         continue
                     if is_float(type1) or is_float(type2):
-                        print "appending line no:",lineno+1
                         result.append(lineno + 1)
                         #print "implicite type conversion violated.  line:", statement
     return result
