@@ -675,10 +675,11 @@ def parse_function_calls(pinst):
                     y = f.group('fname')
                     if y not in exclude:
                         func.function_calls.append(y)
-        print func.function_name, ' has these function calls :', func.function_calls
+        #print func.function_name, ' has these function calls :', func.function_calls
 
 def check_recursion(pinst):
     adj = defaultdict(list)
+    result = []
     for func in pinst.functions:
         adj[func.function_name] = func.function_calls
     for func in pinst.functions:
@@ -698,7 +699,10 @@ def check_recursion(pinst):
         #        print adj[cur]
                 stack.append(Adj)
         func.recursion = flag
-        print func.function_name,' : ',flag
+        if flag is 1:
+            result.append(func.start + 1)
+        #print func.function_name,' : ',flag
+    return result
 
 def check_switch_condition(pinst):
     pat = r'\bswitch\b\s*\((?P<cond>.*?)\)'

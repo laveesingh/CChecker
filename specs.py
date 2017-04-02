@@ -122,6 +122,14 @@ def recursion(pinst):
 	'''There should not be any recursion.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	helper.parse_function_calls(pinst)
+	res = helper.check_recursion(pinst)
+	if not res:
+		return
+	for line in res:
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(10)
 
 def comments_style(pinst):
 	'''There should not be any // style comments. All comments should be of the form /* ... */'''
