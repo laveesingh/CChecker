@@ -506,6 +506,8 @@ def check_implicit_type_conversion(pinst):
                 for statement in statements:
                     if is_assignment(statement):
                         match = re.search(pat, statement)
+                        if not match:
+                            continue
                         if not function.vars:
                             parse_vars(pinst)
                         if function.vars.get(match.group('var1')) is None or function.vars.get(match.group('var2')) is None:  # This variable isn't set
