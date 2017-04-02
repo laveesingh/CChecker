@@ -86,6 +86,7 @@ if __name__ == '__main__':
     opfile = open(opname, 'w+')
     lno = 0
     was_nl = True
+    tno = 0
     for lines in open(args.file, 'r').readlines():
         lno = lno + 1
         res_line = res_dic.get(lno)
@@ -95,12 +96,14 @@ if __name__ == '__main__':
         if lines.endswith('\n'):
             lines = lines[:-1]
             was_nl = True
-        for sp in res_line:
-            nline = "/*This line fails check no " + str(res_line) + " */"
-            #print nline, lines
-            opfile.write(lines + '        ' + str(nline))
+        tno += len(res_line)
+        nline = "/*This line fails check no " + str(res_line) + " */"
+        #print nline, lines
+        opfile.write(lines + '        ' + str(nline))
         if was_nl:
             opfile.write('\n')
+
+    print "Total number of violations found = %d" % tno 
 
     opn = args.file[:-2] + '.opd'
     opf = open(opn, 'w+')
