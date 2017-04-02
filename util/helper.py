@@ -546,12 +546,15 @@ def check_implicit_type_conversion(pinst):
     return result
 
 def check_initialized_variable(pinst):
+    result = []
     pat = r'.*(?<var1>\w+)\W*= (?<rhs>.*)'  #This pattern may malfunction
     for function in pinst.functions:
         initialized = {}
+        st = function.start -1
         for gvar in pinst.global_vars_dict:
             initialized[gvar] = True
         for line in function.text:
+            st += 1
             if is_assignment(line):
                 statements = line.split(',')
                 for statement in statements:
@@ -563,10 +566,13 @@ def check_initialized_variable(pinst):
                         words = re.findall(r'\w+', rhs)
                         for word in words:
                             if word in function.vars and not initialized.get(word):
-                                print "Suspicious initialization statement:",statement
+                                result.append(st + 1)
+                                #print "Suspicious initialization statement:",statement
     for struct in pinst.structs:
         initialized = {}
+        st = struct.start - 1
         for line in struct.text:
+            st += 1
             if is_assignment(line):
                 statements = line.split(',')
                 for statement in statements:
@@ -578,10 +584,13 @@ def check_initialized_variable(pinst):
                         words = re.findall(r'\w+', rhs)
                         for word in words:
                             if word in struct.vars and not initialized.get(word):
-                                print "Suspicious initialization statement:",statement
+                                result.append(st + 1)
+                                #print "Suspicious initialization statement:",statement
     for union in pinst.unions:
         initialized = {}
+        st = union.start - 1
         for line in union.text:
+            st += 1
             if is_assignment(line):
                 statements = line.split(',')
                 for statement in statements:
@@ -593,7 +602,9 @@ def check_initialized_variable(pinst):
                         words = re.findall(r'\w+', rhs)
                         for word in words:
                             if word in union.vars and not initialized.get(word):
-                                print "Suspicious initialization statement:",statement
+                                result.append(st + 1)
+                                #print "Suspicious initialization statement:",statement
+    return result
 
 def function_declaration(pinst):
     '''
