@@ -9,6 +9,5 @@
 19) Numeric variable used in a for loop for controlling loop iterations shall not be modified inside the loop. Eg: for(i=0; i<10; i++) {…..i=i+3; ….} is not allowed. 
 20) All if…else if… constructs should be terminated with an else clause. 
 21) More than two levels of pointer indirection should not be used. 
-22) Unions should not be used. 
 23) There shall not be any unreachable code (code which will not be executed under any circumstances and which can be detected at compile-time). 
 25) A switch expression should not be effectively Boolean. Eg: switch(x==10) should not be used, as x==10 is effectively Boolean. 
