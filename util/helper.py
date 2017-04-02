@@ -439,6 +439,10 @@ def is_float(dtype):
     return False
 
 def check_implicit_type_conversion(pinst):
+    '''
+    Explicit type conversion is human,
+    implicit type conversion is divine.
+    '''
     result = []
     lines_list = []
     pat = r'(?P<var1>\w+)\s*=\s*(\((?P<tcast>\w+)\))?.*?(?P<var2>\w+)' #this pattern can be malicious, adding \s* at the end may redefine
@@ -456,12 +460,12 @@ def check_implicit_type_conversion(pinst):
                             parse_vars(pinst)
                         if function.vars.get(match.group('var1')) is None or function.vars.get(match.group('var2')) is None:  # This variable isn't set
                             continue
-                        type1 = function.vars[match.group('var1')]
-                        type2 = function.vars[match.group('var2')]
+                        type1, signed1 = function.vars[match.group('var1')]
+                        type2, signed2 = function.vars[match.group('var2')]
                         if match.group('tcast'):
                             # Type cast is explicit
                             continue
-                        if is_float(type1) or is_float(type2):
+                        if is_float(type1) != is_float(type2) or signed1 != signed2:
                             result.append(lineno + 1)
                             #print "implicite type conversion violated.  line:", statement
     for struct in pinst.structs:
@@ -519,6 +523,7 @@ def check_implicit_type_conversion(pinst):
                 if is_assignment(statement):
                     match = re.search(pat, statement)
                     if not match:
+                        print "PAT:", pat, 'STATEMENT:', statement
                         print "regex matching screwed up"
                         continue
                     if not pinst.global_vars_dict:
