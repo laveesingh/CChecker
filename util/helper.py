@@ -613,21 +613,22 @@ def function_declaration(pinst):
     for function in pinst.functions:
         if 'main ()' in function.text[0].strip() or 'main()' in function.text[0].strip():
             continue
-        defin[function.text[0].strip()] = function.start
+        reqtext = function.text[0].strip()
+        defin[reqtext.strip('{')] = function.start
     # print defin
     result = []
     if not proto:
         if not defin:
             return result
         for key, items in defin.items():
-            result.append(key)
+            result.append(items + 1)
         return result
     else:
         for proto_name, proto_start in proto.items():
             for defin_name, defin_start in defin.items():
                 if defin_name in proto_name:
                     if proto_start>defin_start:
-                        result_append(defin_name)
+                        result_append(defin_start + 1)
     return result
 
 def bitwise_op(pinst):

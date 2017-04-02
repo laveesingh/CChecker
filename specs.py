@@ -180,6 +180,14 @@ def proto_decl(pinst):
 	'''All functions shall have prototype declarations that are visible at both function definition and function call.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	res = helper.function_declaration(pinst)
+	if not res:
+		return
+	for line in res:
+		no_of_errors[15] += 1
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(15)
 
 def sizeof_effects(pinst):
 	'''sizeof operator should not be used on expressions with side effect. Eg: sizeof(x=10) is not allowed, as this will not set x to 10.'''
