@@ -640,7 +640,7 @@ def bitwise_op(pinst):
 
 def verify_sizeof(pinst):
     result = []
-    pat = r'\W+sizeof\s*\((?P<exp>.*?)\)'
+    pat = r'\bsizeof\s*\((?P<exp>.*?)\)'
     for function in pinst.functions:
         st = function.start - 1
         lines_list = function.text
@@ -649,7 +649,10 @@ def verify_sizeof(pinst):
             match = re.search(pat, line)
             if match is None:
                 continue
+            else:
             exp = match.group('exp')
+            if not function.vars:
+                parse_vars(pinst)
             if exp in function.vars or exp in bd: 
                 None
             else:
