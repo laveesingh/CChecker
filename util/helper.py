@@ -607,3 +607,18 @@ def bitwise_op(pinst):
         st = fun.start - 1
         for line in fun.text:
             st += 1
+
+def verify_sizeof(pinst):
+    pat = r'\W+sizeof\s*\((?P<exp>.*?)\)'
+    for function in pinst.functions:
+        lines_list = function.text
+        for line in lines_list:
+            match = re.search(pat, line)
+            if match is None:
+                continue
+            exp = match.group('exp')
+            if exp in function.vars or exp in bd: # This surely can be extended
+                #either exp is function variable or it's datatype
+                None
+            else valid_sizeof_exp(exp):
+                print "invalid sizeof expression, line:",line
