@@ -617,20 +617,35 @@ def function_declaration(pinst):
 def bitwise_op(pinst):
     ''''''
     bit_op = ['&', '|', '^', '~', '<<', '>>']
-    re1 = r'((?P<first>[\w\*\\\(\)+-]+)\s*((&)|(\|)|(\^))\s*(?P<second>[\w\*\\\(\)+-]+))'
-    re2 = r'\s*(~)\s*(?P<var>[\w\*\\\(\)+-]+)'
-    re3 = r'((?P<first>[\w\*\\\(\)+-]+)\s*((>>)|(<<))\s*(?P<second>[\w\*\\\(\)+-]+))'
+    re1 = r'((?P<first>[\w\*\(\)\+-/]+)\s*((&)|(\|)|(\^))\s*(?P<second>[\w\*\(\)\+-/]+))'
+    re2 = r'\s*(~)\s*(?P<var>[\w\*\(\)\+-/]+)'
+    re3 = r'((?P<first>[\w\*\(\)\+-/]+)\s*((>>)|(<<))\s*(?P<second>[\w\*\(\)\+-/]+))'
     result = []
     for fun in pinst.functions:
         st = fun.start - 1
         for line in fun.text:
             st += 1
+            res1 = re.search(re1, line)
+            if res1:
+                a = res1.group('first')
+                b = res1.group('second')
+            res2 = re.search(re2, line)
+            if res2:
+                var = res2.group('var')
+            res3 = re.search(re3, line)
+            if res3:
+                a = res3.group('first')
+                b = res3.group('second')
+
 
 def verify_sizeof(pinst):
+    result = []
     pat = r'\W+sizeof\s*\((?P<exp>.*?)\)'
     for function in pinst.functions:
+        st = function.start - 1
         lines_list = function.text
         for line in lines_list:
+            st += 1
             match = re.search(pat, line)
             if match is None:
                 continue
@@ -638,21 +653,27 @@ def verify_sizeof(pinst):
             if exp in function.vars or exp in bd: 
                 None
             else:
-                print "invalid sizeof expression, line:",line
+                result.append(st + 1)
+                #print "invalid sizeof expression, line:",line
     for struct in pinst.structs:
         lines_list = struct.text
+        st = struct.start - 1
         for line in lines_list:
+            st += 1
             match = re.search(pat, line)
             if match is None:
                 continue
             exp = match.group('exp')
             if exp in struct.vars or exp in bd: 
                 None
-            else: 
-                print "invalid sizeof expression, line:",line
+            else:
+                result.append(st + 1) 
+                #print "invalid sizeof expression, line:",line
     for union in pinst.unions:
         lines_list = union.text
+        st = union.start - 1
         for line in lines_list:
+            st += 1
             match = re.search(pat, line)
             if match is None:
                 continue
@@ -660,7 +681,9 @@ def verify_sizeof(pinst):
             if exp in union.vars or exp in bd: 
                 None
             else: 
-                print "invalid sizeof expression, line:",line
+                #print "invalid sizeof expression, line:",line
+                result.append(st + 1)
+    return result
 
 def parse_function_calls(pinst):
     exclude = ['return', 'for', 'if', 'scanf', 'printf', 'qsort']

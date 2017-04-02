@@ -169,6 +169,13 @@ def sizeof_effects(pinst):
 	'''sizeof operator should not be used on expressions with side effect. Eg: sizeof(x=10) is not allowed, as this will not set x to 10.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
+	res = helper.verify_sizeof(pinst)
+	if not res:
+		return
+	for line in res:
+		if error_dic.get(line) is None:
+			error_dic[line] = []
+		error_dic[line].append(16)
 
 def rhshift_limits(pinst):
 	'''Right-hand operand of shift operator should lie between zero and one less than the width in bits of the left-hand side operand.
