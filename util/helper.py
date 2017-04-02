@@ -832,3 +832,11 @@ def no_star_comments(pinst):
             if '/*' in text:
                 res.append(text)
     return res
+
+def code_commented(pinst):
+    ''''''
+    res = []
+    for fun in pinst.functions:
+        for comm in fun.comments:
+            text = func.comments[comm]
+            

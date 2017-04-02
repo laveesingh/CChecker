@@ -103,7 +103,7 @@ def check_init(pinst):
 	'''Automatic (local) variables should have a value before they are used.'''
 	func_name = sys._getframe().f_code.co_name
 	#print func_name + "Not yet coded!"
-	result = helper.check_initialised_variable(pinst)
+	result = helper.check_initialized_variable(pinst)
 	if not result:
 		return
 	#print "Following lines have violated check 8"
