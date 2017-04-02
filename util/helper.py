@@ -518,6 +518,9 @@ def check_implicit_type_conversion(pinst):
             for statement in statements:
                 if is_assignment(statement):
                     match = re.search(pat, statement)
+                    if not match:
+                        print "regex matching screwed up"
+                        continue
                     if not pinst.global_vars_dict:
                         parse_global_vars(pinst)
                     if pinst.global_vars_dict.get(match.group('var1')) is None or pinst.global_vars_dict.get(match.group('var2')) is None:
