@@ -112,12 +112,16 @@ if __name__ == '__main__':
         eval_dir(args.dir, specs)
 
     res_dic = specmod.error_dic
-    opname = args.file[:-2] + '.OP'
+    opname = args.file[:-2] + '.html'
     opfile = open(opname, 'w+')
     lno = 0
     was_nl = True
     tno = 0
+    headb = "<html><head><title>CChecker</title></head><body><p style=\"font-size:20px\">"
+    opfile.write(headb + '\n <pre>')
+    #opfile.write("Total number of violations found are %d" % )
     for lines in open(args.file, 'r').readlines():
+        #opfile.write('<pre></pre>')
         lno = lno + 1
         res_line = res_dic.get(lno)
         if res_line is None:
@@ -126,14 +130,17 @@ if __name__ == '__main__':
         if lines.endswith('\n'):
             lines = lines[:-1]
             was_nl = True
+
         tno += len(res_line)
-        nline = "/*This line fails check no " + str(res_line) + " */"
+        ctag = "<font color = \"red\">"
+        nline = "/*This line fails check no " + str(res_line) + " */ </font>"
         #print nline, lines
-        opfile.write(lines + '        ' + str(nline))
+        opfile.write(ctag + lines + '        ' + str(nline))
         if was_nl:
             opfile.write('\n')
 
-    print "Total number of violations found = %d" % tno 
+    opfile.write("<font color = \"blue\">Total number of violations found = %d</font>" % tno)
+    opfile.write('</p></pre></body></html>') 
 
     opn = args.file[:-2] + '.opd'
     opf = open(opn, 'w+')
