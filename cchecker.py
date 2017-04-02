@@ -108,6 +108,8 @@ if __name__ == '__main__':
     assign_list = helper.conditions(pinst)
     #uncomment the below line when we starts parsing loop variables
     #helper.comparison_floating(pinst)
+    helper.parse_function_calls(pinst)
+    helper.check_recursion(pinst)
     helper.parse_comments(pinst)
     helper.parse_switch(pinst)
     opf.write("Preprocessors = ")
@@ -143,4 +145,3 @@ if __name__ == '__main__':
     #if oldname and fileEquals(opname, oldname):
     #    pass
     #print(pinst.lines)
-

@@ -11,6 +11,9 @@ class function:
         self.comments = {}
         self.assignments_in_cond = []
         self.switch=None
+        self.function_name = None
+        self.function_calls = []
+        self.recursion = 1
 
     def __eq__(self, other):
         first = self.name == other.name
