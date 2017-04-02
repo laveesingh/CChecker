@@ -690,8 +690,7 @@ def verify_sizeof(pinst):
             match = re.search(pat, line)
             if match is None:
                 continue
-            else:
-                exp = match.group('exp')
+            exp = match.group('exp')
             if not function.vars:
                 parse_vars(pinst)
             if exp in function.vars or exp in bd:
@@ -860,7 +859,7 @@ def no_unary_minus(pinst):
     print l
  
 def check_shifts(pinst):
-    pat = r'(?P<var>\w+)\s*(<<|>>)\s*(?P<amount>\d+)'
+    pat = r'(?P<var>\w+)\s*(<<|>>)=?\s*(?P<amount>\d+)'
     lengths = {
             'int': 32,
             'long long': 64,
