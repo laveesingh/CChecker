@@ -375,10 +375,10 @@ def single_comments(pinst):
     return res
 
 def is_switch(line):
-	res = re.search(r'(;)?switch(.*).*',line)
-	if res :
-		return True
-	return False
+    res = re.search(r'(;)?switch(.*).*',line)
+    if res :
+        return True
+    return False
 
 def parse_switch(pinst):
     result = []
@@ -652,7 +652,7 @@ def verify_sizeof(pinst):
             if match is None:
                 continue
             else:
-            exp = match.group('exp')
+                exp = match.group('exp')
             if not function.vars:
                 parse_vars(pinst)
             if exp in function.vars or exp in bd: 
