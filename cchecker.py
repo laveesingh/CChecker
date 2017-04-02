@@ -99,7 +99,8 @@ if __name__ == '__main__':
     #parser.add_argument('-d', '--dir', help="Directory containing C files")
     parser.add_argument('-l', '--list', help="List of specs from command line")
     parser.add_argument('-d', '--dir', help="Directory containing C files")
-    parser.add_argument('html', help="Show output in html")
+    #parser.add_argument('html', help="Show output in html")
+    #parser.add_argument('lspec', help="Show the spec file")
     args = parser.parse_args()
     # If there's any error with provided input files
     check_args(parser, args)
@@ -141,6 +142,7 @@ if __name__ == '__main__':
             opfile.write('\n')
 
     opfile.write("<font color = \"blue\">Total number of violations found = %d</font>" % tno)
+    for a in xrange(1, len(specmod.no_of_error))
     opfile.write('</p></pre></body></html>') 
 
     if args.html:
