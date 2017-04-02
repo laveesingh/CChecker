@@ -4,7 +4,6 @@
 13) Inside a comment, the character sequence /* should not be used. 
 14) Identifier in an inner scope should not have the same name as an identifier in an outer scope, and hide the identifier in the outer scope. 
 15) All functions shall have prototype declarations that are visible at both function definition and function call. 
-16) sizeof operator should not be used on expressions with side effect. Eg: sizeof(x=10) is not allowed, as this will not set x to 10. 
 17) Right-hand operand of shift operator should lie between zero and one less than the width in bits of the left-hand side operand. Eg: x << 9 is not permitted if x is of width 8-bits. 
 18) Unary minus operator should not be used on an expression whose type is unsigned. 
 19) Numeric variable used in a for loop for controlling loop iterations shall not be modified inside the loop. Eg: for(i=0; i<10; i++) {…..i=i+3; ….} is not allowed. 
