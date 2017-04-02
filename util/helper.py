@@ -300,7 +300,7 @@ def comparison_floating(pinst):
                             #print "Shit Happens!" + ares
                             pass
                         elif at is 0:
-                            print func.vars, ares
+                            #print func.vars, ares
                             at = func.vars.get(ares)
                             if at is None:
                                 #print "Sucks!" + ares
@@ -656,7 +656,7 @@ def verify_sizeof(pinst):
             if not function.vars:
                 parse_vars(pinst)
             if exp in function.vars or exp in bd: 
-                None
+                pass
             else:
                 result.append(st + 1)
                 #print "invalid sizeof expression, line:",line
