@@ -186,7 +186,6 @@ def parse_comments(pinst):
     '''
     Takes the programs and it will help in parsing the comments in lines
     '''
-
     for function in pinst.functions:
         orstart = function.start
         text_lines = function.text
@@ -371,7 +370,22 @@ def single_comments(pinst):
             #print lno, text
             if text.startswith('//'):
                 res.append(lno + 1)
-
+    for fun in pinst.structs:
+        #print fun.comments
+        for lno in fun.comments:
+            #print comm, lno
+            text = fun.comments[lno][0].strip()
+            #print lno, text
+            if text.startswith('//'):
+                res.append(lno + 1)
+    for fun in pinst.unions:
+        #print fun.comments
+        for lno in fun.comments:
+            #print comm, lno
+            text = fun.comments[lno][0].strip()
+            #print lno, text
+            if text.startswith('//'):
+                res.append(lno + 1)
     return res
 
 def is_switch(line):
