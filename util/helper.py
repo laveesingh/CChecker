@@ -625,7 +625,7 @@ def function_declaration(pinst):
             proto[line.strip()] = prototype.start
     # print proto
     for function in pinst.functions:
-        if 'main ()' in function.text[0].strip() or 'main()' in function.text[0].strip():
+        if 'main' in function.text[0].strip():
             continue
         reqtext = function.text[0].strip()
         defin[reqtext.strip('{')] = function.start

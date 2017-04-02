@@ -14,7 +14,7 @@ int main() {
     printf("Enter two operands: ");
     scanf("%lf %lf",&firstNumber, &secondNumber);
 
-    switch(operator)
+    switch(operator == '+')
     {
         case '+':
             printf("%.1lf + %.1lf = %.1lf",firstNumber, secondNumber, firstNumber+secondNumber);
