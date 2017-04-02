@@ -141,11 +141,12 @@ if __name__ == '__main__':
     assign_list = helper.conditions(pinst)
     #uncomment the below line when we starts parsing loop variables
     #helper.comparison_floating(pinst)
-    helper.parse_function_calls(pinst)
-    helper.check_recursion(pinst)
-    helper.parse_comments(pinst)
-    helper.parse_switch(pinst)
-    helper.function_declaration(pinst)
+    # helper.parse_function_calls(pinst)
+    # helper.check_recursion(pinst)
+    # helper.parse_comments(pinst)
+    # helper.parse_switch(pinst)
+    # helper.function_declaration(pinst)
+    helper.no_star_comments(pinst)
     opf.write("Preprocessors = ")
     for obs in pinst.preprocessors:
         opf.write(''.join(obs.text))

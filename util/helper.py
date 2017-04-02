@@ -795,17 +795,18 @@ def ok_switch_condition(cond):
 def no_star_comments(pinst):
     ''''''
     res = []
-    # parse_comments(pinst)
     for comment in pinst.global_comments:
-        print comment
+        # print comment.text
         text = comment.text[0].strip()
-        print text
+        # print text
         if '/*' in text:
-            print 'Violation'
+            res.append(text)
 
     for function in pinst.functions:
+        # print function.text
         for line in function.comments:
             text = function.comments[line][0].strip()
-            print text
+            # print text
             if '/*' in text:
-                print 'Violation'
+                res.append(text)
+    return res
