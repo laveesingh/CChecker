@@ -516,7 +516,7 @@ def check_implicit_type_conversion(pinst):
                         if is_float(type1) or is_float(type2):
                             result.append(lineno + 1)
                             #print "implicite type conversion violated.  line:", statement
-    # Global vars remaining are remaining 
+    # Global vars remaining are remaining
     for gvar in pinst.global_vars:
         line = gvar.text[0]
         #print line
@@ -691,7 +691,7 @@ def verify_sizeof(pinst):
                 exp = match.group('exp')
             if not function.vars:
                 parse_vars(pinst)
-            if exp in function.vars or exp in bd: 
+            if exp in function.vars or exp in bd:
                 pass
             else:
                 result.append(st + 1)
@@ -705,10 +705,10 @@ def verify_sizeof(pinst):
             if match is None:
                 continue
             exp = match.group('exp')
-            if exp in struct.vars or exp in bd: 
+            if exp in struct.vars or exp in bd:
                 None
             else:
-                result.append(st + 1) 
+                result.append(st + 1)
                 #print "invalid sizeof expression, line:",line
     for union in pinst.unions:
         lines_list = union.text
@@ -719,9 +719,9 @@ def verify_sizeof(pinst):
             if match is None:
                 continue
             exp = match.group('exp')
-            if exp in union.vars or exp in bd: 
+            if exp in union.vars or exp in bd:
                 None
-            else: 
+            else:
                 #print "invalid sizeof expression, line:",line
                 result.append(st + 1)
     return result
@@ -807,7 +807,6 @@ def check_switch_condition(pinst):
             if not ok_switch_condition(cond):
                 result.append(st+1)
                 #print "switch condition violation, line:", line
-    result    
 
 def ok_switch_condition(cond):
     comps = ['==', '!=', '>', '<', '<=', '>=']
@@ -840,3 +839,18 @@ def code_commented(pinst):
         for comm in fun.comments:
             text = func.comments[comm]
             
+def no_unary_minus(pinst):
+    ''''''
+    l = []
+    for func in pinst.functions:
+        for line in func.text:
+            if '-' in line:
+                a=re.search(r'[((\w+)\))\s*-]', line)
+                if(a):
+                    pass
+                else:
+                    check = re.search(r'-(?P<name>\w+)',line)
+                    p=check.group('name')
+                    if(vars_dict[p][1]==1):
+                        l.append(p)
+    print l
