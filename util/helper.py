@@ -547,7 +547,7 @@ def check_implicit_type_conversion(pinst):
 
 def check_initialized_variable(pinst):
     result = []
-    pat = r'.*(?<var1>\w+)\W*= (?<rhs>.*)'  #This pattern may malfunction
+    pat = r'.*(?P<var1>\w+)\W*= (?P<rhs>.*)'  #This pattern may malfunction
     for function in pinst.functions:
         initialized = {}
         st = function.start -1
@@ -559,7 +559,10 @@ def check_initialized_variable(pinst):
                 statements = line.split(',')
                 for statement in statements:
                     if is_assignment(statement):
+                        print "PAT:",pat,"STATEMENT:",statement
                         match = re.search(pat, statement)
+                        if not match:
+                            continue
                         varname = match.group('var1')
                         initialized[varname] = True
                         rhs = match.group('rhs')
