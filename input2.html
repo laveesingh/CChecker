@@ -1,0 +1,65 @@
+<html><head><title>CChecker</title></head><body><p style="font-size:20px">
+ <pre><font color = "red">// 2017 Team NULL1         /*This line fails check no [11] */ </font>
+
+#include<stdio.h>
+#include<stdint.h>
+#include<ctype.h>
+#include<iomanip.h>
+
+<font color = "red">int first(int i)        /*This line fails check no [10, 15] */ </font>
+{
+  	return first(i-1);
+}
+<font color = "red">        /*This line fails check no [22] */ </font>
+union pair
+{
+  	int first; 
+	int second;
+};
+
+<font color = "red">int main()        /*This line fails check no [10] */ </font>
+{
+	float f = 5.0;
+<font color = "red">	volatile register inline int i = f;	        /*This line fails check no [1] */ </font>
+		
+	signed int i = 45;
+	
+	int n = 10;
+<font color = "red">  	switch(n){                /*This line fails check no [24] */ </font>
+	    case 1:
+	      	printf("1\n");
+	      	break;
+	    case 10:
+	      	printf("10\n");
+	      	break;
+ 	 }
+ 	 :LOOP
+ 	 for(int i =0;i<10;++i){
+ 	 	if( i == 5 )
+<font color = "red"> 	 		goto LOOP;        /*This line fails check no [8] */ </font>
+ 	 	else
+<font color = "red"> 	 		continue;        /*This line fails check no [8] */ </font>
+ 	 }
+
+<font color = "red">  	 int *i = malloc(sizeof(int));        /*This line fails check no [9] */ </font>
+
+  	 switch(n == 0){        
+	    case 1:
+	      	printf("1\n");
+	      	break;
+	    case 10:
+	      	printf("10\n");
+	      	break;
+	    default:
+ 	 }
+
+}
+<font color = "blue">Total number of violations found = 10</font><font color = "blue">Spec 1 failed: 1
+</font><font color = "blue">Spec 8 failed: 2
+</font><font color = "blue">Spec 9 failed: 1
+</font><font color = "blue">Spec 10 failed: 2
+</font><font color = "blue">Spec 11 failed: 1
+</font><font color = "blue">Spec 15 failed: 1
+</font><font color = "blue">Spec 22 failed: 1
+</font><font color = "blue">Spec 24 failed: 1
+</font></p></pre></body></html>

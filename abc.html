@@ -1,0 +1,73 @@
+<html><head><title>CChecker</title></head><body><p style="font-size:20px">
+ <pre>/*
+ * Team Null 2017
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ */
+
+#include<stdlib.h>
+#include<stdio.h>
+#define MAXN 150002
+#define MAXM 150002
+
+<font color = "red">//This struct will keep the values of lists        /*This line fails check no [11] */ </font>
+
+struct list {
+	int degree;
+	int busy;
+	char color_of_node;
+	long long int neighbors;
+};
+<font color = "red">        /*This line fails check no [22] */ </font>
+union graph {
+	int n;
+	int m;
+};
+
+int main()
+{
+  int i=0;
+  float fx=0;
+<font color = "red">  i=fx;        /*This line fails check no [1] */ </font>
+  bool operator=true;
+<font color = "red">  switch(operator)        /*This line fails check no [24] */ </font>
+  {
+      case '+':
+          printf("firstNumber, secondNumber, firstNumber+secondNumber");
+          break;
+
+      case '-':
+          printf("firstNumber, secondNumber, firstNumber-secondNumber");
+          break;
+
+      case '*':
+          printf("firstNumber, secondNumber, firstNumber*secondNumber");
+          break;
+
+      case '/':
+          printf("firstNumber, secondNumber, firstNumber/firstNumber");
+          break;
+  }
+  return 0;
+}
+<font color = "blue">Total number of violations found = 4</font><font color = "blue">Spec 1 failed: 1
+</font><font color = "blue">Spec 11 failed: 1
+</font><font color = "blue">Spec 22 failed: 1
+</font><font color = "blue">Spec 24 failed: 1
+</font></p></pre></body></html>
