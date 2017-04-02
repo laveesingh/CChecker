@@ -638,6 +638,8 @@ def bitwise_op(pinst):
     re3 = r'((?P<first>[\w\*\(\)\+-/]+)\s*((>>)|(<<))\s*(?P<second>[\w\*\(\)\+-/]+))'
     result = []
     for fun in pinst.functions:
+        if not fun.vars:
+            parse_vars(pinst)
         st = fun.start - 1
         for line in fun.text:
             st += 1
@@ -645,14 +647,22 @@ def bitwise_op(pinst):
             if res1:
                 a = res1.group('first')
                 b = res1.group('second')
+                if fun.vars.get(a) and fun.vars.get(a)[1] is 0:
+                    result.append(st)
+                else if fun.vars.get(b) and fun.vars.get(b)[1] is 0:
+                    result.append(st)
             res2 = re.search(re2, line)
             if res2:
                 var = res2.group('var')
+                if fun.vars.get(var) and fun.vars.get(var)[1] is 0:
+                    result.append(st)
             res3 = re.search(re3, line)
             if res3:
                 a = res3.group('first')
                 b = res3.group('second')
-
+                if fun.vars.get(a) and fun.vars.get(a)[1] is 0:
+                    result.append(st)
+    return result
 
 def verify_sizeof(pinst):
     result = []
