@@ -26,7 +26,7 @@
 #define MAXN 150002
 #define MAXM 150002
 
-<font color = "red">//This struct will keep the values of lists        /*This line fails check no [11] */ </font>
+//This struct will keep the values of lists
 
 struct list {
 	int degree;
@@ -34,7 +34,7 @@ struct list {
 	char color_of_node;
 	long long int neighbors;
 };
-<font color = "red">        /*This line fails check no [22] */ </font>
+
 union graph {
 	int n;
 	int m;
@@ -44,9 +44,9 @@ int main(int argc, char argv)
 {
   int i=0;
   float fx=0;
-<font color = "red">  i=fx;        /*This line fails check no [1] */ </font>
+  i=fx;
   bool operator=true;
-<font color = "red">  switch(operator)        /*This line fails check no [24] */ </font>
+  switch(operator)
   {
       case '+':
           printf("firstNumber, secondNumber, firstNumber+secondNumber");
@@ -66,8 +66,4 @@ int main(int argc, char argv)
   }
   return 0;
 }
-<font color = "blue">Total number of violations found = 4</font><font color = "blue">Spec 1 failed: 1
-</font><font color = "blue">Spec 11 failed: 1
-</font><font color = "blue">Spec 22 failed: 1
-</font><font color = "blue">Spec 24 failed: 1
-</font></p></pre></body></html>
+<font color = "blue">Total number of violations found = 0</font></p></pre></body></html>
